@@ -220,8 +220,8 @@ export const days: Day[] = [
         why: "Often called the Apple Store of cannabis: marble counters, staff in bow ties, and people who actually know the menu. Non-smokers can just have a coffee.",
         vibes: ["coffeeshop", "local"],
         must: true,
-        card: "Tram from Centraal is covered by the card.",
         tips: [
+          "Tram from Centraal is covered by the card.",
           "Open daily 7:00 am–12:45 am. 18+, so bring your passport.",
           "The red velvet space cake is famously strong. Reviewers say a quarter was too much, so share one.",
         ],
@@ -287,7 +287,6 @@ export const days: Day[] = [
         map: "Bakers & Roasters De Pijp Amsterdam",
         why: "Big American-friendly plates at Bakers & Roasters, then a fresh stroopwafel at the Albert Cuyp Market around the corner.",
         vibes: ["food", "local", "chill"],
-        card: "Tram is covered.",
       },
       {
         time: "1:00 pm",
