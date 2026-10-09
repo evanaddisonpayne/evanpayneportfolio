@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where I've Been Globe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&display=swap">
+<style>
+/* Layout: one dark band, globe left as the hero object, a narrow index of countries and routes on the right. Stacks on phones. */
+:root {
+  color-scheme: dark;
+  --oxblood: #2B0B10;
+  --deep: #1F070B;
+  --ground: #240910;
+  --ivory: #F2E8D5;
+  --brass: #C49A4A;
+  --antique: #735420;
+  --smoke: #A88E86;
+  --signal: #FF5B1F;
+  --rule: rgba(196, 154, 74, 0.28);
+  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --smallcaps: "Cormorant SC", "Cormorant Garamond", Georgia, serif;
+  --body: "DM Sans", "Helvetica Neue", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--oxblood); color: var(--ivory); }
+body { font-family: var(--body); font-size: 16px; line-height: 1.55; padding-inline: 16px; padding-block: 0; }
+
+.wib { max-width: 1240px; margin: 0 auto; padding-block: clamp(56px, 8vw, 104px); display: grid; gap: clamp(28px, 4vw, 44px); }
+
+.eyebrow { font-family: var(--smallcaps); font-weight: 500; font-size: 18px; letter-spacing: 0.14em; color: var(--brass); text-transform: uppercase; margin: 0 0 14px; }
+.head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 24px 64px; align-items: end; }
+.head h2 { font-family: var(--display); font-weight: 300; font-size: clamp(34px, 4.4vw, 52px); line-height: 1.08; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+.head p { margin: 0; color: var(--smoke); font-size: 16px; max-width: 46ch; }
+
+.stage { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: clamp(24px, 3vw, 48px); align-items: start; }
+
+/* Globe */
+.globe { position: sticky; top: max(24px, env(safe-area-inset-top, 0px)); border: 1px solid var(--rule); background: var(--ground); }
+.globe::after { content: ""; position: absolute; inset: 6px; border: 0.6px solid rgba(196,154,74,0.18); pointer-events: none; }
+.canvas-wrap { position: relative; aspect-ratio: 1 / 1; max-width: 100%; }
+canvas { display: block; width: 100%; height: 100%; cursor: grab; touch-action: pan-y; outline: none; }
+canvas.dragging { cursor: grabbing; }
+canvas:focus-visible { box-shadow: inset 0 0 0 2px var(--brass); }
+
+.controls { position: absolute; top: 18px; left: 18px; right: 18px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; z-index: 2; pointer-events: none; }
+.controls > * { pointer-events: auto; }
+.views, .zoom { display: flex; border: 1px solid var(--rule); background: rgba(31, 7, 11, 0.82); backdrop-filter: blur(4px); }
+.views button, .zoom button {
+  font-family: var(--smallcaps); font-weight: 600; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ivory); background: transparent; border: 0; padding: 8px 14px; cursor: pointer; min-height: 36px;
+}
+.views button + button, .zoom button + button { border-left: 1px solid var(--rule); }
+.views button[aria-pressed="true"] { color: var(--oxblood); background: var(--brass); }
+.views button:hover:not([aria-pressed="true"]), .zoom button:hover { color: var(--brass); }
+.zoom button { font-family: var(--body); font-size: 18px; letter-spacing: 0; padding: 4px 14px; line-height: 1; }
+button:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+.legend { position: absolute; left: 18px; bottom: 16px; display: grid; gap: 6px; font-family: var(--smallcaps); font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--smoke); pointer-events: none; z-index: 2; }
+.legend span { display: flex; align-items: center; gap: 10px; }
+.legend i { display: inline-block; width: 26px; flex: none; }
+.k-route { border-top: 1px solid rgba(242,232,213,0.75); }
+.k-rail { border-top: 1px dashed var(--brass); }
+.k-visited { height: 10px; background: rgba(196,154,74,0.34); border: 1px solid var(--brass); }
+.k-home { width: 10px !important; height: 10px; border-radius: 50%; border: 1.5px solid var(--signal); margin-inline: 8px; }
+
+.hint { position: absolute; right: 18px; bottom: 16px; font-size: 12px; color: var(--smoke); z-index: 2; pointer-events: none; text-align: right; }
+.status { position: absolute; inset: auto 18px 56px auto; font-size: 12px; color: var(--smoke); z-index: 2; }
+
+.tip { position: absolute; z-index: 3; pointer-events: none; background: var(--deep); border: 1px solid var(--brass); padding: 8px 12px 9px; min-width: 120px; transform: translate(14px, -50%); }
+.tip b { display: block; font-family: var(--display); font-weight: 400; font-size: 17px; line-height: 1.2; }
+.tip small { display: block; font-family: var(--smallcaps); font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brass); margin-top: 2px; }
+
+/* Index */
+.index { display: grid; gap: 34px; min-width: 0; }
+.index h3 { font-family: var(--smallcaps); font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brass); margin: 0 0 10px; display: flex; justify-content: space-between; gap: 12px; }
+.index h3 span { color: var(--smoke); font-variant-numeric: tabular-nums; }
+.region { font-family: var(--smallcaps); font-weight: 500; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--smoke); margin: 16px 0 2px; }
+.list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.list li { border-bottom: 1px solid var(--rule); }
+.row { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; align-items: baseline; text-align: left; background: transparent; border: 0; color: var(--ivory); padding: 10px 2px; cursor: pointer; font: inherit; }
+.row .name { font-family: var(--display); font-weight: 300; font-size: 19px; line-height: 1.25; }
+.row .meta { grid-column: 1 / -1; font-size: 13px; color: var(--smoke); line-height: 1.4; }
+.row .tag { font-family: var(--smallcaps); font-weight: 700; font-size: 11px; letter-spacing: 0.14em; color: var(--signal); }
+.row .num { font-family: var(--smallcaps); font-weight: 600; font-size: 13px; letter-spacing: 0.08em; color: var(--brass); font-variant-numeric: tabular-nums; }
+.row:hover .name, .row[aria-pressed="true"] .name { color: var(--brass); }
+.row[aria-pressed="true"] { box-shadow: inset 2px 0 0 var(--signal); padding-left: 12px; }
+
+.home { font-family: var(--smallcaps); font-weight: 600; font-size: 12px; letter-spacing: 0.16em; color: var(--smoke); border-top: 1px solid var(--rule); padding-top: 14px; }
+.home b { color: var(--signal); font-weight: 700; }
+
+@media (max-width: 960px) {
+  .globe { position: relative; top: 0; }
+  .stage { grid-template-columns: minmax(0, 1fr); }
+  .head { grid-template-columns: minmax(0, 1fr); }
+  .index { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); column-gap: 32px; }
+}
+@media (max-width: 520px) {
+  .controls { top: 10px; left: 10px; right: 10px; }
+  .views button { padding: 6px 9px; font-size: 12px; }
+  .legend { display: none; }
+  .hint { left: 12px; right: 12px; bottom: 10px; text-align: center; }
+}
+</style>
+
+<section class="wib" aria-labelledby="wib-title">
+  <div class="head">
+    <div>
+      <p class="eyebrow">Where I've been</p>
+      <h2 id="wib-title">Every trip, on one globe.</h2>
+    </div>
+    <p>Flight and train bookings from 2016 to 2026, pulled straight from my inbox. Drag to spin it. Pick a country or a route to fly there.</p>
+  </div>
+
+  <div class="stage">
+    <div class="globe">
+      <div class="canvas-wrap" id="wrap">
+        <canvas id="globe" tabindex="0" role="img" aria-label="Interactive globe showing the countries Evan has visited and the routes he has booked, centered on Chicago."></canvas>
+        <div class="controls">
+          <div class="views" role="group" aria-label="Preset views">
+            <button type="button" id="v-all" data-view="all" aria-pressed="true">Everything</button>
+            <button type="button" id="v-us" data-view="us" aria-pressed="false">U.S.</button>
+            <button type="button" id="v-eu" data-view="eu" aria-pressed="false">Europe</button>
+          </div>
+          <div class="zoom" role="group" aria-label="Zoom">
+            <button type="button" id="z-out" aria-label="Zoom out">−</button>
+            <button type="button" id="z-in" aria-label="Zoom in">+</button>
+          </div>
+        </div>
+        <div class="legend" aria-hidden="true">
+          <span><i class="k-route"></i>Flight</span>
+          <span><i class="k-rail"></i>Rail</span>
+          <span><i class="k-visited"></i>Been there</span>
+          <span><i class="k-home"></i>Home base</span>
+        </div>
+        <div class="hint" id="hint">Drag to spin · Double-click to zoom</div>
+        <div class="status" id="status" hidden></div>
+        <div class="tip" id="tip" hidden></div>
+      </div>
+    </div>
+
+    <aside class="index" aria-label="Places and routes">
+      <div>
+        <h3>Countries <span id="ccount"></span></h3>
+        <div id="countries"></div>
+      </div>
+      <div>
+        <h3>Routes I book most <span>Bookings</span></h3>
+        <ul class="list" id="routes"></ul>
+      </div>
+      <p class="home">Home base · <b>41.8923° N · 87.6354° W</b></p>
+    </aside>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>window.echarts = { registerMap: function (name, geo) { if (/world/i.test(name)) window.__worldGeo = geo; } };</script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
+<script>if (!window.__worldGeo) document.write('<script src="https://cdn.jsdelivr.net/npm/datamaps@0.5.9/dist/datamaps.world.min.js"><\/script>');</script>
+<script>
+(function () {
+  "use strict";
+  const DATA = {"ap":{"SFO":["San Francisco",37.62,-122.38,"US","SFO"],"OAK":["Oakland",37.72,-122.22,"US","OAK"],"BUR":["Burbank",34.2,-118.36,"US","BUR"],"LAX":["Los Angeles",33.94,-118.41,"US","LAX"],"SAN":["San Diego",32.73,-117.19,"US","SAN"],"LAS":["Las Vegas",36.08,-115.15,"US","LAS"],"PHX":["Phoenix",33.43,-112.01,"US","PHX"],"DEN":["Denver",39.86,-104.67,"US","DEN"],"DFW":["Dallas–Fort Worth",32.9,-97.04,"US","DFW"],"DAL":["Dallas Love Field",32.85,-96.85,"US","DAL"],"IAH":["Houston",29.98,-95.34,"US","IAH"],"TUL":["Tulsa",36.2,-95.89,"US","TUL"],"XNA":["Northwest Arkansas",36.28,-94.31,"US","XNA"],"SGF":["Springfield, MO",37.25,-93.39,"US","SGF"],"MSP":["Minneapolis",44.88,-93.22,"US","MSP"],"ORD":["Chicago O'Hare",41.98,-87.9,"US","ORD"],"MDW":["Chicago Midway",41.79,-87.75,"US","MDW"],"Chicago Union Station":["Chicago Union Station",41.879,-87.64,"US",""],"Milwaukee Intermodal":["Milwaukee",43.034,-87.917,"US",""],"BNA":["Nashville",36.12,-86.68,"US","BNA"],"ATL":["Atlanta",33.64,-84.43,"US","ATL"],"MOB":["Mobile",30.69,-88.24,"US","MOB"],"VPS":["Destin",30.48,-86.53,"US","VPS"],"MCO":["Orlando",28.43,-81.31,"US","MCO"],"DCA":["Washington",38.85,-77.04,"US","DCA"],"LGA":["New York LaGuardia",40.78,-73.87,"US","LGA"],"JFK":["New York JFK",40.64,-73.78,"US","JFK"],"CUN":["Cancún",21.04,-86.88,"MX","CUN"],"OGG":["Maui",20.9,-156.43,"US","OGG"],"DUB":["Dublin",53.42,-6.27,"IE","DUB"],"STN":["London Stansted",51.89,0.24,"GB","STN"],"LGW":["London Gatwick",51.15,-0.19,"GB","LGW"],"AMS":["Amsterdam Schiphol",52.31,4.76,"NL","AMS"],"Amsterdam Centraal":["Amsterdam Centraal",52.379,4.9,"NL",""],"CPH":["Copenhagen",55.62,12.65,"DK","CPH"],"BER":["Berlin",52.37,13.5,"DE","BER"],"MUC":["Munich",48.35,11.79,"DE","MUC"],"KRK":["Kraków",50.08,19.78,"PL","KRK"],"Paris Nord":["Paris Nord",48.88,2.355,"FR",""],"Paris Est":["Paris Est",48.877,2.359,"FR",""],"Lille Flandres":["Lille",50.637,3.071,"FR",""],"Reims":["Reims",49.259,4.024,"FR",""],"Karlsruhe Hbf":["Karlsruhe",48.994,8.4,"DE",""],"Basel SBB":["Basel",47.547,7.59,"CH",""],"Zurich HB":["Zurich",47.378,8.54,"CH",""],"Luzern":["Lucerne",47.05,8.31,"CH",""],"Munich Hbf":["Munich Hbf",48.14,11.558,"DE",""],"Innsbruck Hbf":["Innsbruck Hbf",47.263,11.401,"AT",""],"Prague hl.n.":["Prague hl.n.",50.083,14.435,"CZ",""],"Kraków Główny":["Kraków Główny",50.068,19.947,"PL",""],"Brussels-Midi":["Brussels-Midi",50.836,4.336,"BE",""],"Frankfurt Hbf":["Frankfurt Hbf",50.107,8.663,"DE",""],"Berlin Hbf":["Berlin Hbf",52.525,13.369,"DE",""]},"routes":[["ORD","XNA",17,"F","2018","2026"],["BUR","OAK",16,"F","2023","2024"],["DEN","SFO",14,"F","2023","2025"],["BUR","SFO",12,"F","2023","2024"],["LAX","SFO",10,"F","2023","2024"],["ORD","SFO",9,"F","2023","2026"],["LAS","TUL",8,"F","2016","2023"],["DFW","XNA",7,"F","2019","2024"],["DFW","SFO",7,"F","2023","2024"],["Chicago Union Station","Milwaukee Intermodal",6,"R","2025","2026"],["LGA","XNA",5,"F","2019","2022"],["LAS","SFO",5,"F","2023","2025"],["LAS","XNA",4,"F","2016","2022"],["OGG","SFO",4,"F","2023","2024"],["ATL","XNA",3,"F","2020","2022"],["DCA","LGA",3,"F","2021","2021"],["DCA","XNA",3,"F","2021","2021"],["DAL","DEN",3,"F","2023","2024"],["PHX","SFO",3,"F","2024","2024"],["ORD","PHX",3,"F","2024","2024"],["SGF","VPS",2,"F","2017","2017"],["ORD","TUL",2,"F","2018","2018"],["LAX","TUL",2,"F","2018","2018"],["DEN","DFW",2,"F","2019","2019"],["ATL","MOB",2,"F","2020","2020"],["LGA","ORD",2,"F","2021","2022"],["VPS","XNA",2,"F","2021","2021"],["LAX","XNA",2,"F","2022","2023"],["DEN","XNA",2,"F","2023","2023"],["DEN","TUL",2,"F","2023","2023"],["BUR","PHX",2,"F","2024","2024"],["MDW","SFO",2,"F","2024","2024"],["MUC","SFO",2,"F","2024","2024"],["IAH","SFO",2,"F","2024","2025"],["PHX","TUL",2,"F","2024","2024"],["CPH","ORD",2,"F","2026","2026"],["AMS","CPH",2,"F","2026","2026"],["DUB","ORD",2,"F","2026","2026"],["MSP","XNA",1,"F","2022","2022"],["MSP","SFO",1,"F","2022","2022"],["AMS","ATL",1,"F","2022","2022"],["Lille Flandres","Paris Nord",1,"R","2022","2022"],["Paris Est","Reims",1,"R","2022","2022"],["Karlsruhe Hbf","Paris Est",1,"R","2022","2022"],["BER","STN",1,"F","2023","2023"],["JFK","LGW",1,"F","2023","2023"],["DFW","JFK",1,"F","2023","2023"],["OAK","OGG",1,"F","2023","2023"],["DAL","LAX",1,"F","2023","2023"],["DAL","LAS",1,"F","2023","2023"],["SAN","SFO",1,"F","2024","2024"],["DAL","SAN",1,"F","2024","2024"],["DAL","ORD",1,"F","2024","2024"],["DFW","ORD",1,"F","2024","2024"],["BNA","DEN",1,"F","2024","2024"],["BNA","MDW",1,"F","2024","2024"],["KRK","MUC",1,"F","2024","2024"],["DFW","IAH",1,"F","2024","2024"],["LAS","ORD",1,"F","2025","2025"],["DEN","ORD",1,"F","2025","2025"],["CUN","ORD",1,"F","2025","2025"],["CUN","MCO",1,"F","2025","2025"],["MCO","ORD",1,"F","2025","2025"],["IAH","XNA",1,"F","2025","2025"],["Amsterdam Centraal","Basel SBB",1,"R","2026","2026"],["Amsterdam Centraal","Zurich HB",1,"R","2026","2026"],["Luzern","Zurich HB",1,"R","2026","2026"],["Munich Hbf","Innsbruck Hbf",1,"R","2024","2024"],["Innsbruck Hbf","Prague hl.n.",1,"R","2024","2024"],["Prague hl.n.","Kraków Główny",1,"R","2024","2024"],["Amsterdam Centraal","Brussels-Midi",1,"R","2022","2022"],["Brussels-Midi","Lille Flandres",1,"R","2022","2022"],["Karlsruhe Hbf","Frankfurt Hbf",1,"R","2022","2022"],["Frankfurt Hbf","Berlin Hbf",1,"R","2022","2022"]]};
+  const AP = DATA.ap;            // id -> [name, lat, lon, countryCode, iata]
+  const ROUTES = DATA.routes;    // [a, b, bookings, F|R, firstYear, lastYear]
+
+  const CITY = { STN: "London", LGW: "London", AMS: "Amsterdam", "Amsterdam Centraal": "Amsterdam", "Paris Nord": "Paris", "Paris Est": "Paris",
+    ORD: "Chicago", MDW: "Chicago", "Chicago Union Station": "Chicago", DFW: "Dallas", DAL: "Dallas", LGA: "New York", JFK: "New York",
+    XNA: "NW Arkansas", "Dallas Love Field": "Dallas",
+    "Munich Hbf": "Munich", "Innsbruck Hbf": "Innsbruck", "Prague hl.n.": "Prague", "Kraków Główny": "Kraków", "Brussels-Midi": "Brussels", "Frankfurt Hbf": "Frankfurt", "Berlin Hbf": "Berlin" };
+  const city = id => CITY[id] || AP[id][0];
+
+  // The twelve countries, plus home. Centers are used for fly-to even if border data is unavailable.
+  const COUNTRIES = [
+    { cc: "US", name: "United States", iso: "USA", aliases: ["United States", "United States of America", "USA"], c: [-96, 39], z: 2.1, region: "North America", home: true },
+    { cc: "MX", name: "Mexico", iso: "MEX", aliases: ["Mexico"], c: [-95, 22], z: 2.6, region: "North America" },
+    { cc: "IE", name: "Ireland", iso: "IRL", aliases: ["Ireland"], c: [-8, 53.3], z: 7, region: "Europe" },
+    { cc: "GB", name: "United Kingdom", iso: "GBR", aliases: ["United Kingdom", "UK", "Great Britain"], c: [-2, 53.5], z: 5.5, region: "Europe" },
+    { cc: "FR", name: "France", iso: "FRA", aliases: ["France"], c: [2.4, 46.6], z: 5, region: "Europe" },
+    { cc: "BE", name: "Belgium", iso: "BEL", aliases: ["Belgium"], c: [4.6, 50.6], z: 9, region: "Europe" },
+    { cc: "NL", name: "Netherlands", iso: "NLD", aliases: ["Netherlands", "The Netherlands"], c: [5.4, 52.2], z: 9, region: "Europe" },
+    { cc: "DE", name: "Germany", iso: "DEU", aliases: ["Germany"], c: [10.4, 51.1], z: 5.5, region: "Europe" },
+    { cc: "DK", name: "Denmark", iso: "DNK", aliases: ["Denmark"], c: [10, 56], z: 8, region: "Europe" },
+    { cc: "PL", name: "Poland", iso: "POL", aliases: ["Poland"], c: [19.4, 52], z: 6, region: "Europe" },
+    { cc: "CZ", name: "Czechia", iso: "CZE", aliases: ["Czechia", "Czech Rep.", "Czech Republic"], c: [15.4, 49.8], z: 8, region: "Europe" },
+    { cc: "AT", name: "Austria", iso: "AUT", aliases: ["Austria"], c: [14.5, 47.6], z: 8, region: "Europe" },
+    { cc: "CH", name: "Switzerland", iso: "CHE", aliases: ["Switzerland"], c: [8.2, 46.8], z: 9, region: "Europe" }
+  ];
+  const VIEWS = { all: { c: [-55, 38], z: 1.05 }, us: { c: [-98, 37], z: 2.15 }, eu: { c: [7, 50], z: 4.2 } };
+  const MAJOR = new Set(["ORD", "SFO", "LAX", "DEN", "DFW", "XNA", "LGA", "ATL", "OGG", "CUN", "DUB", "STN", "AMS", "CPH", "BER", "MUC", "KRK", "Paris Nord", "Zurich HB", "Prague hl.n.", "Innsbruck Hbf", "Brussels-Midi", "Frankfurt Hbf", "LAS", "PHX", "TUL", "MSP", "MCO", "IAH", "DCA"]);
+  const HOME = [-87.6354, 41.8923];
+
+  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const canvas = document.getElementById("globe");
+  const wrap = document.getElementById("wrap");
+  const tip = document.getElementById("tip");
+  const statusEl = document.getElementById("status");
+  const ctx = canvas.getContext("2d");
+  if (!window.d3) { statusEl.hidden = false; statusEl.textContent = "The globe needs a script that didn't load. Refresh to try again."; return; }
+
+  // ---------- world borders ----------
+  function decodeEcharts(json) {
+    if (!json || !json.UTF8Encoding) return json;
+    const scale = json.UTF8Scale == null ? 1024 : json.UTF8Scale;
+    const dec = (str, off) => {
+      const out = []; let px = off[0], py = off[1];
+      for (let i = 0; i < str.length; i += 2) {
+        let x = str.charCodeAt(i) - 64, y = str.charCodeAt(i + 1) - 64;
+        x = (x >> 1) ^ (-(x & 1)); y = (y >> 1) ^ (-(y & 1));
+        x += px; y += py; px = x; py = y;
+        out.push([x / scale, y / scale]);
+      }
+      return out;
+    };
+    json.features.forEach(f => {
+      const g = f.geometry, off = g.encodeOffsets;
+      if (!off) return;
+      if (g.type === "Polygon") g.coordinates = g.coordinates.map((r, i) => typeof r === "string" ? dec(r, off[i]) : r);
+      else if (g.type === "MultiPolygon") g.coordinates = g.coordinates.map((p, i) => p.map((r, j) => typeof r === "string" ? dec(r, off[i][j]) : r));
+    });
+    json.UTF8Encoding = false;
+    return json;
+  }
+  // d3 wants clockwise exterior rings; GeoJSON sources often wind the other way.
+  function rewind(f) {
+    const g = f.geometry; if (!g) return f;
+    const fix = poly => {
+      if (d3.geoArea({ type: "Polygon", coordinates: poly }) > 2 * Math.PI) poly.forEach(r => r.reverse());
+      return poly;
+    };
+    if (g.type === "Polygon") fix(g.coordinates);
+    if (g.type === "MultiPolygon") g.coordinates.forEach(fix);
+    return f;
+  }
+  function loadWorld() {
+    try {
+      if (window.__worldGeo && window.__worldGeo.features) {
+        const gj = decodeEcharts(window.__worldGeo);
+        return gj.features.filter(f => f.geometry).map(f => rewind({ type: "Feature", geometry: f.geometry, properties: { name: (f.properties && f.properties.name) || "" } }));
+      }
+      if (window.Datamap && window.Datamap.prototype.worldTopo && window.topojson) {
+        const t = window.Datamap.prototype.worldTopo;
+        const key = Object.keys(t.objects)[0];
+        return topojson.feature(t, t.objects[key]).features.map(f => rewind({ type: "Feature", geometry: f.geometry, id: f.id, properties: { name: (f.properties && f.properties.name) || "", iso: f.id } }));
+      }
+    } catch (e) { /* fall through to no borders */ }
+    return null;
+  }
+  const world = loadWorld();
+  const visitedByFeature = new Map();
+  if (world) {
+    world.forEach(f => {
+      const n = (f.properties.name || "").toLowerCase(), iso = f.properties.iso || f.id;
+      const hit = COUNTRIES.find(c => c.iso === iso || c.aliases.some(a => a.toLowerCase() === n));
+      if (hit) { visitedByFeature.set(f, hit); hit.feature = f; }
+    });
+  } else {
+    statusEl.hidden = false; statusEl.textContent = "Country borders didn't load. Routes still work.";
+  }
+  const landAll = world ? { type: "FeatureCollection", features: world } : null;
+
+  // ---------- routes ----------
+  const routes = ROUTES.map(([a, b, n, m, y0, y1], i) => {
+    const A = [AP[a][2], AP[a][1]], B = [AP[b][2], AP[b][1]];
+    const dist = d3.geoDistance(A, B);
+    const interp = d3.geoInterpolate(A, B);
+    const steps = Math.max(12, Math.ceil(dist * 180 / Math.PI / 1.5));
+    const lift = Math.min(0.32, 0.04 + dist * 0.16);
+    const pts = d3.range(steps + 1).map(k => { const t = k / steps; return [interp(t), 1 + lift * Math.sin(Math.PI * t)]; });
+    return { i, a, b, n, rail: m === "R", y0, y1, pts, dist, mid: interp(0.5), A, B, phase: (i * 0.137) % 1 };
+  });
+  const maxN = d3.max(routes, r => r.n);
+
+  // ---------- view state ----------
+  let W = 0, H = 0, R = 0, dpr = 1;
+  let rot = [-VIEWS.all.c[0], -VIEWS.all.c[1], 0];
+  let zoom = VIEWS.all.z;
+  const projection = d3.geoOrthographic().clipAngle(90).precision(0.4);
+  const path = d3.geoPath(projection, ctx);
+  const graticule = d3.geoGraticule10();
+  let hover = null;        // {type:'country'|'airport', ...}
+  let selected = null;     // country object
+  let hotRoute = null;     // route index highlighted from the list
+  let anim = null;         // fly animation
+  let lastInteract = -1e9, driftBase = rot[0], driftT0 = performance.now();
+
+  function resize() {
+    const r = wrap.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = r.width; H = r.height;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    R = Math.min(W, H) * 0.42;
+    draw();
+  }
+
+  function setProj() {
+    projection.rotate(rot).scale(R * zoom).translate([W / 2, H / 2 + (W < 520 ? 10 : 6)]);
+  }
+  // project a lon/lat lifted off the surface by factor e; returns [x, y, visible]
+  const rotator = { fn: null, key: "" };
+  function lifted(ll, e) {
+    const key = rot.join(",");
+    if (rotator.key !== key) { rotator.fn = d3.geoRotation(rot); rotator.key = key; }
+    const p = rotator.fn(ll), lam = p[0] * Math.PI / 180, phi = p[1] * Math.PI / 180;
+    const s = R * zoom * e, cphi = Math.cos(phi);
+    const x = cphi * Math.sin(lam), y = Math.sin(phi), z = cphi * Math.cos(lam);
+    const [tx, ty] = projection.translate();
+    const vis = z > 0 || e * Math.sqrt(x * x + y * y) > 1.0;
+    return [tx + s * x, ty - s * y, vis];
+  }
+
+  // ---------- drawing ----------
+  function draw(now) {
+    if (!W) return;
+    now = now || performance.now();
+    setProj();
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    const [cx, cy] = projection.translate(), s = projection.scale();
+
+    // halo
+    const halo = ctx.createRadialGradient(cx, cy, s * 0.96, cx, cy, s * 1.22);
+    halo.addColorStop(0, "rgba(196,154,74,0.16)"); halo.addColorStop(1, "rgba(196,154,74,0)");
+    ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(cx, cy, s * 1.22, 0, 2 * Math.PI); ctx.fill();
+
+    // ocean
+    const sea = ctx.createRadialGradient(cx - s * 0.35, cy - s * 0.4, s * 0.1, cx, cy, s);
+    sea.addColorStop(0, "#3a141b"); sea.addColorStop(1, "#1a0609");
+    ctx.beginPath(); path({ type: "Sphere" }); ctx.fillStyle = sea; ctx.fill();
+
+    ctx.save(); ctx.beginPath(); path({ type: "Sphere" }); ctx.clip();
+    ctx.beginPath(); path(graticule); ctx.strokeStyle = "rgba(196,154,74,0.11)"; ctx.lineWidth = 0.6; ctx.stroke();
+
+    if (landAll) {
+      ctx.beginPath(); path(landAll); ctx.fillStyle = "rgba(196,154,74,0.10)"; ctx.fill();
+      visitedByFeature.forEach((c, f) => {
+        ctx.beginPath(); path(f);
+        ctx.fillStyle = c.home ? "rgba(196,154,74,0.20)" : "rgba(196,154,74,0.34)"; ctx.fill();
+      });
+      if (hover && hover.type === "country") { ctx.beginPath(); path(hover.feature); ctx.fillStyle = "rgba(242,232,213,0.16)"; ctx.fill(); }
+      ctx.beginPath(); path(landAll); ctx.strokeStyle = "rgba(196,154,74,0.55)"; ctx.lineWidth = 0.6; ctx.stroke();
+      visitedByFeature.forEach((c, f) => { ctx.beginPath(); path(f); ctx.strokeStyle = "rgba(196,154,74,0.95)"; ctx.lineWidth = 1.1; ctx.stroke(); });
+      const sel = selected && selected.feature;
+      if (sel) { ctx.beginPath(); path(sel); ctx.strokeStyle = "#FF5B1F"; ctx.lineWidth = 1.6; ctx.stroke(); }
+      if (hover && hover.type === "country") { ctx.beginPath(); path(hover.feature); ctx.strokeStyle = "rgba(242,232,213,0.9)"; ctx.lineWidth = 1; ctx.stroke(); }
+    }
+    ctx.restore();
+
+    // rim
+    ctx.beginPath(); path({ type: "Sphere" }); ctx.strokeStyle = "rgba(196,154,74,0.7)"; ctx.lineWidth = 1.2; ctx.stroke();
+
+    // routes
+    ctx.lineCap = "round"; ctx.lineJoin = "round";
+    for (const r of routes) drawRoute(r, now, false);
+    if (hotRoute != null) drawRoute(routes[hotRoute], now, true);
+
+    // airports
+    const placed = [];
+    const labels = [];
+    for (const id in AP) {
+      const a = AP[id];
+      const [x, y, vis] = lifted([a[2], a[1]], 1);
+      if (!vis) continue;
+      if (id === "ORD") continue;
+      ctx.beginPath(); ctx.arc(x, y, 2.2, 0, 2 * Math.PI);
+      ctx.fillStyle = "#240910"; ctx.fill(); ctx.strokeStyle = "rgba(242,232,213,0.9)"; ctx.lineWidth = 0.9; ctx.stroke();
+      if (MAJOR.has(id) || zoom > 3.2) labels.push({ id, x, y, major: MAJOR.has(id) });
+    }
+    // home
+    const [hx, hy, hvis] = lifted(HOME, 1);
+    if (hvis) {
+      const pulse = reduceMotion ? 0.5 : (now / 1800) % 1;
+      ctx.beginPath(); ctx.arc(hx, hy, 4 + pulse * 14, 0, 2 * Math.PI);
+      ctx.strokeStyle = `rgba(255,91,31,${0.7 * (1 - pulse)})`; ctx.lineWidth = 1; ctx.stroke();
+      ctx.beginPath(); ctx.arc(hx, hy, 7, 0, 2 * Math.PI); ctx.strokeStyle = "#FF5B1F"; ctx.lineWidth = 1; ctx.stroke();
+      ctx.beginPath(); ctx.arc(hx, hy, 3.2, 0, 2 * Math.PI); ctx.fillStyle = "#FF5B1F"; ctx.fill();
+      placed.push([hx - 8, hy - 8, hx + 70, hy + 8]);
+      label("CHICAGO", hx + 12, hy - 10, "#FF5B1F", 13);
+    }
+    // city labels, greedy collision avoidance
+    labels.sort((a, b) => (b.major - a.major));
+    const seen = new Set(["Chicago"]);
+    ctx.font = "600 12px 'Cormorant SC', Georgia, serif";
+    for (const l of labels) {
+      const t = city(l.id).toUpperCase();
+      if (seen.has(city(l.id))) continue;
+      const w = ctx.measureText(t).width + 2;
+      const box = [l.x + 6, l.y - 14, l.x + 6 + w, l.y - 2];
+      if (box[2] > W - 8 || box[1] < 60) continue;
+      if (placed.some(p => !(box[2] < p[0] || box[0] > p[2] || box[3] < p[1] || box[1] > p[3]))) continue;
+      placed.push(box); seen.add(city(l.id));
+      label(t, l.x + 6, l.y - 5, "rgba(242,232,213,0.88)", 12);
+    }
+  }
+  function label(t, x, y, color, size) {
+    ctx.font = `600 ${size}px 'Cormorant SC', Georgia, serif`;
+    ctx.lineWidth = 3; ctx.strokeStyle = "rgba(31,7,11,0.85)"; ctx.strokeText(t, x, y);
+    ctx.fillStyle = color; ctx.fillText(t, x, y);
+  }
+  function drawRoute(r, now, hot) {
+    const w = hot ? 2.2 : 0.6 + 1.3 * Math.sqrt(r.n / maxN);
+    ctx.setLineDash(r.rail ? [4, 3] : []);
+    ctx.strokeStyle = hot ? "#FF5B1F" : r.rail ? "rgba(196,154,74,0.9)" : "rgba(242,232,213,0.62)";
+    ctx.lineWidth = w;
+    ctx.beginPath();
+    let pen = false; const proj = [];
+    for (const [ll, e] of r.pts) {
+      const p = lifted(ll, e); proj.push(p);
+      if (p[2]) { pen ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); pen = true; } else pen = false;
+    }
+    ctx.stroke(); ctx.setLineDash([]);
+    if (reduceMotion || r.rail) return;
+    // a short bright comet travelling along the arc
+    const speed = 0.12 / Math.max(0.25, r.dist);
+    const t = (now / 1000 * speed + r.phase) % 1;
+    const k = Math.floor(t * (proj.length - 1));
+    const tail = Math.max(2, Math.round(proj.length * 0.12));
+    ctx.beginPath(); let on = false;
+    for (let j = Math.max(0, k - tail); j <= k; j++) {
+      const p = proj[j]; if (!p[2]) { on = false; continue; }
+      on ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); on = true;
+    }
+    ctx.strokeStyle = hot ? "#FFD2BF" : "rgba(255,240,220,0.95)"; ctx.lineWidth = w + 0.6; ctx.stroke();
+  }
+
+  // ---------- motion ----------
+  function flyTo(c, z, dur) {
+    const fromC = [-rot[0], -rot[1]], fromZ = zoom;
+    const gi = d3.geoInterpolate(fromC, c), zi = d3.interpolateNumber(fromZ, z);
+    const d = reduceMotion ? 0 : (dur || 1200);
+    anim = { t0: performance.now(), d, step: t => { const p = gi(t); rot = [-p[0], -p[1], 0]; zoom = zi(t); } };
+    if (!d) { anim.step(1); anim = null; draw(); }
+    lastInteract = performance.now();
+  }
+  function frame(now) {
+    if (anim) {
+      const t = Math.min(1, (now - anim.t0) / anim.d);
+      anim.step(d3.easeCubicInOut(t));
+      if (t >= 1) { anim = null; driftBase = rot[0]; driftT0 = now; }
+    } else if (!reduceMotion && !dragging && now - lastInteract > 6000) {
+      if (driftT0 < lastInteract) { driftBase = rot[0]; driftT0 = now; }
+      rot[0] = driftBase - 3 * Math.sin((now - driftT0) / 4000);
+    }
+    draw(now);
+    requestAnimationFrame(frame);
+  }
+
+  // ---------- interaction ----------
+  let dragging = false, moved = 0, last = null;
+  canvas.addEventListener("pointerdown", e => {
+    dragging = true; moved = 0; last = [e.clientX, e.clientY]; anim = null;
+    canvas.setPointerCapture(e.pointerId); canvas.classList.add("dragging"); lastInteract = performance.now();
+  });
+  canvas.addEventListener("pointermove", e => {
+    if (dragging) {
+      const dx = e.clientX - last[0], dy = e.clientY - last[1]; last = [e.clientX, e.clientY];
+      moved += Math.abs(dx) + Math.abs(dy);
+      const k = 0.28 / zoom;
+      rot[0] += dx * k; rot[1] = Math.max(-80, Math.min(80, rot[1] - dy * k));
+      lastInteract = performance.now(); hideTip(); return;
+    }
+    pick(e);
+  });
+  const end = e => {
+    if (!dragging) return;
+    dragging = false; canvas.classList.remove("dragging");
+    if (moved < 4) clickAt(e);
+  };
+  canvas.addEventListener("pointerup", end);
+  canvas.addEventListener("pointercancel", () => { dragging = false; canvas.classList.remove("dragging"); });
+  canvas.addEventListener("pointerleave", () => { if (!dragging) { hover = null; hideTip(); } });
+  canvas.addEventListener("dblclick", e => {
+    const p = localXY(e); const ll = projection.invert(p);
+    if (ll && d3.geoDistance(ll, [-rot[0], -rot[1]]) < Math.PI / 2) flyTo(ll, Math.min(12, zoom * 1.8), 700);
+  });
+  canvas.addEventListener("keydown", e => {
+    const k = 6 / zoom; let hit = true;
+    if (e.key === "ArrowLeft") rot[0] += k; else if (e.key === "ArrowRight") rot[0] -= k;
+    else if (e.key === "ArrowUp") rot[1] = Math.max(-80, rot[1] - k); else if (e.key === "ArrowDown") rot[1] = Math.min(80, rot[1] + k);
+    else if (e.key === "+" || e.key === "=") zoomBy(1.4); else if (e.key === "-") zoomBy(1 / 1.4); else hit = false;
+    if (hit) { e.preventDefault(); lastInteract = performance.now(); }
+  });
+  function zoomBy(f) { flyTo([-rot[0], -rot[1]], Math.max(0.8, Math.min(12, zoom * f)), 420); }
+  document.getElementById("z-in").addEventListener("click", () => zoomBy(1.5));
+  document.getElementById("z-out").addEventListener("click", () => zoomBy(1 / 1.5));
+  document.querySelectorAll("[data-view]").forEach(b => b.addEventListener("click", () => {
+    const v = VIEWS[b.dataset.view]; setView(b.dataset.view); select(null); flyTo(v.c, v.z);
+  }));
+  function setView(key) { document.querySelectorAll("[data-view]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.view === key))); }
+
+  function localXY(e) { const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+  function pick(e) {
+    const p = localXY(e);
+    // airports first
+    let best = null, bd = 10;
+    for (const id in AP) {
+      const a = AP[id], q = lifted([a[2], a[1]], 1);
+      if (!q[2]) continue;
+      const d = Math.hypot(q[0] - p[0], q[1] - p[1]);
+      if (d < bd) { bd = d; best = id; }
+    }
+    if (best) {
+      const n = routes.filter(r => r.a === best || r.b === best);
+      const bookings = d3.sum(n, r => r.n);
+      hover = { type: "airport", id: best };
+      showTip(p, AP[best][0] + (AP[best][4] ? ` (${AP[best][4]})` : ""), `${n.length} route${n.length === 1 ? "" : "s"} · ${bookings} booking${bookings === 1 ? "" : "s"}`);
+      return;
+    }
+    const ll = projection.invert(p);
+    if (world && ll && d3.geoDistance(ll, [-rot[0], -rot[1]]) < Math.PI / 2) {
+      const f = world.find(f => d3.geoContains(f, ll));
+      if (f) {
+        const c = visitedByFeature.get(f);
+        hover = { type: "country", feature: f, country: c };
+        showTip(p, c ? c.name : f.properties.name, c ? (c.home ? "Home" : "Been there") : "Not yet");
+        return;
+      }
+    }
+    hover = null; hideTip();
+  }
+  function clickAt(e) {
+    if (hover && hover.type === "country" && hover.country) { focusCountry(hover.country); return; }
+    if (hover && hover.type === "airport") { const a = AP[hover.id]; flyTo([a[2], a[1]], Math.max(zoom, 3.5), 900); }
+  }
+  function showTip(p, title, sub) {
+    tip.hidden = false;
+    tip.innerHTML = "";
+    const b = document.createElement("b"); b.textContent = title;
+    const s = document.createElement("small"); s.textContent = sub;
+    tip.append(b, s);
+    const flip = p[0] > W - 200;
+    tip.style.left = p[0] + "px"; tip.style.top = p[1] + "px";
+    tip.style.transform = flip ? "translate(calc(-100% - 14px), -50%)" : "translate(14px, -50%)";
+  }
+  function hideTip() { tip.hidden = true; }
+
+  // ---------- index ----------
+  const byCountry = {};
+  for (const id in AP) (byCountry[AP[id][3]] = byCountry[AP[id][3]] || new Set()).add(city(id));
+  const holder = document.getElementById("countries");
+  document.getElementById("ccount").textContent = String(COUNTRIES.filter(c => !c.home).length).padStart(2, "0");
+  let region = "";
+  let list = null;
+  const rowsByCC = {};
+  COUNTRIES.forEach(c => {
+    if (c.region !== region) {
+      region = c.region;
+      const h = document.createElement("p"); h.className = "region"; h.textContent = region; holder.append(h);
+      list = document.createElement("ul"); list.className = "list"; holder.append(list);
+    }
+    const li = document.createElement("li");
+    const btn = document.createElement("button"); btn.type = "button"; btn.className = "row"; btn.setAttribute("aria-pressed", "false");
+    const nm = document.createElement("span"); nm.className = "name"; nm.textContent = c.name;
+    const tg = document.createElement("span"); tg.className = c.home ? "tag" : "num";
+    const cities = byCountry[c.cc] ? [...byCountry[c.cc]] : [];
+    tg.textContent = c.home ? "Home" : "";
+    btn.append(nm, tg);
+    if (cities.length) {
+      const m = document.createElement("span"); m.className = "meta";
+      m.textContent = c.home ? `${cities.length} cities on the map, from Maui to New York` : cities.join(" · ");
+      btn.append(m);
+    }
+    btn.addEventListener("click", () => focusCountry(c));
+    btn.addEventListener("mouseenter", () => { if (c.feature) { hover = { type: "country", feature: c.feature, country: c }; } });
+    btn.addEventListener("mouseleave", () => { hover = null; });
+    li.append(btn); list.append(li); rowsByCC[c.cc] = btn;
+  });
+  function select(c) {
+    selected = c;
+    Object.entries(rowsByCC).forEach(([cc, b]) => b.setAttribute("aria-pressed", String(!!c && c.cc === cc)));
+  }
+  function focusCountry(c) {
+    select(c); setView(null);
+    flyTo(c.c, c.z);
+  }
+
+  const rl = document.getElementById("routes");
+  routes.slice().filter(r => !r.rail).sort((a, b) => b.n - a.n).slice(0, 6).forEach(r => {
+    const li = document.createElement("li");
+    const btn = document.createElement("button"); btn.type = "button"; btn.className = "row";
+    const nm = document.createElement("span"); nm.className = "name"; nm.textContent = `${city(r.a)} ⇄ ${city(r.b)}`;
+    const num = document.createElement("span"); num.className = "num"; num.textContent = String(r.n).padStart(2, "0");
+    const meta = document.createElement("span"); meta.className = "meta";
+    meta.textContent = `${AP[r.a][4] || AP[r.a][0]} to ${AP[r.b][4] || AP[r.b][0]} · ${r.y0 === r.y1 ? r.y0 : r.y0 + " to " + r.y1}`;
+    btn.append(nm, num, meta);
+    btn.addEventListener("mouseenter", () => { hotRoute = r.i; });
+    btn.addEventListener("mouseleave", () => { hotRoute = null; });
+    btn.addEventListener("focus", () => { hotRoute = r.i; });
+    btn.addEventListener("blur", () => { hotRoute = null; });
+    btn.addEventListener("click", () => {
+      hotRoute = r.i; select(null); setView(null);
+      const z = Math.max(1.1, Math.min(6, 1.2 / Math.max(0.05, r.dist)));
+      flyTo(r.mid, z, 1100);
+    });
+    li.append(btn); rl.append(li);
+  });
+
+  if (reduceMotion) document.getElementById("hint").textContent = "Drag to spin · Use the buttons to zoom";
+  new ResizeObserver(resize).observe(wrap);
+  resize();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => draw());
+  requestAnimationFrame(frame);
+})();
+</script>
+<script>(function(){function s(){try{parent.postMessage({globeHeight:document.documentElement.scrollHeight},"*")}catch(e){}}addEventListener("load",s);addEventListener("resize",s);if(window.ResizeObserver)new ResizeObserver(s).observe(document.documentElement);setTimeout(s,800);})();</script>
