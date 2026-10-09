@@ -125,9 +125,12 @@ export default function Trip() {
     setPicksOnly(false);
     const id = `${d.id}-${s.start}-${s.title}`;
     setFocusStop(id);
+    // Wait for the day tab to render, then scroll. Two frames is enough even on slow phones.
     window.setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 60);
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "center" })),
+      );
+    }, 80);
     window.setTimeout(() => setFocusStop(null), 2400);
   };
 
