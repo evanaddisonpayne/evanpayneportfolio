@@ -219,3 +219,38 @@
 .ams-sources a { border-bottom: 1px solid color-mix(in srgb, var(--brass) 60%, transparent); }
 .ams-sources a:hover { color: var(--signal); }
 @media (min-width: 1024px) { .ams-foot { grid-template-columns: minmax(0, 1fr) 380px; align-items: end; } }
+
+/* ---------- individual experiences ---------- */
+.ams-profile { margin-top: 28px; display: grid; gap: 28px; border: 1.2px solid var(--brass); padding: 24px; position: relative; animation: ams-in .35s ease-out both; }
+.ams-profile::after { content: ""; position: absolute; inset: 6px; border: .6px solid color-mix(in srgb, var(--brass) 55%, transparent); pointer-events: none; }
+@keyframes ams-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .ams-profile { animation: none; } }
+.ams-profile-src { font-family: var(--caps); font-weight: 700; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--brass); }
+.ams-profile-head { font-family: var(--display); font-weight: 300; font-size: clamp(24px, 1vw + 19px, 32px); line-height: 1.2; margin-top: 10px; }
+.ams-profile-loves { display: grid; gap: 8px; margin-top: 18px; }
+.ams-profile-loves li { position: relative; padding-left: 20px; color: var(--ivory); }
+.ams-profile-loves li::before { content: "★"; position: absolute; left: 0; color: var(--signal); font-size: 12px; top: 4px; }
+.ams-profile-facts { display: grid; gap: 10px; margin: 20px 0 0; }
+.ams-profile-facts > div { display: grid; grid-template-columns: 64px 1fr; gap: 12px; }
+.ams-profile-facts dt { font-family: var(--caps); font-weight: 700; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--brass); padding-top: 3px; }
+.ams-profile-facts dd { margin: 0; color: var(--smoke); }
+.ams-profile-extra { display: grid; gap: 6px; margin-top: 16px; font-size: 15px; color: var(--smoke); font-style: italic; }
+.ams-profile-picks .ams-card-stops { margin-top: 10px; }
+@media (min-width: 1024px) { .ams-profile { grid-template-columns: minmax(0, 1fr) 380px; gap: 48px; padding: 32px; } }
+
+.ams-chip-star { border-color: var(--signal); color: var(--oxblood); }
+.ams-chip-star[aria-pressed="true"] { background: var(--signal); border-color: var(--signal); color: var(--oxblood); }
+.ams-badge-opt { border-style: dashed; color: var(--antique); }
+.ams-badge-star { background: var(--oxblood); border-color: var(--oxblood); color: var(--signal); }
+.ams-badge-picks { color: var(--antique); border-color: color-mix(in srgb, var(--antique) 60%, transparent); }
+.ams-stop.is-pick .ams-stop-title::after { content: " ★"; color: var(--signal); font-size: .7em; vertical-align: .25em; }
+
+.ams-meta { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.ams-price { font-family: var(--body); font-weight: 500; font-size: 12px; letter-spacing: .04em; padding: 1px 8px; border: 1px solid var(--oxblood); color: var(--oxblood); }
+.ams-price-free { border-style: dashed; color: var(--antique); border-color: var(--antique); }
+.ams-price-card { background: var(--antique); border-color: var(--antique); color: var(--ivory); font-family: var(--caps); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: 11px; }
+.ams-legend { margin-top: 20px; font-size: 13px; color: color-mix(in srgb, var(--oxblood) 70%, transparent); }
+.ams-legend strong { font-weight: 500; color: var(--oxblood); }
+
+.ams-person-vibe { font-family: var(--display); font-style: italic; font-weight: 300; font-size: 17px; line-height: 1.35; color: var(--ivory); }
+.ams-person-src { font-family: var(--caps); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--brass); }

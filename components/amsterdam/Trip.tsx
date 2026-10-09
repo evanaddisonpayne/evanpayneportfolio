@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import {
   PEOPLE,
+  PRICE_KEY,
   TRIP_START,
   VIBES,
   checklist,
@@ -13,9 +14,11 @@ import {
   knowhow,
   mapUrl,
   phrases,
+  profiles,
   sources,
   type Day,
   type Person,
+  type Price,
   type Stop,
   type Vibe,
 } from "@/lib/amsterdam";
@@ -61,12 +64,14 @@ const toMins = (hhmm: string) => {
 
 const forYou = (s: Stop, me: Person | null) => !me || !s.who || s.who.includes(me);
 const whoLabel = (who: Person[]) => (who.length === 2 ? `${who[0]} & ${who[1]}` : who.join(", "));
+const priceLabel = (p: Price) => (p === "free" ? "Free" : p === "card" ? "Card" : p);
 
 export default function Trip() {
   const [now, setNow] = useState<Date | null>(null);
   const [me, setMe] = useState<Person | null>(null);
   const [dayId, setDayId] = useState<string>(days[0].id);
   const [vibes, setVibes] = useState<Vibe[]>([]);
+  const [picksOnly, setPicksOnly] = useState(false);
   const [rain, setRain] = useState(false);
   const [checks, setChecks] = useState<Record<string, boolean>>({});
   const [flipped, setFlipped] = useState<number | null>(null);
@@ -102,6 +107,7 @@ export default function Trip() {
   const pickMe = (p: Person) => {
     const next = me === p ? null : p;
     setMe(next);
+    if (!next) setPicksOnly(false);
     save(ME_KEY, next);
   };
   const toggleVibe = (v: Vibe) => setVibes((cur) => (cur.includes(v) ? cur.filter((x) => x !== v) : [...cur, v]));
@@ -116,6 +122,7 @@ export default function Trip() {
     setDayId(d.id);
     setRain(false);
     setVibes([]);
+    setPicksOnly(false);
     const id = `${d.id}-${s.start}-${s.title}`;
     setFocusStop(id);
     window.setTimeout(() => {
@@ -124,6 +131,8 @@ export default function Trip() {
     window.setTimeout(() => setFocusStop(null), 2400);
   };
 
+  const myPicks = me ? days.flatMap((d) => d.stops.filter((s) => s.picks?.includes(me)).map((s) => ({ d, s }))) : [];
+  const profile = me ? profiles[me] : null;
   const musts = days.flatMap((d) => d.stops.filter((s) => s.must).map((s) => ({ d, s })));
   const cardStops = days.flatMap((d) => d.stops.filter((s) => s.card).map((s) => ({ d, s })));
   const allItems = checklist.flatMap((g) => g.items);
@@ -173,8 +182,62 @@ export default function Trip() {
           <p className="ams-hint">
             {me
               ? `Showing ${me}'s trip. Plans you're not in are dimmed.`
-              : "Tap your name to dim the plans you're not part of."}
+              : "Tap your name to see your profile and your picks, and to dim the plans you're not part of."}
           </p>
+
+          {me && profile && (
+            <div className="ams-profile">
+              <div className="ams-profile-main">
+                <p className="ams-profile-src">{profile.sourceNote}</p>
+                <p className="ams-profile-head">{profile.headline}</p>
+                <ul className="ams-profile-loves">
+                  {profile.loves.map((l) => (
+                    <li key={l}>{l}</li>
+                  ))}
+                </ul>
+                <dl className="ams-profile-facts">
+                  <div>
+                    <dt>Budget</dt>
+                    <dd>{profile.budget}</dd>
+                  </div>
+                  <div>
+                    <dt>Pace</dt>
+                    <dd>{profile.pace}</dd>
+                  </div>
+                </dl>
+                {profile.extra && (
+                  <ul className="ams-profile-extra">
+                    {profile.extra.map((x) => (
+                      <li key={x}>{x}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <div className="ams-profile-picks">
+                <p className="ams-profile-src">
+                  ★ Made for {me} · {myPicks.length}
+                </p>
+                {myPicks.length > 0 ? (
+                  <ul className="ams-card-stops">
+                    {myPicks.map(({ d, s }) => (
+                      <li key={d.id + s.title}>
+                        <button onClick={() => jumpTo(d, s)}>
+                          <span>
+                            {d.dow} {s.time}
+                          </span>
+                          {s.title}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="body">
+                    No picks yet. Once {me} answers the vibe questions, the stops that fit get starred.
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -257,8 +320,19 @@ export default function Trip() {
                     {v.label}
                   </button>
                 ))}
-                {vibes.length > 0 && (
-                  <button className="ams-chip ams-chip-clear" onClick={() => setVibes([])}>
+                {me && (
+                  <button className="ams-chip ams-chip-star" aria-pressed={picksOnly} onClick={() => setPicksOnly((v) => !v)}>
+                    ★ {me}&apos;s picks
+                  </button>
+                )}
+                {(vibes.length > 0 || picksOnly) && (
+                  <button
+                    className="ams-chip ams-chip-clear"
+                    onClick={() => {
+                      setVibes([]);
+                      setPicksOnly(false);
+                    }}
+                  >
                     Clear
                   </button>
                 )}
@@ -280,7 +354,10 @@ export default function Trip() {
               {day.stops.map((s, i) => {
                 const id = `${day.id}-${s.start}-${s.title}`;
                 const mine = forYou(s, me);
-                const matches = vibes.length === 0 || (s.vibes ?? []).some((v) => vibes.includes(v));
+                const matches =
+                  (vibes.length === 0 || (s.vibes ?? []).some((v) => vibes.includes(v))) &&
+                  (!picksOnly || (!!me && !!s.picks?.includes(me)));
+                const mineStar = !!me && !!s.picks?.includes(me);
                 const live = i === liveIndex;
                 const cls = [
                   "ams-stop",
@@ -288,6 +365,7 @@ export default function Trip() {
                   !matches && "is-filtered",
                   live && "is-live",
                   s.must && "is-must",
+                  mineStar && "is-pick",
                   focusStop === id && "is-focus",
                 ]
                   .filter(Boolean)
@@ -301,6 +379,12 @@ export default function Trip() {
                     <div className="ams-stop-body">
                       <div className="ams-badges">
                         {s.must && <span className="ams-badge ams-badge-must">Must-do</span>}
+                        {s.optional && <span className="ams-badge ams-badge-opt">Optional</span>}
+                        {mineStar ? (
+                          <span className="ams-badge ams-badge-star">★ Your kind of thing</span>
+                        ) : (
+                          s.picks && <span className="ams-badge ams-badge-picks">★ {whoLabel(s.picks)}</span>
+                        )}
                         {s.card && <span className="ams-badge ams-badge-card">I amsterdam card</span>}
                         {s.book && <span className="ams-badge ams-badge-book">Book</span>}
                         {s.who && <span className="ams-badge ams-badge-who">{whoLabel(s.who)}</span>}
@@ -318,11 +402,18 @@ export default function Trip() {
                         </ul>
                       )}
                       <div className="ams-stop-foot">
+                        <span className="ams-meta">
+                          {s.price && (
+                            <span className={`ams-price ams-price-${s.price === "card" || s.price === "free" ? s.price : "eur"}`} title={PRICE_KEY.find((x) => x.id === s.price)?.label}>
+                              {priceLabel(s.price)}
+                            </span>
+                          )}
                         {s.vibes && (
                           <span className="ams-vibes">
                             {s.vibes.map((v) => VIBES.find((x) => x.id === v)?.label).join(" · ")}
                           </span>
                         )}
+                        </span>
                         <span className="ams-links">
                           {s.where && (
                             <a href={mapUrl(s.map ?? s.where)} target="_blank" rel="noopener noreferrer">
@@ -341,6 +432,15 @@ export default function Trip() {
                 );
               })}
             </ol>
+            <p className="ams-legend">
+              Rough cost per person:{" "}
+              {PRICE_KEY.map((p, i) => (
+                <span key={p.id}>
+                  {i > 0 && " · "}
+                  <strong>{priceLabel(p.id)}</strong>{p.id === "card" ? " = I amsterdam card" : p.id === "free" ? "" : ` ${p.label}`}
+                </span>
+              ))}
+            </p>
           </div>
         </div>
       </section>
@@ -400,7 +500,7 @@ export default function Trip() {
         <div className="wrap">
           <div className="section-head">
             <p className="eyebrow">The crew</p>
-            <h2 className="h2">Who lands when.</h2>
+            <h2 className="h2">Who&apos;s who, and who lands when.</h2>
             <p className="lede">
               Home base is {hotel.name}, {hotel.address}. {hotel.how}
             </p>
@@ -410,6 +510,8 @@ export default function Trip() {
               <li key={c.name} className={`card ams-person${me === c.name ? " is-me" : ""}`}>
                 <span className="card-num">{["I", "II", "III", "IV"][i]}</span>
                 <p className="card-title">{c.name}</p>
+                <p className="ams-person-vibe">{profiles[c.name].headline}</p>
+                <p className="ams-person-src">{profiles[c.name].sourceNote}</p>
                 <p className="ams-person-meta">
                   {c.from}
                   <br />
