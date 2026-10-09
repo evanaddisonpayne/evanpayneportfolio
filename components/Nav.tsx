@@ -18,6 +18,9 @@ export default function Nav() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
+  // The private /amsterdam trip page has its own chrome and isn't part of the portfolio.
+  if (pathname === "/amsterdam" || pathname.startsWith("/amsterdam/")) return null;
+
   const brand = (
     <Link href="/" className="brand" aria-label={`${site.name}, home`}>
       <img src="/art/seal.webp" alt="" width={44} height={44} />
