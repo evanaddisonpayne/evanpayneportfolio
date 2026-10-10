@@ -31,7 +31,7 @@ export type Stop = {
   book?: string; // booking note
   link?: { href: string; label: string };
   price?: Price; // rough cost per person
-  picks?: Person[]; // whose kind of thing this is, from their own answers (or Evan's read)
+  picks?: Person[]; // whose kind of thing this is, from their own answers
   optional?: boolean;
 };
 
@@ -55,7 +55,7 @@ export type Profile = {
   extra?: string[];
 };
 
-// Jarrod (Oct 9) and Tyler (Oct 10) answered in their own words. Zak hasn't yet, so his is Evan's read.
+// Everyone answered in their own words: Evan (Oct 8), Jarrod (Oct 9), Tyler and Zak (Oct 10).
 export const profiles: Record<Person, Profile> = {
   Jarrod: {
     source: "own",
@@ -84,12 +84,21 @@ export const profiles: Record<Person, Profile> = {
     extra: ["Skip anything he's already done on past trips."],
   },
   Zak: {
-    source: "evan",
-    sourceNote: "Evan's read. Zak hasn't answered yet",
-    headline: "Up for the trip, but needs convincing on club nights.",
-    loves: ["Not sold on club nights yet", "Every late night in the plan has an easy exit for him"],
-    budget: "Around $150–200 a day",
-    pace: "Slow, with the option to call it early",
+    source: "own",
+    sourceNote: "In his own words (mostly), Oct 10",
+    headline: "Food, museums, local spots, and back to the Rijksmuseum.",
+    loves: [
+      "Food",
+      "Museums, starting with the Rijksmuseum again (\"an epic place\")",
+      "Local spots",
+      "Windmills out in the countryside",
+    ],
+    budget: "Not super worried, $200 a day max",
+    pace: "A busy day or two is fine, but not scheduled all day every day",
+    extra: [
+      "Thanksgiving: \"Duh.\" He expects Evan to cook it with a Dutch woman in her kitchen and serve it to the group.",
+      "He's sure Jarrod will love the Rijksmuseum's art and history.",
+    ],
   },
   Tyler: {
     source: "own",
@@ -241,7 +250,7 @@ export const days: Day[] = [
         start: "19:00",
         title: "Dinner at Hotel de Goudfazant",
         price: "€€€",
-        picks: ["Evan", "Tyler"],
+        picks: ["Evan", "Tyler", "Zak"],
         where: "Aambeeldstraat 10H, Amsterdam-Noord",
         map: "Hotel de Goudfazant Amsterdam",
         why: "A candlelit restaurant in a converted garage with a French-leaning menu. It feels very Noord, about 15 minutes from the hotel by taxi or bus.",
@@ -284,9 +293,9 @@ export const days: Day[] = [
         start: "09:30",
         title: "Zaanse Schans",
         price: "card",
-        picks: ["Tyler"],
+        picks: ["Tyler", "Zak"],
         where: "Zaanse Schans",
-        why: "Windmills along the dike, a cheese farm and a clog workshop, and far fewer crowds in November. Two to three hours is plenty.",
+        why: "Zak's windmills in the countryside: a row of working mills along the dike, a cheese farm and a clog workshop, with far fewer crowds in November. Two to three hours is plenty.",
         vibes: ["culture"],
         must: true,
         card: "Card covers the Zaans Museum + Verkade Experience, the Mill Museum and windmills, and the Time Museum.",
@@ -297,7 +306,7 @@ export const days: Day[] = [
         start: "12:30",
         title: "Pancakes in the village",
         price: "€",
-        picks: ["Tyler"],
+        picks: ["Tyler", "Zak"],
         where: "Pannenkoekenrestaurant De Kraai, Zaanse Schans",
         map: "De Kraai pancakes Zaanse Schans",
         why: "Dutch pancakes (pannenkoeken) are the right lunch after a cold walk on the dike. Winter hours aren't confirmed, so if it's closed, eat at the cheese farm or back in the city.",
@@ -335,7 +344,7 @@ export const days: Day[] = [
         start: "17:45",
         title: "Dinner at Café Restaurant Van Kerkwijk",
         price: "€€",
-        picks: ["Evan", "Tyler"],
+        picks: ["Evan", "Tyler", "Zak"],
         where: "Nes 41, Amsterdam",
         map: "Café Restaurant van Kerkwijk Nes 41 Amsterdam",
         why: "A cozy, packed little room near the Dam with no printed menu. The waiter recites the day's dishes at your table. It's unfussy and good, and a favorite with people who live here.",
@@ -353,7 +362,7 @@ export const days: Day[] = [
         start: "20:00",
         title: "Brown-café crawl",
         price: "€",
-        picks: ["Evan", "Jarrod", "Tyler"],
+        picks: ["Evan", "Jarrod", "Tyler", "Zak"],
         where: "Café Hoppe, Spui, Amsterdam",
         map: "Café Hoppe Spui Amsterdam",
         why: "Start at Café Hoppe on the Spui, 5 minutes from dinner, with a sawdust floor and open since 1670. Then walk 15 minutes into the Jordaan.",
@@ -376,14 +385,14 @@ export const days: Day[] = [
     title: "Thanksgiving + Light Festival opening",
     mood: "The big group night",
     intro:
-      "The Amsterdam Light Festival switches on for the first time tonight. The day builds toward it: an easy morning, then museums or a brewery depending on who you are, sunset from the top of your own tower, the lights cruise, then a long dinner.",
+      "The Amsterdam Light Festival switches on for the first time tonight. The day builds toward it: an easy morning, then the Rijksmuseum or a brewery depending on who you are, sunset from the top of your own tower, the lights cruise, then a long dinner.",
     stops: [
       {
         time: "10:30 am",
         start: "10:30",
         title: "Slow brunch in De Pijp",
         price: "€€",
-        picks: ["Tyler"],
+        picks: ["Tyler", "Zak"],
         where: "Bakers & Roasters, De Pijp, Amsterdam",
         map: "Bakers & Roasters De Pijp Amsterdam",
         why: "Big American-friendly plates at Bakers & Roasters, then a fresh stroopwafel at the Albert Cuyp Market around the corner.",
@@ -392,13 +401,13 @@ export const days: Day[] = [
       {
         time: "1:00 pm",
         start: "13:00",
-        title: "Rijksmuseum or Moco",
+        title: "Rijksmuseum",
         price: "card",
-        picks: ["Tyler"],
+        picks: ["Tyler", "Zak"],
         where: "Museumplein, Amsterdam",
-        why: "Both are a 10-minute walk from De Pijp and both are on the card. Go to the Rijksmuseum for the Night Watch, or Moco for Banksy and modern art. Evan can skip whatever he's seen.",
+        why: "Zak's top request: he's been before, called it epic, and is sure Jarrod will love the art and history. Go for the Night Watch and the Dutch Golden Age galleries; two hours is plenty. It's a 10-minute walk from De Pijp. Already done the Rijks? Moco, across the square, has Banksy and modern art and is also on the card.",
         vibes: ["culture"],
-        card: "Both included. Book a timeslot in the I amsterdam app.",
+        card: "Included (Moco too). Book a timeslot in the I amsterdam app.",
         book: "Timeslot in the I amsterdam app",
       },
       {
@@ -446,7 +455,7 @@ export const days: Day[] = [
         start: "19:45",
         title: "Thanksgiving dinner",
         price: "€€€",
-        picks: ["Tyler"],
+        picks: ["Tyler", "Zak"],
         where: "Blauw Amsterdam",
         map: "Blauw restaurant Amsterdam",
         why: "Recommended: rijsttafel at Blauw, 15–20 Indonesian dishes shared family-style. It's a feast without forcing turkey, and Jarrod is happy with anything that isn't traditional. The fallback is an expat turkey dinner, but 2026 menus aren't posted yet.",
@@ -504,7 +513,7 @@ export const days: Day[] = [
         start: "12:30",
         title: "NDSM wharf + lunch at Pllek",
         price: "€€",
-        picks: ["Evan"],
+        picks: ["Evan", "Zak"],
         where: "Pllek, NDSM, Amsterdam",
         map: "Pllek Amsterdam NDSM",
         why: "Take the free ferry from behind Centraal to NDSM-werf, about 15 minutes. It's an old shipyard turned street-art quarter that tourists mostly skip. Pllek is a shipping-container café on the water with fireplaces in winter.",
@@ -524,7 +533,7 @@ export const days: Day[] = [
         start: "14:30",
         title: "Or: Lotus Biscoff oliebol run",
         price: "€",
-        picks: ["Evan", "Tyler"],
+        picks: ["Evan", "Tyler", "Zak"],
         where: "Osdorperweg 247, Amsterdam",
         map: "De Gekroonde Oliebol Tuincentrum Osdorp Amsterdam",
         why: "The one from Evan's TikTok: De Gekroonde Oliebol's new Lotus Biscoff oliebol, a Dutch fried dough ball split open and filled with Biscoff spread. Oliebollen are the Dutch winter treat you'll see everywhere by late November. This stand is in a garden center out in Osdorp, so it's a detour; go instead of resting if the group is hungry for it.",
@@ -616,7 +625,7 @@ export const days: Day[] = [
         start: "10:30",
         title: "Noordermarkt + Winkel 43",
         price: "€",
-        picks: ["Tyler"],
+        picks: ["Tyler", "Zak"],
         where: "Noordermarkt, Amsterdam",
         why: "Five minutes from the Anne Frank House. The Saturday farmers' market in the Jordaan has cheese, oysters and produce. On the same square, Winkel 43 makes the apple pie locals queue for. Order it met slagroom (with whipped cream).",
         vibes: ["food", "local"],
@@ -687,7 +696,7 @@ export const days: Day[] = [
         start: "18:30",
         title: "Farewell dinner at De Belhamel",
         price: "€€€",
-        picks: ["Tyler"],
+        picks: ["Tyler", "Zak"],
         where: "Brouwersgracht 60, Amsterdam",
         map: "De Belhamel Amsterdam",
         why: "An art-nouveau dining room on the corner of the Brouwersgracht with canal views. This is the last-night-together dinner.",
@@ -858,7 +867,7 @@ export const checklist: { group: string; items: CheckItem[] }[] = [
   {
     group: "One week out",
     items: [
-      { id: "timeslots", label: "Book Rijksmuseum or Moco timeslot for Thu Nov 26 in the I amsterdam app", when: "1w" },
+      { id: "timeslots", label: "Book Rijksmuseum timeslots for Thu Nov 26, 1 pm, in the I amsterdam app", when: "1w" },
       { id: "weather", label: "Check the forecast. Pack a waterproof shell, warm layers and cobblestone-proof shoes", when: "1w" },
       { id: "apps", label: "Apps: NS, GVB, 9292, I amsterdam, Light Festival, Sixt", when: "1w" },
       { id: "bank", label: "Tell your bank you're traveling. One Visa/Mastercard + a little euro cash", when: "1w" },
