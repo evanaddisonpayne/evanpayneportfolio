@@ -23,6 +23,7 @@ import {
   type Vibe,
 } from "@/lib/amsterdam";
 import { Bingo, TripMap, Windows } from "./Fun";
+import Chat from "./Chat";
 
 const TZ = "Europe/Amsterdam";
 const ME_KEY = "ams26-me";
@@ -703,6 +704,7 @@ export default function Trip() {
           </p>
         </div>
       </footer>
+      <Chat me={me} />
     </div>
   );
 }
