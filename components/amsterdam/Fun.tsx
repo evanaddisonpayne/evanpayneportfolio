@@ -17,14 +17,14 @@ const H = Math.round((W * (B.n - B.s)) / ((B.e - B.w) * COS));
 const proj = ([lat, lng]: LatLng): [number, number] => [((lng - B.w) / (B.e - B.w)) * W, ((B.n - lat) / (B.n - B.s)) * H];
 
 // Approximate locations, keyed by stop title. Good enough for a doodle.
-const TOWER: LatLng = [52.3841, 4.902];
+const TOWER: LatLng = [52.3852, 4.9035]; // nudged north so its pins stay on dry land
 const CENTRAAL: LatLng = [52.3786, 4.9003];
 const BOEREJONGENS: LatLng = [52.3637, 4.8986];
 const REGULIERS: LatLng = [52.3662, 4.8932];
 const GEO: Record<string, LatLng> = {
   "Train → Centraal → free ferry to Noord": CENTRAAL,
   "Lunch at The Butcher Social Club": TOWER,
-  "Nap, or a river walk to EYE": [52.3845, 4.9006],
+  "Nap, or a river walk to EYE": [52.3858, 4.8965],
   "Dinner at Hotel de Goudfazant": [52.3868, 4.9232],
   "One nightcap at the hotel, then bed": TOWER,
   "Ferry + train to Zaanse Schans": CENTRAAL,
@@ -89,10 +89,10 @@ const WATER = smooth(
     [52.4045, 4.851],
     [52.4002, 4.866],
     [52.3985, 4.885],
-    [52.3968, 4.894],
-    [52.385, 4.8975],
-    [52.3829, 4.904],
-    [52.3818, 4.92],
+    [52.3968, 4.8925],
+    [52.3838, 4.8955],
+    [52.3824, 4.904],
+    [52.3816, 4.92],
     [52.3815, 4.933],
     [52.3786, 4.933],
     [52.3792, 4.92],
@@ -137,15 +137,15 @@ const LABELS: { at: LatLng; text: string; cls?: string }[] = [
   { at: [52.3755, 4.8805], text: "JORDAAN", cls: "hood" },
   { at: [52.3535, 4.8965], text: "DE PIJP", cls: "hood" },
   { at: [52.3635, 4.922], text: "OOST", cls: "hood" },
-  { at: [52.3712, 4.9035], text: "CENTRUM", cls: "hood" },
-  { at: [52.3912, 4.873], text: "the IJ", cls: "water" },
+  { at: [52.3688, 4.9035], text: "CENTRUM", cls: "hood" },
+  { at: [52.3972, 4.872], text: "the IJ", cls: "water" },
   { at: [52.3596, 4.911], text: "Amstel", cls: "water" },
 ];
 const QUIPS: { at: LatLng; text: string; rot?: number }[] = [
-  { at: [52.3868, 4.8995], text: "home, club & swing — all one building", rot: -4 },
-  { at: [52.3712, 4.9118], text: "no photos of the windows. seriously.", rot: 3 },
-  { at: [52.3578, 4.8735], text: "Zak's happy place", rot: -3 },
-  { at: [52.3928, 4.8925], text: "Jarrod: on a boat, probably", rot: 4 },
+  { at: [52.3884, 4.9075], text: "↙ home, club & swing: all one building", rot: -4 },
+  { at: [52.3748, 4.9142], text: "← no photos of the windows. seriously.", rot: 3 },
+  { at: [52.3577, 4.8852], text: "↑ Zak's happy place", rot: -3 },
+  { at: [52.3995, 4.8705], text: "Jarrod: on a boat, probably", rot: 4 },
   { at: [52.3612, 4.8905], text: "↑ the ring canals. Bikes WILL hit you.", rot: -2 },
 ];
 
@@ -205,7 +205,7 @@ export function TripMap({
       day.stops.map((s, i) => ({
         s,
         n: i + 1,
-        where: GEO[s.title] ? "pin" : OFFMAP[s.title] ? OFFMAP[s.title].arrow + " off the map" : "—",
+        where: GEO[s.title] ? "pin" : OFFMAP[s.title] ? OFFMAP[s.title].arrow + " off the map" : "no fixed spot",
       })),
     [day],
   );

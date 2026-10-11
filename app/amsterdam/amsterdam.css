@@ -350,7 +350,16 @@
 .ams-door { width: 34%; height: 46px; background: rgba(0,0,0,.35); border: 2px solid rgba(196,154,74,.5); border-bottom: 0; border-radius: 18px 18px 0 0; }
 .ams-house-sign { font-family: var(--caps); font-weight: 700; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--brass); }
 @media (prefers-reduced-motion: reduce) { .ams-window-glow { animation: none; } .ams-curtain { transition: none; } }
-.ams-windows-sec .wrap { padding-top: 40px; }
+.ams-windows { padding-top: 130px; row-gap: 140px; }
+@media (max-width: 899px) {
+  .ams-house { padding: 0 8px 14px; }
+  .ams-window { aspect-ratio: 3 / 5; border-width: 4px; }
+  .ams-window-card { padding: 10px 6px; gap: 4px; }
+  .ams-window-name { font-size: 22px; }
+  .ams-window-title { font-size: 10px; letter-spacing: .12em; }
+  .ams-window-lines { font-size: 11px; gap: 4px; margin-top: 4px; }
+  .ams-window-lines span { padding-top: 4px; }
+}
 
 /* ---------- bingo ---------- */
 .ams-bingo-wrap { max-width: 760px; }
@@ -374,3 +383,5 @@
 .ams-bingo-foot { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: space-between; margin-top: 14px; }
 .ams-bingo-foot .ams-hint { margin-top: 0; }
 @media (prefers-reduced-motion: reduce) { .ams-bingo-stamp { animation: none; } }
+.ams-map-label, .ams-map-quip { paint-order: stroke; stroke: color-mix(in srgb, var(--ivory) 88%, var(--brass)); stroke-width: 6px; stroke-linejoin: round; }
+.ams-map-water { stroke: color-mix(in srgb, var(--brass) 26%, var(--ivory)); }
