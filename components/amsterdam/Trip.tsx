@@ -22,6 +22,7 @@ import {
   type Stop,
   type Vibe,
 } from "@/lib/amsterdam";
+import { Bingo, TripMap, Windows } from "./Fun";
 
 const TZ = "Europe/Amsterdam";
 const ME_KEY = "ams26-me";
@@ -448,6 +449,29 @@ export default function Trip() {
         </div>
       </section>
 
+      {/* ---------- MAP ---------- */}
+      <section className="section light ams-map-sec" id="map">
+        <div className="wrap">
+          <div className="section-head">
+            <p className="eyebrow">The map</p>
+            <h2 className="h2">
+              Where we&apos;ll be, <span className="italic">roughly.</span>
+            </h2>
+            <p className="lede">Every stop, pinned by day. Your picks glow orange once you&apos;ve tapped your name up top.</p>
+          </div>
+          <TripMap
+            days={days}
+            dayId={day.id}
+            me={me}
+            onDay={(id) => {
+              setDayId(id);
+              setRain(false);
+            }}
+            onPick={jumpTo}
+          />
+        </div>
+      </section>
+
       {/* ---------- I AMSTERDAM CARD ---------- */}
       <section className="section dark ams-card-sec">
         <div className="wrap">
@@ -537,6 +561,20 @@ export default function Trip() {
         </div>
       </section>
 
+      {/* ---------- RED LIGHT WINDOWS ---------- */}
+      <section className="section dark ams-windows-sec">
+        <div className="wrap">
+          <div className="section-head">
+            <p className="eyebrow">Now appearing in the windows</p>
+            <h2 className="h2">
+              The Red Light District, <span className="italic">but it&apos;s just us.</span>
+            </h2>
+            <p className="lede">The only windows in De Wallen you&apos;re allowed to photograph. Tap a curtain.</p>
+          </div>
+          <Windows me={me} />
+        </div>
+      </section>
+
       {/* ---------- CHECKLIST ---------- */}
       <section className="section light ams-check-sec" id="checklist">
         <div className="wrap">
@@ -601,6 +639,20 @@ export default function Trip() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* ---------- BINGO ---------- */}
+      <section className="section light ams-bingo-sec">
+        <div className="wrap">
+          <div className="split-head">
+            <div>
+              <p className="eyebrow">Trip bingo</p>
+              <h2 className="h2">Things that will absolutely happen.</h2>
+            </div>
+            <p className="lede">Tap a square when it happens. First to a line buys the next round of bitterballen.</p>
+          </div>
+          <Bingo />
         </div>
       </section>
 
