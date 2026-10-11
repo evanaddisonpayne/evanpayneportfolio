@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import type { Day, Person, Stop } from "@/lib/amsterdam";
 
 /* ==========================================================================
@@ -962,6 +962,204 @@ export function GezelligRain({ nasty = false, trigger = 0 }: { nasty?: boolean; 
           {d.emoji}
         </span>
       ))}
+    </div>
+  );
+}
+
+/* ==========================================================================
+   7. Crazier: Bad Decisions Generator + Shelter Mode (full-screen club)
+   ========================================================================== */
+
+const DARES = [
+  "Ask a stranger to rate your bike-lane etiquette out of ten.",
+  "Order in Dutch only. No pointing, no English, no mercy.",
+  "Compliment the first bartender you see on their jenever pour.",
+  "Do your best Dutch accent for the next ten minutes.",
+  "Get a photo with a stranger who is wearing orange.",
+  "Eat a bitterbal in one bite. Report back.",
+  "Narrate the next canal like a nature documentary.",
+  "Start a slow clap when the next tram arrives.",
+  "Invent a Dutch holiday and get the table to celebrate it.",
+  "Try the strangest thing on the snack menu.",
+];
+const NASTY_DARES = [
+  "Wink at the next person who says 'gezellig'.",
+  "Introduce yourself to the next bar by your alter-ego name, in full.",
+  "Rate each of your friends' butts out of ten. Out loud. Be fair.",
+  "Slow-dance with a lamppost for one full chorus.",
+];
+const DRINKS = [
+  "a Heineken, because it's a rule",
+  "a Brouwerij 't IJ Zatte",
+  "a mystery jenever, chased with a beer (a kopstoot)",
+  "something with a ridiculous name, bartender's choice",
+  "a water. Yes, really. You're welcome.",
+  "whatever your roommate is drinking",
+  "an Amsterdam Mule, pinky out",
+  "the cheapest thing on the board",
+];
+const CONSEQUENCES = [
+  "Everyone votes. If it was bad, you buy the next round of bitterballen.",
+  "The group picks your next song. Your protests will be ignored.",
+  "You're navigator for the next hour. Nobody may help.",
+  "You're designated photographer until the next stop.",
+  "You owe each friend one honest compliment.",
+  "Nothing. You're safe. Suspiciously safe.",
+  "You must take the tram, not a taxi, no matter what.",
+  "You carry the group's snacks for the rest of the night.",
+];
+
+export function BadDecisions({ me, nasty = false }: { me: Person | null; nasty?: boolean }) {
+  const crew: Person[] = ["Evan", "Jarrod", "Tyler", "Zak"];
+  const [who, setWho] = useState<Person>(me ?? "Evan");
+  const [roll, setRoll] = useState<{ dare: string; drink: string; cons: string } | null>(null);
+  const [rolling, setRolling] = useState(false);
+  const dares = nasty ? [...DARES, ...NASTY_DARES] : DARES;
+  const pick = <T,>(a: T[]) => a[Math.floor(Math.random() * a.length)];
+
+  useEffect(() => {
+    if (me) setWho(me);
+  }, [me]);
+
+  function go() {
+    if (rolling) return;
+    setRolling(true);
+    let n = 0;
+    const t = window.setInterval(() => {
+      setRoll({ dare: pick(dares), drink: pick(DRINKS), cons: pick(CONSEQUENCES) });
+      if (++n >= 9) {
+        window.clearInterval(t);
+        setRolling(false);
+      }
+    }, 90);
+  }
+
+  return (
+    <div className="ams-bad">
+      <div className="ams-bad-who" role="group" aria-label="Who is rolling">
+        {crew.map((p) => (
+          <button key={p} className={who === p ? "is-on" : undefined} onClick={() => setWho(p)} aria-pressed={who === p}>
+            {p}
+          </button>
+        ))}
+      </div>
+      <button className="ams-bad-roll" onClick={go} disabled={rolling}>
+        {rolling ? "Rolling…" : roll ? `Roll again for ${who}` : `Roll for ${who}`}
+      </button>
+      <div className={`ams-bad-card${roll ? " is-shown" : ""}`} aria-live="polite">
+        {roll ? (
+          <>
+            <p><span>The dare</span>{roll.dare}</p>
+            <p><span>Your drink</span>{roll.drink}</p>
+            <p><span>The consequence</span>{roll.cons}</p>
+            <small>Drink at your own pace. Skipping is always allowed. Water counts as a drink.</small>
+          </>
+        ) : (
+          <p className="ams-bad-empty">Three dice. One dare, one drink, one consequence. All optional, all binding.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/** Full-screen club. Opens from a button, Konami code or typing "shelter". Asks first because it flashes. */
+export function ShelterMode({ nasty = false, trigger = 0 }: { nasty?: boolean; trigger?: number }) {
+  const [stage, setStage] = useState<"off" | "warn" | "on">("off");
+  const [beat, setBeat] = useState(0);
+  const [sound, setSound] = useState(false);
+  const reduced = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+  useEffect(() => {
+    let typed = "";
+    const KONAMI = "ArrowUp,ArrowUp,ArrowDown,ArrowDown,ArrowLeft,ArrowRight,ArrowLeft,ArrowRight,b,a";
+    let seq: string[] = [];
+    const onKey = (e: KeyboardEvent) => {
+      seq = [...seq, e.key].slice(-10);
+      if (seq.join(",") === KONAMI) setStage("warn");
+      if (e.key.length === 1) {
+        typed = (typed + e.key.toLowerCase()).slice(-7);
+        if (typed === "shelter") setStage("warn");
+      }
+      if (e.key === "Escape") setStage("off");
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  useEffect(() => {
+    if (trigger > 0) setStage("warn");
+  }, [trigger]);
+
+  // Beat clock: 124 bpm. Slower and no flashing when reduced motion is on.
+  useEffect(() => {
+    if (stage !== "on") return;
+    const ms = 60000 / 124;
+    const t = window.setInterval(() => setBeat((b) => b + 1), ms);
+    return () => window.clearInterval(t);
+  }, [stage]);
+
+  // Optional kick drum from the Web Audio API (no files, off by default).
+  useEffect(() => {
+    if (stage !== "on" || !sound) return;
+    try {
+      const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const ctx = new AC();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.connect(g);
+      g.connect(ctx.destination);
+      o.frequency.setValueAtTime(140, ctx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.18);
+      g.gain.setValueAtTime(0.5, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
+      o.start();
+      o.stop(ctx.currentTime + 0.25);
+      o.onended = () => ctx.close().catch(() => {});
+    } catch {
+      /* no audio, fine */
+    }
+  }, [beat, stage, sound]);
+
+  if (stage === "off") return null;
+
+  if (stage === "warn") {
+    return (
+      <div className="ams-shelter-warn" role="dialog" aria-modal="true" aria-label="Shelter Mode warning">
+        <div>
+          <p className="eyebrow">Shelter Mode</p>
+          <h3 className="h3">Basement club. Flashing lights.</h3>
+          <p className="body">
+            This fills the screen with fast flashing colours, which can trigger seizures in people with photosensitive epilepsy. {reduced ? "Your device asks for reduced motion, so it will fade softly instead of flashing." : "Skip it if that's you."}
+          </p>
+          <div className="ams-shelter-btns">
+            <button className="ams-rain-btn" onClick={() => setStage("on")}>Let me in</button>
+            <button className="ams-shelter-ghost" onClick={() => setStage("off")}>No thanks</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const hues = nasty ? [285, 320, 265, 300] : [18, 45, 340, 200];
+  const lines = nasty
+    ? ["NO SHAME", "SHELTER", "PRESS CLOSER", "GEZELLIG??", "ZAK BUYS", "ONE MORE"]
+    : ["SHELTER", "GEZELLIG", "DANCE", "ONE MORE", "PROOST", "NO PHOTOS"];
+  return (
+    <div
+      className={`ams-shelter${reduced ? " is-calm" : ""}`}
+      style={{ ["--h" as string]: String(hues[beat % hues.length]) } as CSSProperties}
+      role="dialog"
+      aria-label="Shelter Mode"
+    >
+      <div className="ams-shelter-ring" key={beat} />
+      <p className="ams-shelter-word" key={`w${Math.floor(beat / 2)}`}>
+        {lines[Math.floor(beat / 4) % lines.length]}
+      </p>
+      <div className="ams-shelter-bar">
+        <button onClick={() => setSound((s) => !s)} aria-pressed={sound}>{sound ? "Sound on" : "Sound off"}</button>
+        <button onClick={() => setStage("off")}>Leave the club</button>
+      </div>
+      <p className="ams-shelter-hint">Tap Esc or “Leave the club” to exit. 124 BPM, 03:00 forever.</p>
     </div>
   );
 }

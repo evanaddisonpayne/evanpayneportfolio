@@ -22,7 +22,7 @@ import {
   type Stop,
   type Vibe,
 } from "@/lib/amsterdam";
-import { AlterEgos, Bingo, Complaints, GezelligRain, Services, TripMap, Windmill, Windows } from "./Fun";
+import { AlterEgos, BadDecisions, Bingo, Complaints, GezelligRain, ShelterMode, Services, TripMap, Windmill, Windows } from "./Fun";
 import Chat from "./Chat";
 
 const TZ = "Europe/Amsterdam";
@@ -76,6 +76,7 @@ export default function Trip() {
   const [taps, setTaps] = useState<number[]>([]);
   const [toast, setToast] = useState<string | null>(null);
   const [rainTick, setRainTick] = useState(0);
+  const [shelterTick, setShelterTick] = useState(0);
   const [dayId, setDayId] = useState<string>(days[0].id);
   const [vibes, setVibes] = useState<Vibe[]>([]);
   const [picksOnly, setPicksOnly] = useState(false);
@@ -738,10 +739,21 @@ export default function Trip() {
           </div>
           <AlterEgos me={me} />
 
+          <div className="ams-egos-head">
+            <p className="eyebrow">The Bad Decisions Generator</p>
+            <h3 className="h3">Three dice. Zero accountability.</h3>
+          </div>
+          <BadDecisions me={me} nasty={nasty} />
+
           <button className="ams-rain-btn" onClick={() => setRainTick((t) => t + 1)}>
             Make it rain {nasty ? "eggplants" : "cheese"}
           </button>
           <p className="ams-hint">Or type “gezellig” anywhere on the page.</p>
+
+          <button className="ams-shelter-open" onClick={() => setShelterTick((t) => t + 1)}>
+            Do not press this
+          </button>
+          <p className="ams-hint">Opens a full-screen club. It flashes, so it asks first. (Konami code works too.)</p>
         </div>
       </section>
 
@@ -794,6 +806,7 @@ export default function Trip() {
       </footer>
       <Chat me={me} nasty={nasty} />
       <GezelligRain nasty={nasty} trigger={rainTick} />
+      <ShelterMode nasty={nasty} trigger={shelterTick} />
     </div>
   );
 }

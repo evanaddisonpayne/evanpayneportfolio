@@ -538,3 +538,33 @@
 .ams-rain-fx span { position: absolute; top: -60px; animation-name: ams-fall; animation-timing-function: cubic-bezier(.4, .1, .7, 1); animation-fill-mode: both; }
 @keyframes ams-fall { from { transform: translateY(0) rotate(0); } to { transform: translateY(115vh) rotate(540deg); } }
 @media (prefers-reduced-motion: reduce) { .ams-rain-fx { display: none; } }
+
+/* ---- Bad Decisions + Shelter Mode ---- */
+.ams-bad { margin-top: 24px; max-width: 560px; }
+.ams-bad-who { display: flex; flex-wrap: wrap; gap: 8px; }
+.ams-bad-who button { font-family: var(--caps); letter-spacing: .12em; text-transform: uppercase; font-size: 13px; padding: 8px 14px; border: 1px solid var(--antique); color: var(--smoke); }
+.ams-bad-who button.is-on { background: var(--brass); color: var(--oxblood); border-color: var(--brass); }
+.ams-bad-roll { margin-top: 16px; font-family: var(--caps); font-weight: 700; font-size: 14px; letter-spacing: .16em; text-transform: uppercase; padding: 14px 24px; background: var(--signal); color: var(--oxblood); }
+.ams-bad-roll:disabled { opacity: .7; }
+.ams-bad-card { margin-top: 18px; padding: 18px 20px; border: 1px dashed var(--antique); min-height: 80px; }
+.ams-bad-card p { margin: 0 0 12px; line-height: 1.45; }
+.ams-bad-card p span { display: block; font-family: var(--caps); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--brass); margin-bottom: 2px; }
+.ams-bad-card small { color: var(--smoke); }
+.ams-bad-empty { color: var(--smoke); margin: 0; }
+.ams-shelter-open { display: block; margin-top: 32px; font-family: var(--caps); font-weight: 700; font-size: 14px; letter-spacing: .16em; text-transform: uppercase; padding: 14px 24px; border: 2px solid var(--signal); color: var(--signal); }
+.ams-shelter-open:hover { background: var(--signal); color: var(--oxblood); }
+.ams-shelter-warn { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 24px; background: rgba(20, 5, 8, .96); color: var(--ivory); }
+.ams-shelter-warn > div { max-width: 460px; }
+.ams-shelter-btns { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+.ams-shelter-btns .ams-rain-btn { margin-top: 0; }
+.ams-shelter-ghost { font-family: var(--caps); letter-spacing: .14em; text-transform: uppercase; font-size: 13px; padding: 14px 20px; border: 1px solid var(--antique); color: var(--smoke); }
+.ams-shelter { position: fixed; inset: 0; z-index: 1001; display: grid; place-items: center; overflow: hidden; background: hsl(var(--h) 90% 8%); color: hsl(var(--h) 100% 70%); animation: ams-strobe .484s steps(1) infinite; }
+.ams-shelter.is-calm { animation: none; transition: background 1.2s; }
+.ams-shelter-ring { position: absolute; width: 20vmin; height: 20vmin; border-radius: 50%; border: 6px solid hsl(var(--h) 100% 60%); animation: ams-pulse .484s ease-out forwards; }
+.ams-shelter.is-calm .ams-shelter-ring { animation: none; opacity: .3; }
+.ams-shelter-word { position: relative; font-family: var(--display); font-weight: 700; font-size: clamp(44px, 14vw, 160px); letter-spacing: .04em; text-align: center; text-shadow: 0 0 40px currentColor; margin: 0; padding: 0 12px; }
+.ams-shelter-bar { position: absolute; bottom: 64px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.ams-shelter-bar button { font-family: var(--caps); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; padding: 12px 18px; background: rgba(0,0,0,.6); color: #fff; border: 1px solid #fff; }
+.ams-shelter-hint { position: absolute; bottom: 24px; margin: 0; font-size: 12px; color: #fff; opacity: .7; text-align: center; padding: 0 16px; }
+@keyframes ams-strobe { 0% { filter: brightness(1.5); } 12% { filter: brightness(.7); } 100% { filter: brightness(.7); } }
+@keyframes ams-pulse { from { transform: scale(.3); opacity: 1; } to { transform: scale(7); opacity: 0; } }
