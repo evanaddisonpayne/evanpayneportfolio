@@ -497,3 +497,44 @@
 .ams-notice-stamp { position: absolute; right: 16px; bottom: 92px; z-index: 2; padding: 6px 14px; border: 3px solid #c8102e; color: #c8102e; font-family: var(--caps); font-weight: 700; font-size: 22px; letter-spacing: .2em; text-transform: uppercase; transform: rotate(12deg); opacity: .85; animation: ams-stamp-in .4s cubic-bezier(.2, 1.4, .4, 1) both; }
 .ams-notice-share { margin-top: 18px; position: relative; z-index: 1; }
 @media (prefers-reduced-motion: reduce) { .ams-notice-stamp { animation: none; } }
+
+/* ---------- the weird part ---------- */
+.ams-windmill-wrap { display: grid; gap: 28px; align-items: center; }
+@media (min-width: 900px) { .ams-windmill-wrap { grid-template-columns: 320px minmax(0, 1fr); gap: 64px; } }
+.ams-windmill { display: grid; justify-items: center; gap: 12px; width: 100%; max-width: 320px; justify-self: center; }
+.ams-windmill svg { width: 100%; height: auto; overflow: visible; }
+.ams-wm-body { fill: #3d1a1c; stroke: var(--brass); stroke-width: 2; }
+.ams-wm-cap { fill: var(--brass); }
+.ams-wm-door, .ams-wm-window { fill: var(--signal); }
+.ams-wm-sails { transform-origin: 150px 140px; transform-box: view-box; transition: transform 3.1s cubic-bezier(.15, .85, .2, 1); }
+.ams-wm-arm { fill: var(--brass); }
+.ams-wm-sail { fill: color-mix(in srgb, var(--ivory) 90%, transparent); stroke: var(--brass); stroke-width: 1.5; }
+.ams-wm-lattice { stroke: var(--brass); stroke-width: 1; }
+.ams-wm-hub { fill: var(--signal); stroke: var(--ivory); stroke-width: 2; }
+.ams-wm-cta { font-family: var(--caps); font-weight: 700; font-size: 14px; letter-spacing: .16em; text-transform: uppercase; color: var(--signal); border: 1.2px solid var(--signal); padding: 10px 20px; }
+.ams-windmill:hover .ams-wm-cta { background: var(--signal); color: var(--oxblood); }
+.ams-windmill:disabled { cursor: progress; }
+.ams-fate { border: 1.2px solid var(--brass); padding: 28px; position: relative; min-height: 160px; display: grid; align-content: center; gap: 10px; }
+.ams-fate::after { content: ""; position: absolute; inset: 6px; border: .6px solid color-mix(in srgb, var(--brass) 55%, transparent); pointer-events: none; }
+.ams-fate-label { font-family: var(--caps); font-weight: 700; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--brass); }
+.ams-fate-text { font-family: var(--display); font-weight: 300; font-size: clamp(24px, 1.4vw + 18px, 38px); line-height: 1.2; color: var(--smoke); }
+.ams-fate.is-shown .ams-fate-text { color: var(--ivory); animation: ams-in .4s ease-out both; }
+@media (prefers-reduced-motion: reduce) { .ams-wm-sails { transition-duration: .01s; } }
+
+.ams-egos-head { margin-top: 72px; margin-bottom: 20px; }
+.ams-egos-head .h3 { font-weight: 300; margin-top: 10px; }
+.ams-egos { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+.ams-egos button { width: 100%; height: 100%; text-align: left; display: grid; align-content: start; gap: 8px; padding: 20px; border: 1.2px dashed var(--brass); min-height: 150px; }
+.ams-egos button:hover { border-style: solid; }
+.ams-egos li.is-me button { border-color: var(--signal); }
+.ams-ego-real { font-family: var(--caps); font-weight: 700; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--brass); }
+.ams-ego-name { font-family: var(--display); font-size: 24px; line-height: 1.15; color: var(--smoke); font-style: italic; }
+.ams-ego-name.is-shown { color: var(--ivory); font-style: normal; }
+.ams-ego-bio { font-size: 14px; line-height: 1.5; color: var(--smoke); }
+
+.ams-rain-btn { margin-top: 56px; font-family: var(--caps); font-weight: 700; font-size: 14px; letter-spacing: .16em; text-transform: uppercase; padding: 14px 24px; background: var(--signal); color: var(--oxblood); }
+.ams-rain-btn:hover { filter: brightness(1.1); }
+.ams-rain-fx { position: fixed; inset: 0; pointer-events: none; z-index: 90; overflow: hidden; }
+.ams-rain-fx span { position: absolute; top: -60px; animation-name: ams-fall; animation-timing-function: cubic-bezier(.4, .1, .7, 1); animation-fill-mode: both; }
+@keyframes ams-fall { from { transform: translateY(0) rotate(0); } to { transform: translateY(115vh) rotate(540deg); } }
+@media (prefers-reduced-motion: reduce) { .ams-rain-fx { display: none; } }

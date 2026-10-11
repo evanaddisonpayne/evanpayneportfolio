@@ -22,7 +22,7 @@ import {
   type Stop,
   type Vibe,
 } from "@/lib/amsterdam";
-import { Bingo, Complaints, Services, TripMap, Windows } from "./Fun";
+import { AlterEgos, Bingo, Complaints, GezelligRain, Services, TripMap, Windmill, Windows } from "./Fun";
 import Chat from "./Chat";
 
 const TZ = "Europe/Amsterdam";
@@ -75,6 +75,7 @@ export default function Trip() {
   const [nasty, setNasty] = useState(false);
   const [taps, setTaps] = useState<number[]>([]);
   const [toast, setToast] = useState<string | null>(null);
+  const [rainTick, setRainTick] = useState(0);
   const [dayId, setDayId] = useState<string>(days[0].id);
   const [vibes, setVibes] = useState<Vibe[]>([]);
   const [picksOnly, setPicksOnly] = useState(false);
@@ -718,6 +719,32 @@ export default function Trip() {
         </div>
       </section>
 
+      {/* ---------- WEIRD ---------- */}
+      <section className="section dark ams-weird-sec">
+        <div className="pattern pattern-passport" aria-hidden />
+        <div className="wrap">
+          <div className="section-head">
+            <p className="eyebrow">The weird part</p>
+            <h2 className="h2">
+              Consult the <span className="italic">Windmill of Fate.</span>
+            </h2>
+            <p className="lede">Can&apos;t agree on the next bar, who&apos;s paying or whether Tyler can go to bed? Spin it. The windmill is binding.</p>
+          </div>
+          <Windmill nasty={nasty} />
+
+          <div className="ams-egos-head">
+            <p className="eyebrow">Your Dutch alter egos</p>
+            <h3 className="h3">Who you really are over here.</h3>
+          </div>
+          <AlterEgos me={me} />
+
+          <button className="ams-rain-btn" onClick={() => setRainTick((t) => t + 1)}>
+            Make it rain {nasty ? "eggplants" : "cheese"}
+          </button>
+          <p className="ams-hint">Or type “gezellig” anywhere on the page.</p>
+        </div>
+      </section>
+
       {/* ---------- KNOW-HOW ---------- */}
       <section className="section dark ams-know-sec">
         <div className="wrap">
@@ -766,6 +793,7 @@ export default function Trip() {
         </div>
       </footer>
       <Chat me={me} nasty={nasty} />
+      <GezelligRain nasty={nasty} trigger={rainTick} />
     </div>
   );
 }

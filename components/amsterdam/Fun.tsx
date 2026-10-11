@@ -815,3 +815,153 @@ export function Complaints({ me, nasty = false }: { me: Person | null; nasty?: b
     </div>
   );
 }
+
+/* ==========================================================================
+   6. Getting weird: Windmill of Fate, Dutch alter egos, the gezellig rain
+   ========================================================================== */
+
+const FATES = [
+  "Zak buys the next round.",
+  "Everyone takes a jenever, bent over the bar, no hands.",
+  "Jarrod picks the next bar. No vetoes.",
+  "Tyler is granted permission to go to bed.",
+  "Evan may not mention the itinerary for one hour.",
+  "Next stop: FEBO. Immediately.",
+  "Speak only Dutch until the next canal. Good luck.",
+  "Whoever is closest to a bike lane buys bitterballen.",
+  "Group photo with the next heron you see.",
+  "Swap jackets with your roommate until midnight.",
+  "Order whatever the bartender recommends. Trust the Dutch.",
+  "Ferry ride to Noord and back, for no reason.",
+];
+const NASTY_FATES = [
+  "Loser rolls for the whole group.",
+  "Everyone confesses their worst Red Light District thought.",
+  "Next round is on whoever said 'gezellig' last.",
+  "Space-cake roulette: quarter pieces only, you animals.",
+];
+
+export function Windmill({ nasty = false }: { nasty?: boolean }) {
+  const [angle, setAngle] = useState(0);
+  const [spinning, setSpinning] = useState(false);
+  const [fate, setFate] = useState<string | null>(null);
+  const pool = nasty ? [...FATES, ...NASTY_FATES] : FATES;
+
+  function spin() {
+    if (spinning) return;
+    setFate(null);
+    setSpinning(true);
+    setAngle((a) => a + 1440 + Math.floor(Math.random() * 720));
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    window.setTimeout(() => {
+      setFate(pick);
+      setSpinning(false);
+    }, 3200);
+  }
+
+  return (
+    <div className="ams-windmill-wrap">
+      <button className="ams-windmill" onClick={spin} aria-label="Spin the Windmill of Fate" disabled={spinning}>
+        <svg viewBox="0 0 300 360" aria-hidden>
+          <path d="M115 340 L135 150 L165 150 L185 340 Z" className="ams-wm-body" />
+          <path d="M126 160 L150 120 L174 160 Z" className="ams-wm-cap" />
+          <rect x="140" y="290" width="20" height="50" className="ams-wm-door" />
+          <rect x="143" y="210" width="14" height="18" className="ams-wm-window" />
+          <g className="ams-wm-sails" style={{ transform: `rotate(${angle}deg)` }}>
+            {[0, 90, 180, 270].map((r) => (
+              <g key={r} transform={`rotate(${r} 150 140)`}>
+                <rect x="144" y="18" width="12" height="118" className="ams-wm-arm" />
+                <rect x="156" y="22" width="34" height="104" className="ams-wm-sail" />
+                {[40, 62, 84, 106].map((y) => (
+                  <line key={y} x1="156" x2="190" y1={y} y2={y} className="ams-wm-lattice" />
+                ))}
+              </g>
+            ))}
+            <circle cx="150" cy="140" r="10" className="ams-wm-hub" />
+          </g>
+        </svg>
+        <span className="ams-wm-cta">{spinning ? "Deciding your fate…" : fate ? "Spin again" : "Spin it"}</span>
+      </button>
+      <div className={`ams-fate${fate ? " is-shown" : ""}`} aria-live="polite">
+        <p className="ams-fate-label">The windmill has spoken</p>
+        <p className="ams-fate-text">{fate ?? "Settle any argument. The windmill is never wrong."}</p>
+      </div>
+    </div>
+  );
+}
+
+const ALTER_EGOS: { who: Person; name: string; bio: string }[] = [
+  { who: "Evan", name: "Evert van der Brug", bio: "Retired harbour master of itineraries. Has never once been late. Will tell you about it." },
+  { who: "Jarrod", name: "Joost Bootsma", bio: "Third-generation barge captain. Legally married to a canal boat. Smells faintly of hops." },
+  { who: "Tyler", name: "Teun de Oude", bio: "Museum docent since 1987. In bed by 22:00. Has opinions about Rembrandt's brushwork." },
+  { who: "Zak", name: "Sjaak van Rijn", bio: "Claims to be Rembrandt's descendant. Isn't. Still expects a Dutch grandmother to cook his Thanksgiving." },
+];
+
+export function AlterEgos({ me }: { me: Person | null }) {
+  const [shown, setShown] = useState<Record<string, boolean>>({});
+  return (
+    <ul className="ams-egos">
+      {ALTER_EGOS.map((e) => (
+        <li key={e.who} className={me === e.who ? "is-me" : undefined}>
+          <button onClick={() => setShown((s) => ({ ...s, [e.who]: !s[e.who] }))} aria-expanded={!!shown[e.who]}>
+            <span className="ams-ego-real">{e.who} is actually…</span>
+            <span className={`ams-ego-name${shown[e.who] ? " is-shown" : ""}`}>{shown[e.who] ? e.name : "tap to reveal"}</span>
+            {shown[e.who] && <span className="ams-ego-bio">{e.bio}</span>}
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Type "gezellig" anywhere (or call the trigger) and it rains cheese, tulips and bikes. */
+export function GezelligRain({ nasty = false, trigger = 0 }: { nasty?: boolean; trigger?: number }) {
+  const [drops, setDrops] = useState<{ id: number; left: number; delay: number; dur: number; emoji: string; size: number }[]>([]);
+
+  useEffect(() => {
+    let typed = "";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key.length !== 1) return;
+      typed = (typed + e.key.toLowerCase()).slice(-8);
+      if (typed === "gezellig") rain();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nasty]);
+
+  useEffect(() => {
+    if (trigger > 0) rain();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trigger]);
+
+  function rain() {
+    const set = nasty ? ["🍆", "🧀", "🌷", "🚲", "🍆", "🥴"] : ["🧀", "🌷", "🚲", "🧇", "🌷", "🧀"];
+    const base = Date.now();
+    setDrops(
+      Array.from({ length: 44 }, (_, i) => ({
+        id: base + i,
+        left: Math.random() * 100,
+        delay: Math.random() * 1.6,
+        dur: 2.6 + Math.random() * 2.2,
+        emoji: set[i % set.length],
+        size: 22 + Math.random() * 26,
+      })),
+    );
+    window.setTimeout(() => setDrops([]), 6500);
+  }
+
+  if (!drops.length) return null;
+  return (
+    <div className="ams-rain-fx" aria-hidden>
+      {drops.map((d) => (
+        <span
+          key={d.id}
+          style={{ left: `${d.left}%`, animationDelay: `${d.delay}s`, animationDuration: `${d.dur}s`, fontSize: `${d.size}px` }}
+        >
+          {d.emoji}
+        </span>
+      ))}
+    </div>
+  );
+}
