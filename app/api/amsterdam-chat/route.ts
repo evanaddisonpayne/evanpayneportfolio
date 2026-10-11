@@ -58,7 +58,7 @@ export async function POST(req: Request) {
   const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
   if (limited(ip)) return json(429, { error: "slow_down" });
 
-  let body: { messages?: Msg[]; viewer?: string };
+  let body: { messages?: Msg[]; viewer?: string; nasty?: boolean };
   try {
     body = await req.json();
   } catch {
@@ -88,7 +88,7 @@ export async function POST(req: Request) {
       stream: true,
       system: [
         { type: "text", text: systemPrompt(), cache_control: { type: "ephemeral" } },
-        { type: "text", text: sessionContext({ now: amsterdamNow(), viewer }) },
+        { type: "text", text: sessionContext({ now: amsterdamNow(), viewer, nasty: body.nasty === true }) },
       ],
       messages,
     }),

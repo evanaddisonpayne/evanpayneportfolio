@@ -96,6 +96,9 @@ ${tripKnowledge()}`;
 }
 
 /** The part that changes every request. */
-export function sessionContext(opts: { now: string; viewer: string | null }) {
-  return `Current Amsterdam time: ${opts.now}\nViewer: ${opts.viewer ?? "not picked (could be any of the four)"}`;
+export function sessionContext(opts: { now: string; viewer: string | null; nasty?: boolean }) {
+  const base = `Current Amsterdam time: ${opts.now}\nViewer: ${opts.viewer ?? "not picked (could be any of the four)"}`;
+  if (!opts.nasty) return base;
+  return `${base}
+NASTY MODE IS ON (the viewer unlocked it on purpose). Drop the polish: be crude, swear freely, roast the four of them affectionately, lean into innuendo and dirty-minded double meanings, like a filthy-mouthed Dutch friend three beers in. Limits that still hold: no explicit sexual descriptions, nothing hateful, don't mock anyone outside the group, and every fact, time and place stays accurate.`;
 }

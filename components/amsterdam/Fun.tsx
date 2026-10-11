@@ -65,7 +65,7 @@ const OFFMAP: Record<string, { label: string; at: [number, number]; arrow: strin
   "Collect bags → Schiphol": { label: "Schiphol · 15 min by train", at: [40, H - 40], arrow: "↙" },
   "Zaanse Schans": { label: "Windmills · 17 min by train", at: [40, 40], arrow: "↖" },
   "Pancakes in the village": { label: "Windmills · 17 min by train", at: [40, 40], arrow: "↖" },
-  "Or: Lotus Biscoff oliebol run": { label: "Biscoff oliebol · 40 min", at: [40, H * 0.55], arrow: "←" },
+  "Or: Lotus Biscoff oliebol run": { label: "Biscoff oliebol · 40 min", at: [40, H * 0.74], arrow: "←" },
 };
 
 const pts = (list: LatLng[]) => list.map((p) => proj(p));
@@ -155,12 +155,14 @@ export function TripMap({
   days,
   dayId,
   me,
+  nasty = false,
   onDay,
   onPick,
 }: {
   days: Day[];
   dayId: string;
   me: Person | null;
+  nasty?: boolean;
   onDay: (id: string) => void;
   onPick: (d: Day, s: Stop) => void;
 }) {
@@ -333,11 +335,30 @@ export function TripMap({
                   }
                 }}
               >
-                <circle r={all ? 9 : 17} />
-                {!all && (
-                  <text textAnchor="middle" dy="6">
-                    {p.n}
-                  </text>
+                {nasty ? (
+                  <>
+                    <circle r={all ? 12 : 22} className="ams-pin-hit" />
+                    <text textAnchor="middle" dy={all ? 7 : 12} className="ams-pin-egg" style={{ fontSize: all ? 20 : 34 }}>
+                      🍆
+                    </text>
+                    {!all && (
+                      <g transform="translate(15 -15)">
+                        <circle r="11" className="ams-pin-badge" />
+                        <text textAnchor="middle" dy="5" className="ams-pin-badge-n">
+                          {p.n}
+                        </text>
+                      </g>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <circle r={all ? 9 : 17} />
+                    {!all && (
+                      <text textAnchor="middle" dy="6">
+                        {p.n}
+                      </text>
+                    )}
+                  </>
                 )}
                 {active && (
                   <g className="ams-pin-tip">
@@ -368,7 +389,9 @@ export function TripMap({
           )}
         </svg>
         </div>
-        <p className="ams-map-small">Not to scale. Barely to anything. Tap a pin to jump to it in the plan.</p>
+        <p className="ams-map-small">
+          {nasty ? "Not to scale. Every pin is an eggplant now. You did this." : "Not to scale. Barely to anything. Tap a pin to jump to it in the plan."}
+        </p>
       </div>
 
       {!all && (
@@ -416,11 +439,31 @@ const WINDOWS: { who: Person; title: string; lines: string[] }[] = [
   },
 ];
 
-export function Windows({ me }: { me: Person | null }) {
+const NASTY_WINDOWS: Record<Person, { title: string; lines: string[] }> = {
+  Evan: {
+    title: "The Ringleader",
+    lines: ["Third visit. Will absolutely mention it.", "Specialty: losing you in a brown café at 1 am", "Turn-ons: a well-kept itinerary", "Rate: you owe him for this website"],
+  },
+  Jarrod: {
+    title: "The Boatswain",
+    lines: ["Specialty: getting baked on a boat", "Rolls for the whole group, no questions", "Hours: until the ferry gives up", "Rate: one local beer, paid up front"],
+  },
+  Tyler: {
+    title: "The Early Bird",
+    lines: ["Specialty: leaving at 11, judging you at breakfast", "Turn-ons: placards, audio guides", "Will cry at Anne Frank. Will deny it.", "Rate: a quiet room by midnight"],
+  },
+  Zak: {
+    title: "The Heckler",
+    lines: ["Specialty: heckling Evan's itinerary", "Turn-ons: Rembrandt, windmills, a Dutch woman's kitchen", "Hours: not scheduled all day, sweetheart", "Rate: $200 a day and not a cent more"],
+  },
+};
+
+export function Windows({ me, nasty = false }: { me: Person | null; nasty?: boolean }) {
   const [open, setOpen] = useState<Record<string, boolean>>({});
   return (
     <div className="ams-windows">
-      {WINDOWS.map((w, i) => {
+      {WINDOWS.map((base, i) => {
+        const w = nasty ? { ...base, ...NASTY_WINDOWS[base.who] } : base;
         const isOpen = !!open[w.who];
         return (
           <div key={w.who} className={`ams-house ams-house-${i}${me === w.who ? " is-me" : ""}`}>
@@ -570,6 +613,204 @@ export function Bingo() {
         >
           New card
         </button>
+      </div>
+    </div>
+  );
+}
+
+/* ==========================================================================
+   4. The window services menu
+   ========================================================================== */
+
+type Service = { who: string; what: string; price: string };
+const SERVICES: Service[] = [
+  { who: "Evan", what: "Reciting the itinerary from memory", price: "Mandatory" },
+  { who: "Evan", what: "Booking every table, emotionally", price: "Free" },
+  { who: "Jarrod", what: "Rolling for the group on the Bulldog Boat", price: "One beer" },
+  { who: "Jarrod", what: "Finding a gay bar within 400 m of anywhere", price: "Instant" },
+  { who: "Tyler", what: "Historical context nobody asked for", price: "Free, unavoidable" },
+  { who: "Tyler", what: "Leaving the club at 11, gracefully", price: "Included" },
+  { who: "Zak", what: "Rijksmuseum tour, second edition", price: "Your patience" },
+  { who: "Zak", what: "Thanksgiving demands", price: "Non-negotiable" },
+  { who: "Anyone", what: "Holding your jacket at Shelter", price: "€0 + resentment" },
+  { who: "Anyone", what: "Emotional support at the Anne Frank House", price: "Priceless" },
+];
+const NASTY_SERVICES: Service[] = [
+  { who: "Anyone", what: "Holding your hair after the space cake", price: "One FEBO croquette" },
+  { who: "Anyone", what: "Pretending we didn't see that in De Wallen", price: "€20, cash" },
+  { who: "Anyone", what: "Walking you home after Shelter", price: "A 6 am apology" },
+  { who: "Jarrod", what: "Hot-boxing the Bulldog Boat cabin", price: "Two drinks included" },
+  { who: "Evan", what: "Explaining to the ferry why you're shouting", price: "Gratis" },
+];
+
+export function Services({ nasty = false }: { nasty?: boolean }) {
+  const list = nasty ? [...SERVICES, ...NASTY_SERVICES] : SERVICES;
+  return (
+    <ul className="ams-services">
+      {list.map((s) => (
+        <li key={s.who + s.what} className={NASTY_SERVICES.includes(s) ? "is-nasty-item" : undefined}>
+          <span className="ams-svc-who">{s.who}</span>
+          <span className="ams-svc-what">{s.what}</span>
+          <span className="ams-svc-dots" aria-hidden />
+          <span className="ams-svc-price">{s.price}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/* ==========================================================================
+   5. Official roommate complaints
+   ========================================================================== */
+
+const ROOMMATE: Record<Person, Person> = { Evan: "Zak", Zak: "Evan", Jarrod: "Tyler", Tyler: "Jarrod" };
+const OFFENCES = [
+  "Snored like a ferry horn",
+  "Hogged the shower",
+  "Came home at 6 am",
+  "Set a 5:45 am alarm and hit snooze",
+  "Ate my FEBO croquette",
+  "Recited the itinerary, unprompted",
+  "Took the good pillow",
+  "Left wet towels on my bed",
+  "Narrated the Rijksmuseum",
+  "Played music in the room at 2 am",
+];
+const NASTY_OFFENCES = [
+  "Hot-boxed the bathroom (non-smoking hotel)",
+  "Left space-cake crumbs in the bed",
+  "Brought the whole club home with them",
+  "Clogged the toilet after FEBO",
+  "Smelled like the Bulldog Boat for 48 hours",
+];
+const RULINGS = [
+  "Buys the next round of bitterballen.",
+  "Takes the 5:45 am Sunday alarm without complaint.",
+  "Banned from the shower until Thursday.",
+  "Owes the room one FEBO croquette, warm.",
+  "Must carry everyone's jackets at Shelter.",
+  "Sits on the open deck of the next canal cruise.",
+  "Pays for the oliebollen run. All of it.",
+  "Writes a formal apology in Dutch. Proost.",
+];
+
+function caseNo() {
+  return `SA-${Math.floor(1000 + Math.random() * 9000)}-${"ABCDEFGHJKLMNPQRSTUVWXYZ"[Math.floor(Math.random() * 24)]}`;
+}
+
+export function Complaints({ me, nasty = false }: { me: Person | null; nasty?: boolean }) {
+  const [by, setBy] = useState<Person | null>(null);
+  const [against, setAgainst] = useState<Person | null>(null);
+  const [crimes, setCrimes] = useState<string[]>([]);
+  const [notice, setNotice] = useState<{ no: string; ruling: string } | null>(null);
+  const [copied, setCopied] = useState(false);
+  const filer = by ?? me;
+  const list = nasty ? [...OFFENCES, ...NASTY_OFFENCES] : OFFENCES;
+
+  useEffect(() => {
+    if (me && !by) setBy(me);
+  }, [me, by]);
+  useEffect(() => {
+    if (filer && !against) setAgainst(ROOMMATE[filer]);
+  }, [filer, against]);
+
+  const people: Person[] = ["Evan", "Jarrod", "Tyler", "Zak"];
+  const ready = !!against && crimes.length > 0;
+  const text = notice && against
+    ? `OFFICIAL NOTICE · Sir Adam Grievance Office · Case ${notice.no}\nComplainant: ${filer ?? "Anonymous"}\nAccused: ${against}\nCharges: ${crimes.join("; ")}\nRuling: ${notice.ruling}\nThis decision is final and cannot be appealed.`
+    : "";
+
+  async function share() {
+    try {
+      if (navigator.share) {
+        await navigator.share({ text });
+        return;
+      }
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* user cancelled */
+    }
+  }
+
+  return (
+    <div className="ams-complaints">
+      <div className="ams-complaint-form">
+        <div className="ams-cf-row">
+          <p className="ams-cf-label">Filed by</p>
+          <div className="ams-cf-chips">
+            {people.map((p) => (
+              <button key={p} className="ams-chip" aria-pressed={filer === p} onClick={() => { setBy(p); setAgainst(ROOMMATE[p]); setNotice(null); }}>
+                {p}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="ams-cf-row">
+          <p className="ams-cf-label">Against</p>
+          <div className="ams-cf-chips">
+            {people.filter((p) => p !== filer).map((p) => (
+              <button key={p} className="ams-chip" aria-pressed={against === p} onClick={() => { setAgainst(p); setNotice(null); }}>
+                {p}
+                {filer && ROOMMATE[filer] === p ? " (roommate)" : ""}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="ams-cf-row">
+          <p className="ams-cf-label">Charges</p>
+          <div className="ams-cf-chips">
+            {list.map((c) => (
+              <button
+                key={c}
+                className={`ams-chip${NASTY_OFFENCES.includes(c) ? " ams-chip-nasty" : ""}`}
+                aria-pressed={crimes.includes(c)}
+                onClick={() => {
+                  setCrimes((cur) => (cur.includes(c) ? cur.filter((x) => x !== c) : [...cur, c]));
+                  setNotice(null);
+                }}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        </div>
+        <button
+          className="btn btn-dark"
+          disabled={!ready}
+          onClick={() => setNotice({ no: caseNo(), ruling: RULINGS[Math.floor(Math.random() * RULINGS.length)] })}
+        >
+          {notice ? "Re-sentence" : "File complaint"}
+        </button>
+      </div>
+
+      <div className={`ams-notice${notice ? " is-filed" : ""}`} aria-live="polite">
+        {notice && against ? (
+          <>
+            <p className="ams-notice-office">Sir Adam Grievance Office</p>
+            <p className="ams-notice-title">Official Notice</p>
+            <p className="ams-notice-case">Case {notice.no}</p>
+            <dl>
+              <div><dt>Complainant</dt><dd>{filer ?? "Anonymous"}</dd></div>
+              <div><dt>Accused</dt><dd>{against}</dd></div>
+              <div>
+                <dt>Charges</dt>
+                <dd>
+                  <ul>{crimes.map((c) => <li key={c}>{c}</li>)}</ul>
+                </dd>
+              </div>
+              <div><dt>Ruling</dt><dd className="ams-notice-ruling">{notice.ruling}</dd></div>
+            </dl>
+            <p className="ams-notice-fine">This decision is final and cannot be appealed.</p>
+            <span className="ams-notice-stamp" aria-hidden>Guilty</span>
+            <button className="btn btn-signal ams-notice-share" onClick={share}>
+              {copied ? "Copied" : "Send to the group chat"}
+            </button>
+          </>
+        ) : (
+          <p className="ams-notice-empty">Your notice appears here once charges are filed.</p>
+        )}
       </div>
     </div>
   );

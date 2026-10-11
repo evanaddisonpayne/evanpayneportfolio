@@ -75,7 +75,7 @@ function Rich({ text }: { text: string }) {
   );
 }
 
-export default function Chat({ me }: { me: Person | null }) {
+export default function Chat({ me, nasty = false }: { me: Person | null; nasty?: boolean }) {
   const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -113,7 +113,7 @@ export default function Chat({ me }: { me: Person | null }) {
       const res = await fetch("/api/amsterdam-chat", {
         method: "POST",
         headers: { "content-type": "application/json", "x-trip-code": codeOverride ?? code },
-        body: JSON.stringify({ messages: history, viewer: me }),
+        body: JSON.stringify({ messages: history, viewer: me, nasty }),
       });
       if (!res.ok || !res.body) {
         const err = await res.json().catch(() => ({}) as { error?: string });
@@ -178,7 +178,10 @@ export default function Chat({ me }: { me: Person | null }) {
         <header className="ams-chat-head">
           <div>
             <p className="ams-chat-title">Bram</p>
-            <p className="ams-chat-sub">Your trip concierge. Knows the whole plan{me ? `, and that you're ${me}` : ""}.</p>
+            <p className="ams-chat-sub">
+              {nasty ? "Nasty Mode: on. He's had a few. " : "Your trip concierge. "}
+              Knows the whole plan{me ? `, and that you're ${me}` : ""}.
+            </p>
           </div>
           <div className="ams-chat-head-actions">
             {msgs.length > 0 && (

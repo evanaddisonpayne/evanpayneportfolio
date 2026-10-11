@@ -22,11 +22,12 @@ import {
   type Stop,
   type Vibe,
 } from "@/lib/amsterdam";
-import { Bingo, TripMap, Windows } from "./Fun";
+import { Bingo, Complaints, Services, TripMap, Windows } from "./Fun";
 import Chat from "./Chat";
 
 const TZ = "Europe/Amsterdam";
 const ME_KEY = "ams26-me";
+const NASTY_KEY = "ams26-nasty";
 const CHECK_KEY = "ams26-checks";
 
 function load<T>(key: string, fallback: T): T {
@@ -71,6 +72,9 @@ const priceLabel = (p: Price) => (p === "free" ? "Free" : p === "card" ? "Card" 
 export default function Trip() {
   const [now, setNow] = useState<Date | null>(null);
   const [me, setMe] = useState<Person | null>(null);
+  const [nasty, setNasty] = useState(false);
+  const [taps, setTaps] = useState<number[]>([]);
+  const [toast, setToast] = useState<string | null>(null);
   const [dayId, setDayId] = useState<string>(days[0].id);
   const [vibes, setVibes] = useState<Vibe[]>([]);
   const [picksOnly, setPicksOnly] = useState(false);
@@ -84,6 +88,7 @@ export default function Trip() {
     const d = new Date();
     setNow(d);
     setMe(load<Person | null>(ME_KEY, null));
+    setNasty(load<boolean>(NASTY_KEY, false));
     setChecks(load<Record<string, boolean>>(CHECK_KEY, {}));
     const today = amsNow(d).date;
     const match = days.find((x) => x.date === today);
@@ -136,6 +141,27 @@ export default function Trip() {
     window.setTimeout(() => setFocusStop(null), 2400);
   };
 
+  const flash = (msg: string) => {
+    setToast(msg);
+    window.setTimeout(() => setToast(null), 2600);
+  };
+  const setNastyMode = (on: boolean) => {
+    setNasty(on);
+    save(NASTY_KEY, on);
+    flash(on ? "🍆 Nasty Mode engaged. God help us." : "Nasty Mode off. Back to being respectable.");
+  };
+  const tapStamp = () => {
+    const t = Date.now();
+    const recent = [...taps.filter((x) => t - x < 3000), t];
+    if (recent.length >= 5) {
+      setTaps([]);
+      setNastyMode(!nasty);
+    } else {
+      setTaps(recent);
+      if (recent.length === 3) flash(nasty ? "Two more to calm down…" : "Keep going…");
+    }
+  };
+
   const myPicks = me ? days.flatMap((d) => d.stops.filter((s) => s.picks?.includes(me)).map((s) => ({ d, s }))) : [];
   const profile = me ? profiles[me] : null;
   const musts = days.flatMap((d) => d.stops.filter((s) => s.must).map((s) => ({ d, s })));
@@ -144,7 +170,17 @@ export default function Trip() {
   const done = allItems.filter((i) => checks[i.id]).length;
 
   return (
-    <div className="ams">
+    <div className={`ams${nasty ? " is-nasty" : ""}`}>
+      {nasty && (
+        <button className="ams-nasty-bar" onClick={() => setNastyMode(false)}>
+          <span aria-hidden>🍆</span> Nasty Mode is on. Tap here to be respectable again.
+        </button>
+      )}
+      {toast && (
+        <div className="ams-toast" role="status">
+          {toast}
+        </div>
+      )}
       {/* ---------- HERO ---------- */}
       <section className="section dark ams-hero">
         <div className="pattern pattern-passport" aria-hidden />
@@ -163,12 +199,19 @@ export default function Trip() {
               Five nights in Noord, two canal cruises through the light art, one Indonesian feast, and a club in our own
               building. Slow mornings, late nights, and every evening has a way out.
             </p>
-            <Countdown now={now} />
+            <Countdown now={now} nasty={nasty} />
           </div>
-          <div className="ams-stamp-wrap" aria-hidden>
-            <div className="ams-stamp">
+          <div className="ams-stamp-wrap">
+            <div
+              className={`ams-stamp${taps.length ? " is-tapped" : ""}`}
+              role="button"
+              tabIndex={0}
+              aria-label="Passport stamp"
+              onClick={tapStamp}
+              onKeyDown={(e: { key: string }) => e.key === "Enter" && tapStamp()}
+            >
               <span className="ams-stamp-top">Gemeente Amsterdam</span>
-              <span className="ams-stamp-xxx">✕ ✕ ✕</span>
+              <span className="ams-stamp-xxx">{nasty ? "🍆 🍆 🍆" : "✕ ✕ ✕"}</span>
               <span className="ams-stamp-date">24 · XI · 2026</span>
               <span className="ams-stamp-bottom">Sir Adam · Noord</span>
             </div>
@@ -464,6 +507,7 @@ export default function Trip() {
             days={days}
             dayId={day.id}
             me={me}
+            nasty={nasty}
             onDay={(id) => {
               setDayId(id);
               setRain(false);
@@ -572,7 +616,24 @@ export default function Trip() {
             </h2>
             <p className="lede">The only windows in De Wallen you&apos;re allowed to photograph. Tap a curtain.</p>
           </div>
-          <Windows me={me} />
+          <Windows me={me} nasty={nasty} />
+          <div className="ams-services-head">
+            <p className="eyebrow">The menu</p>
+            <h3 className="h3">Services available. Prices non-negotiable.</h3>
+          </div>
+          <Services nasty={nasty} />
+        </div>
+      </section>
+
+      {/* ---------- COMPLAINTS ---------- */}
+      <section className="section orange ams-complaint-sec">
+        <div className="wrap">
+          <div className="section-head">
+            <p className="eyebrow">Sir Adam Grievance Office</p>
+            <h2 className="h2">File an official roommate complaint.</h2>
+            <p className="lede">Pick the accused, pick the crimes, get a formal notice to send to the group chat. Rulings are final.</p>
+          </div>
+          <Complaints me={me} nasty={nasty} />
         </div>
       </section>
 
@@ -704,12 +765,12 @@ export default function Trip() {
           </p>
         </div>
       </footer>
-      <Chat me={me} />
+      <Chat me={me} nasty={nasty} />
     </div>
   );
 }
 
-function Countdown({ now }: { now: Date | null }) {
+function Countdown({ now, nasty }: { now: Date | null; nasty?: boolean }) {
   if (!now) return <div className="ams-count" aria-hidden />;
   const start = new Date(TRIP_START).getTime();
   const diff = start - now.getTime();
@@ -753,7 +814,11 @@ function Countdown({ now }: { now: Date | null }) {
           </div>
         ))}
       </div>
-      <p className="ams-hint">Until the first wheels touch down at Schiphol, Tue Nov 24, 10:40 am.</p>
+      <p className="ams-hint">
+        {nasty
+          ? "Until we're legally high on a boat. (Technically: first wheels down at Schiphol, Tue Nov 24, 10:40 am.)"
+          : "Until the first wheels touch down at Schiphol, Tue Nov 24, 10:40 am."}
+      </p>
     </div>
   );
 }
