@@ -704,6 +704,16 @@ const NASTY_OFFENCES = [
   "Left the bathroom door open, which no one asked for ever",
   "Called me a 'filthy little canal rat' and I have never felt so seen",
   "Brought back a stranger's bike and a stranger's shoe. Neither is theirs",
+  "Took a dump in the hotel gym and left it as an installation",
+  "Sneezed into my coffee and said 'it's a Dutch blessing'",
+  "Peed in the canal and then lectured ME about respect",
+  "Sweated through four shirts and wore the fifth like a threat",
+  "Burped the national anthem into my ear at 4 am",
+  "Fell asleep in a bush outside the hotel. Security waved",
+  "Said 'I'm not drunk' while wearing someone else's pants",
+  "Ordered the same shot six times and called it a personality",
+  "Had a toothbrush that has seen things. Used mine anyway",
+  "Called the sauna 'a fart tent' and proved it",
 ];
 const RULINGS = [
   "Buys the next round of bitterballen.",
@@ -732,6 +742,12 @@ const NASTY_RULINGS = [
   "Banned from the good bed, the good pillow and the good mood until further notice.",
   "Walks into the next bar and announces their crime to everyone, in Dutch.",
   "Gets roasted by all three others, one full minute each, no mercy.",
+  "Wears a bike helmet and a sign reading 'I AM THE PROBLEM' for the whole next stop.",
+  "Eats the next bitterbal off the floor. Five-second rule is now ten.",
+  "Drinks one (1) beer through a stranger's hat. Stranger must consent.",
+  "Is hereby declared 'the Dutch Smell' and addressed as such until Sunday.",
+  "Pays everyone's tram fare in coins, counted slowly, out loud.",
+  "Must do a full catwalk down the next canal bridge, scoring cards held up by the room.",
 ];
 
 function caseNo() {
@@ -1200,6 +1216,76 @@ export function ShelterMode({ nasty = false, trigger = 0 }: { nasty?: boolean; t
         <button onClick={() => setStage("off")}>Leave the club</button>
       </div>
       <p className="ams-shelter-hint">Tap Esc or “Leave the club” to exit. 124 BPM, 03:00 forever.</p>
+    </div>
+  );
+}
+
+
+/* ==========================================================================
+   8. Roast Booth (Nasty Mode only): profane, affectionate, never explicit
+   ========================================================================== */
+
+const ROASTS: Record<Person, string[]> = {
+  Evan: [
+    "Evan planned the entire trip down to the minute and still can't plan to stop talking about it. Absolute spreadsheet-brained fuckwit.",
+    "He built a whole website for four dudes to drink beer, and he's STILL the most boring one in the group. Impressive. Genuinely.",
+    "Evan will bring a laminated itinerary to the Red Light District and ask the nearest window what her opening hours are.",
+    "Evan treats 'let's wing it' like a medical emergency. Shut up, sit down and have a jenever, you spreadsheet goblin.",
+    "He's the only man who can turn 'we're just getting a beer' into a 14-step process with contingency plans. Piss off, Evan.",
+  ],
+  Jarrod: [
+    "Jarrod flew across an ocean to sit on a boat and get high. Not a single cultural thought in that skull. Fucking beautiful.",
+    "He will be absolutely baked by 2 pm and in love with a pigeon by 3. We've all seen it. The pigeon has too.",
+    "Jarrod has never once been on time, never once been sober at a museum and never once apologised. Icon, but also a prick.",
+    "Ask Jarrod where he put his passport and watch a grown man rediscover fear. Dumbass.",
+    "Jarrod will 'just have one' and be locating his dignity in a canal at 4 am. Every. Single. Time.",
+  ],
+  Tyler: [
+    "Tyler's 'night life within reason' lasts until 10 pm, at which point he turns into a Victorian ghost who needs his bed. Weak.",
+    "He'll stand in the Rijksmuseum for four hours and call it 'a decent warmup'. Nobody asked you, grandpa.",
+    "Tyler's idea of a wild night is a second dessert. We know. We watched. You absolute grandma.",
+    "Tyler has opinions about Rembrandt's brushwork and zero about the fact he's the worst dancer at Shelter. Sit down.",
+    "Tyler is the only man who'd read the entire plaque, then read the plaque's plaque. Fuck off, we're thirsty.",
+  ],
+  Zak: [
+    "Zak signed up for Anne Frank, the Rijks and windmills, then still expects a Dutch grandma to cook him Thanksgiving. Entitled little shit.",
+    "Zak took the questionnaire seriously for exactly one question. That's the whole Zak experience, ladies and gentlemen.",
+    "He'll go to 'see windmills' and find the one bar in a 20-mile radius. Naturally. Menace.",
+    "Zak will fall asleep in the Rijksmuseum standing up, wake up, and declare it 'epic'. Absolute clown.",
+    "Zak says 'duh' to everything and means it every time. The universe's most confident idiot.",
+  ],
+};
+const GROUP_ROASTS = [
+  "Four grown men flew to Amsterdam to eat fried things, get high on a boat and argue about Anne Frank tickets. Peak civilisation.",
+  "This group has exactly one planner, one stoner, one grandpa and one gremlin. It's a disaster with a hotel.",
+  "None of you will remember the museum. All of you will remember the FEBO. That's the real itinerary.",
+];
+
+export function RoastBooth({ me }: { me: Person | null }) {
+  const crew: Person[] = ["Evan", "Jarrod", "Tyler", "Zak"];
+  const [who, setWho] = useState<Person | "All">(me ?? "Evan");
+  const [line, setLine] = useState<string | null>(null);
+
+  function fire() {
+    const pool = who === "All" ? GROUP_ROASTS : ROASTS[who];
+    setLine(pool[Math.floor(Math.random() * pool.length)]);
+  }
+
+  return (
+    <div className="ams-bad ams-roast">
+      <div className="ams-bad-who" role="group" aria-label="Who gets roasted">
+        {[...crew, "All" as const].map((p) => (
+          <button key={p} className={who === p ? "is-on" : undefined} onClick={() => setWho(p)} aria-pressed={who === p}>
+            {p}
+          </button>
+        ))}
+      </div>
+      <button className="ams-bad-roll" onClick={fire}>
+        {line ? "Another one" : `Roast ${who === "All" ? "the whole group" : who}`}
+      </button>
+      <div className={`ams-bad-card${line ? " is-shown" : ""}`} aria-live="polite">
+        {line ? <p>{line}</p> : <p className="ams-bad-empty">Consent was given by all four of you. Affectionate abuse, no mercy.</p>}
+      </div>
     </div>
   );
 }

@@ -22,7 +22,7 @@ import {
   type Stop,
   type Vibe,
 } from "@/lib/amsterdam";
-import { AlterEgos, BadDecisions, Bingo, Complaints, GezelligRain, ShelterMode, Services, TripMap, Windmill, Windows } from "./Fun";
+import { AlterEgos, BadDecisions, Bingo, Complaints, GezelligRain, RoastBooth, ShelterMode, Services, TripMap, Windmill, Windows } from "./Fun";
 import Chat from "./Chat";
 
 const TZ = "Europe/Amsterdam";
@@ -744,6 +744,16 @@ export default function Trip() {
             <h3 className="h3">Three dice. Zero accountability.</h3>
           </div>
           <BadDecisions me={me} nasty={nasty} />
+
+          {nasty && (
+            <>
+              <div className="ams-egos-head">
+                <p className="eyebrow">The Roast Booth</p>
+                <h3 className="h3">Consent given. Zero mercy.</h3>
+              </div>
+              <RoastBooth me={me} />
+            </>
+          )}
 
           <button className="ams-rain-btn" onClick={() => setRainTick((t) => t + 1)}>
             Make it rain {nasty ? "eggplants" : "cheese"}
