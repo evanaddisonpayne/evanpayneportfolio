@@ -127,7 +127,7 @@ export async function POST(req: Request) {
               controller.enqueue(encoder.encode(data.delta.text));
               sent = true;
             } else if (data.type === "error") {
-              controller.enqueue(encoder.encode("\n\n(Bram lost his train of thought. Try again in a moment.)"));
+              controller.enqueue(encoder.encode("\n\n(Bram lost the thread. Try again in a moment.)"));
               sent = true;
             }
           } catch {
