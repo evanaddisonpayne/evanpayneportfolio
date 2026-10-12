@@ -682,6 +682,16 @@ const NASTY_OFFENCES = [
   "Brought the whole club home with them",
   "Clogged the toilet after FEBO",
   "Smelled like the Bulldog Boat for 48 hours",
+  "Farted the entire length of the A'DAM Lookout elevator",
+  "Pissed in the sink and called it 'the Dutch way'",
+  "Was loudly horny about a stroopwafel",
+  "Snored, sweated and drooled, in that order, on my side of the room",
+  "Shat for forty minutes and refused to light a match",
+  "Answered the door in a towel, then dropped the towel (room service has filed a report)",
+  "Gave an unsolicited 3 am ranking of everyone we saw in the Red Light District",
+  "Left a mystery stain on the nice duvet and blamed the Wi-Fi",
+  "Drunk-texted an ex from the Sir Adam swing",
+  "Called the minibar 'a lifestyle' and drank all of it",
 ];
 const RULINGS = [
   "Buys the next round of bitterballen.",
@@ -692,6 +702,16 @@ const RULINGS = [
   "Sits on the open deck of the next canal cruise.",
   "Pays for the oliebollen run. All of it.",
   "Writes a formal apology in Dutch. Proost.",
+];
+const NASTY_RULINGS = [
+  "Sleeps in the bathtub. Dignity optional.",
+  "Must publicly apologise to the next stranger they offend, with a bow.",
+  "Does the walk of shame down Damrak, carrying everyone's shoes.",
+  "Buys the room's hangover breakfast and eats it last.",
+  "Banned from speaking until they've apologised in rhyme.",
+  "Smells the offending sock. Out loud. With feeling.",
+  "Pays a fine of one (1) emotional compliment to the person they wronged.",
+  "Court-ordered cold shower. Duration: until the room says stop.",
 ];
 
 function caseNo() {
@@ -779,7 +799,7 @@ export function Complaints({ me, nasty = false }: { me: Person | null; nasty?: b
         <button
           className="btn btn-dark"
           disabled={!ready}
-          onClick={() => setNotice({ no: caseNo(), ruling: RULINGS[Math.floor(Math.random() * RULINGS.length)] })}
+          onClick={() => setNotice({ no: caseNo(), ruling: (nasty ? [...RULINGS, ...NASTY_RULINGS, ...NASTY_RULINGS] : RULINGS)[Math.floor(Math.random() * (nasty ? RULINGS.length + 2 * NASTY_RULINGS.length : RULINGS.length))] })}
         >
           {notice ? "Re-sentence" : "File complaint"}
         </button>
