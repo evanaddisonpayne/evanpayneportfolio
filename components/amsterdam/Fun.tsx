@@ -24,7 +24,7 @@ const REGULIERS: LatLng = [52.3662, 4.8932];
 const GEO: Record<string, LatLng> = {
   "Train → Centraal → free ferry to Noord": CENTRAAL,
   "Lunch at The Butcher Social Club": TOWER,
-  "Nap, or a river walk to EYE": [52.3858, 4.8965],
+  "Check in, then a quick reset": TOWER,
   "Dinner at Hotel de Goudfazant": [52.3868, 4.9232],
   "One nightcap at the hotel, then bed": TOWER,
   "Ferry + train to Zaanse Schans": CENTRAAL,

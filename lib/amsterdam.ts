@@ -193,7 +193,7 @@ export const days: Day[] = [
     title: "Land, nap, Noord",
     mood: "Jet-lag day",
     intro:
-      "Everyone lands after an overnight flight and the room may not be ready until the afternoon. Keep it light and stay in Noord. Don't start the I amsterdam card today; tap a contactless card on transport instead.",
+      "Everyone lands after an overnight flight and the room may not be ready until the afternoon. Keep it light and stay in Noord. Collect your I amsterdam cards at the store by Centraal on the way in, but don't scan them until the Lookout this afternoon: that first scan starts the 4-day clock.",
     stops: [
       {
         time: "10:40 am",
@@ -222,8 +222,10 @@ export const days: Day[] = [
         where: "Amsterdam Centraal",
         why: "The train is about 15–20 minutes. The I amsterdam card does not cover it, so tap in and out with a contactless card or phone.",
         tips: [
-          "Walk out the back of Centraal (the IJ side) for the free ferry to Buiksloterweg.",
-          "Drop bags at Sir Adam and ask about early check-in.",
+          "Pick up your I amsterdam cards at the i amsterdam Store, De Ruijterkade 28 B–D, on the IJ side of Centraal. Open Mon–Fri 10:00–19:00. Bring the booking confirmation and ID.",
+          "Ask staff to confirm the card won't start until the first scan. Do NOT scan it at the counter, or the 4-day clock ends too early on Saturday.",
+          "Then walk out the back of Centraal for the free ferry to Buiksloterweg.",
+          "Drop bags at Sir Adam. There's no front desk (lockbox check-in), and check-in opens at 3:00 pm.",
         ],
       },
       {
@@ -239,11 +241,23 @@ export const days: Day[] = [
       {
         time: "3:00 pm",
         start: "15:00",
-        title: "Nap, or a river walk to EYE",
+        title: "Check in, then a quick reset",
         price: "free",
         where: "EYE Filmmuseum, Amsterdam",
-        why: "Sleep until about 5, or walk 10 minutes west along the IJ to the EYE Film Museum. The lobby is free and has the best river view in Noord. Sunset is around 4:40.",
+        why: "Check-in opens at 3:00. Dump bags, wash your face, then head up the tower. If someone is truly dead, they can nap and skip the Lookout; it still works Thursday on the same card.",
         vibes: ["chill"],
+      },
+      {
+        time: "3:45 pm",
+        start: "15:45",
+        title: "Sunset at A'DAM Lookout",
+        price: "card",
+        where: "A'DAM Lookout, Overhoeksplein 5",
+        map: "A'DAM Lookout Amsterdam",
+        why: "It's on top of your hotel's tower, so there's no travel on a jet-lag day. This is the first scan of your card, so the 4-day clock starts here. Sunset is around 4:40, with the swing out over the edge for whoever is brave enough.",
+        vibes: ["culture"],
+        card: "Included (normally €18.50). The Over the Edge swing is extra.",
+        tips: ["Open daily 10:00–22:00.", "Scan the card at the Lookout, not before. 4 days from about 4 pm Tuesday runs to about 4 pm Saturday."],
       },
       {
         time: "7:00 pm",
@@ -276,7 +290,7 @@ export const days: Day[] = [
     num: "25",
     title: "Windmills, Boerejongens, Van Kerkwijk",
     mood: "Classic Amsterdam",
-    cardDay: "Start your I amsterdam card here. A 4-day card started Wednesday morning runs to Sunday morning and covers everything through Saturday night.",
+    cardDay: "Your card is already running from the Lookout on Tuesday afternoon. A 4-day card runs until about 4 pm Saturday.",
     intro:
       "Use the early jet-lag wake-up for the windmills. Then a proper coffeeshop sit-down, the must-eat dinner on the Nes, and a brown-café crawl. The Light Festival isn't on yet tonight.",
     stops: [
@@ -299,7 +313,7 @@ export const days: Day[] = [
         vibes: ["culture"],
         must: true,
         card: "Card covers the Zaans Museum + Verkade Experience, the Mill Museum and windmills, and the Time Museum.",
-        tips: ["Some windmills and workshops close in winter.", "Activate the card at your first entry here."],
+        tips: ["Some windmills and workshops close in winter.", "Your card is already active from Tuesday. Just tap it at entry."],
       },
       {
         time: "12:30 pm",
@@ -385,7 +399,7 @@ export const days: Day[] = [
     title: "Thanksgiving + Light Festival opening",
     mood: "The big group night",
     intro:
-      "The Amsterdam Light Festival switches on for the first time tonight. The day builds toward it: an easy morning, then the Rijksmuseum or a brewery depending on who you are, sunset from the top of your own tower, the lights cruise, then a long dinner.",
+      "The Amsterdam Light Festival switches on for the first time tonight. The day builds toward it: an easy morning, then the Rijksmuseum or a brewery depending on who you are, a rest, the lights cruise, then a long dinner. (The Lookout moved to Tuesday.)",
     stops: [
       {
         time: "10:30 am",
@@ -421,19 +435,8 @@ export const days: Day[] = [
         why: "The beer option, at the same time as the museums. It's Amsterdam's best-known local brewery, in a tasting room at the foot of the De Gooyer windmill in Oost. Order at the bar, get a few house beers and some sausage. Split up here if half the group wants art and half wants beer.",
         vibes: ["pub", "local"],
         optional: true,
-        tips: ["Open daily 10:00–22:00.", "Tram toward Centraal, then the ferry back to Noord, takes about 30 minutes. Leave by 3:30 for the Lookout."],
+        tips: ["Open daily 10:00–22:00.", "Tram toward Centraal, then the ferry back to Noord, takes about 30 minutes. Be back in Noord by 5:00 for the cruise."],
         link: { href: "https://brouwerijhetij.nl/en/tasting-rooms/proeflokaal-de-molen", label: "brouwerijhetij.nl" },
-      },
-      {
-        time: "4:00 pm",
-        start: "16:00",
-        title: "Sunset at A'DAM Lookout",
-        price: "card",
-        where: "A'DAM Lookout, Overhoeksplein 5",
-        map: "A'DAM Lookout Amsterdam",
-        why: "It's on top of your hotel's tower. Catch the sunset around 4:35 from the roof, with the swing out over the edge for whoever is brave enough.",
-        vibes: ["culture"],
-        card: "Included (normally €18.50).",
       },
       {
         time: "5:30 pm",
@@ -448,7 +451,7 @@ export const days: Day[] = [
         must: true,
         book: "Book now: 4 people, around 5:30 pm",
         link: { href: "https://www.iamsterdam.com/en/whats-on/calendar/festivals/events/amsterdam-light-festival", label: "Festival info" },
-        tips: ["One cruise option departs from the A'DAM Tower itself, so you can go straight from the Lookout to the boat."],
+        tips: ["One cruise option departs from the A'DAM Tower itself, so you can walk straight from the hotel to the boat."],
       },
       {
         time: "7:45 pm",
@@ -484,7 +487,7 @@ export const days: Day[] = [
         optional: true,
       },
     ],
-    rain: "Rain doesn't change much: the Lookout is indoors, the cruise boat is covered, and the museums are indoors.",
+    rain: "Rain doesn't change much: the cruise boat is covered and the museums are indoors.",
   },
   {
     id: "fri",
@@ -836,7 +839,7 @@ export const iamsterdam = {
     "The IJ ferries, which are free for everyone anyway",
   ],
   activation:
-    "The card starts on first use. Start it Wednesday morning: a 4-day card then runs until Sunday morning and covers every card stop in this plan.",
+    "The card starts on its first scan. Pick the cards up at the i amsterdam Store by Centraal on Tuesday, then scan first at the A'DAM Lookout (about 3:45 pm). A 4-day card then runs until about 4 pm Saturday, which covers every card stop in this plan (Our Lord in the Attic is at 1:30 pm Saturday). Trams after that need a contactless tap.",
   source: { href: "https://www.amsterdamtips.com/iamsterdam-city-card", label: "AmsterdamTips, updated Jan 2026" },
 };
 
@@ -859,7 +862,7 @@ export const checklist: { group: string; items: CheckItem[] }[] = [
       { id: "bulldog", label: "Bulldog Boat · Fri Nov 27, 8:30 pm · 4 people", when: "2w" },
       { id: "shelter", label: "Shelter tickets for Fri Nov 27 once the lineup posts", when: "2w" },
       { id: "kerkwijk", label: "Call Van Kerkwijk (020 620 3316): will they hold a table for 4 on Wed Nov 25?", when: "2w" },
-      { id: "card", label: "I amsterdam cards loaded in the app (4-day, start Wednesday)", when: "2w" },
+      { id: "card", label: "I amsterdam cards bought (4-day). Pick up Tue at the Centraal store; first scan at the Lookout", when: "2w" },
       { id: "mpc", label: "Zak & Tyler: set up Mobile Passport Control for the Atlanta connection", when: "2w" },
       { id: "passport", label: "Passports valid 3+ months past Nov 30; check ETIAS status for your dates", when: "2w" },
     ],
