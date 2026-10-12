@@ -692,6 +692,18 @@ const NASTY_OFFENCES = [
   "Left a mystery stain on the nice duvet and blamed the Wi-Fi",
   "Drunk-texted an ex from the Sir Adam swing",
   "Called the minibar 'a lifestyle' and drank all of it",
+  "Shat so hard the hotel's Wi-Fi dropped",
+  "Wiped their ass with MY towel and called it 'a mix-up'",
+  "Crop-dusted the whole room, then opened a window like that fixes it",
+  "Puked in the bathroom, missed, then slept through the cleanup",
+  "Wore the same boxers for four days and expected applause",
+  "Moaned in their sleep about a bitterbal. We heard everything",
+  "Hit on a bartender, a bouncer AND a tram driver, in that order",
+  "Stumbled in at 5 am reeking of jenever and poor choices",
+  "Cried at the Rijksmuseum, then cried harder at the FEBO",
+  "Left the bathroom door open, which no one asked for ever",
+  "Called me a 'filthy little canal rat' and I have never felt so seen",
+  "Brought back a stranger's bike and a stranger's shoe. Neither is theirs",
 ];
 const RULINGS = [
   "Buys the next round of bitterballen.",
@@ -712,6 +724,14 @@ const NASTY_RULINGS = [
   "Smells the offending sock. Out loud. With feeling.",
   "Pays a fine of one (1) emotional compliment to the person they wronged.",
   "Court-ordered cold shower. Duration: until the room says stop.",
+  "Must eat a FEBO kroket plain, no sauce, no water, no excuses.",
+  "Becomes the group's designated drunk-text proofreader for the night.",
+  "Sleeps in the hallway outside the room, in the sacred pose of shame.",
+  "Must introduce themselves as 'the one who ruined it' to every bartender tonight.",
+  "Clean up their own mess, with gloves, while the room watches and judges.",
+  "Banned from the good bed, the good pillow and the good mood until further notice.",
+  "Walks into the next bar and announces their crime to everyone, in Dutch.",
+  "Gets roasted by all three others, one full minute each, no mercy.",
 ];
 
 function caseNo() {
