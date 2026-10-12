@@ -712,6 +712,18 @@ const NASTY_OFFENCES = [
   "Fell asleep in a bush outside the hotel. Security waved",
   "Said 'I'm not drunk' while wearing someone else's pants",
   "Ordered the same shot six times and called it a personality",
+  "Spent forty minutes 'getting ready' in the bathroom and refused to say what was getting ready",
+  "Told the Red Light District window ladies 'I'm just here for the architecture' while visibly not",
+  "Left a suspicious number of tissues, 'allergies' he says, in a city with no pollen",
+  "Moaned 'oh yeah, right there' at the Rijksmuseum guide who only said 'the Night Watch is this way'",
+  "Rated the hotel swing 'good for two, bad for one, scandalous for three'",
+  "Said 'size matters' about a bitterbal and wouldn't elaborate",
+  "Fell in love with a bartender's forearms and wrote them a poem on a coaster",
+  "Tried to 'rent' a bike by the hour and asked how the rates scale",
+  "Walked past a certain shop window, then walked back, then walked past it again",
+  "Claimed to be 'purely there for the stroopwafel' and blushed at the word 'warm'",
+  "Called the A'DAM Lookout swing 'a good time' four separate times, with eye contact",
+  "Asked the guide at the sex museum whether there was a student discount. We were not there for the museum",
   "Had a toothbrush that has seen things. Used mine anyway",
   "Called the sauna 'a fart tent' and proved it",
 ];
@@ -748,6 +760,11 @@ const NASTY_RULINGS = [
   "Is hereby declared 'the Dutch Smell' and addressed as such until Sunday.",
   "Pays everyone's tram fare in coins, counted slowly, out loud.",
   "Must do a full catwalk down the next canal bridge, scoring cards held up by the room.",
+  "Reads their own most embarrassing text aloud, with feeling and a Dutch accent.",
+  "Has to flirt with the next statue they see. Full commitment, two minutes.",
+  "Must wink at every bartender tonight and accept whatever happens.",
+  "Writes a love poem to a FEBO vending hatch. Reads it at the next bar.",
+  "Takes one (1) shot per innuendo they've made all trip. The room keeps count.",
 ];
 
 function caseNo() {
