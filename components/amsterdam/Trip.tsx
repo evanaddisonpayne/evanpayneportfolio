@@ -23,7 +23,6 @@ import {
   type Vibe,
 } from "@/lib/amsterdam";
 import { AlterEgos, BadDecisions, Bingo, Complaints, GezelligRain, RoastBooth, ShelterMode, Services, TripMap, Windmill, Windows } from "./Fun";
-import Chat from "./Chat";
 
 const TZ = "Europe/Amsterdam";
 const ME_KEY = "ams26-me";
@@ -814,7 +813,6 @@ export default function Trip() {
           </p>
         </div>
       </footer>
-      <Chat me={me} nasty={nasty} />
       <GezelligRain nasty={nasty} trigger={rainTick} />
       <ShelterMode nasty={nasty} trigger={shelterTick} />
     </div>
