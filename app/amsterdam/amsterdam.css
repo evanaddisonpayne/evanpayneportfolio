@@ -456,3 +456,24 @@
 .ams-shelter-hint { position: absolute; bottom: 24px; margin: 0; font-size: 12px; color: #fff; opacity: .7; text-align: center; padding: 0 16px; }
 @keyframes ams-strobe { 0% { filter: brightness(1.5); } 12% { filter: brightness(.7); } 100% { filter: brightness(.7); } }
 @keyframes ams-pulse { from { transform: scale(.3); opacity: 1; } to { transform: scale(7); opacity: 0; } }
+
+/* ---- Packing list ---- */
+.ams-pack-weather { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--antique); border: 1px solid var(--antique); }
+.ams-pack-weather div { background: var(--oxblood); padding: 14px 16px; display: grid; gap: 4px; }
+.ams-pack-weather span { font-family: var(--caps); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--brass); }
+.ams-pack-weather strong { font-weight: 500; font-size: 15px; line-height: 1.35; }
+.ams-pack-note { margin: 16px 0 22px; max-width: 62ch; color: var(--smoke); font-size: 14px; line-height: 1.5; }
+.ams-pack-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 22px 0 8px; }
+.ams-pack-bar p { margin: 0; font-size: 14px; color: var(--smoke); }
+.ams-pack-bar button { font-family: var(--caps); letter-spacing: .12em; text-transform: uppercase; font-size: 12px; padding: 8px 12px; border: 1px solid var(--antique); color: var(--ivory); }
+.ams-pack-bar button[aria-pressed="true"] { background: var(--brass); color: var(--oxblood); border-color: var(--brass); }
+.ams-pack-meter { flex: 1 1 160px; height: 8px; background: color-mix(in srgb, var(--ivory) 14%, transparent); }
+.ams-pack-meter span { display: block; height: 100%; background: var(--signal); transition: width .25s; }
+.ams-pack-grid { display: grid; gap: 36px; margin-top: 20px; }
+@media (min-width: 900px) { .ams-pack-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 64px; } }
+.ams-pack-sec .ams-check-group { color: var(--brass); }
+.ams-pack-sec .ams-checks label { border-bottom-color: color-mix(in srgb, var(--ivory) 18%, transparent); }
+.ams-pack-sec .ams-checks input { border-color: var(--ivory); }
+.ams-pack-sec .ams-checks label.is-done span { text-decoration-color: var(--signal); }
+.ams-pack-qty { color: var(--signal); font-weight: 700; margin-right: 2px; }
+.ams-pack-why { display: block; margin-top: 3px; font-style: normal; font-size: 13px; color: var(--smoke); }

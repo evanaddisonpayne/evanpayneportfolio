@@ -871,7 +871,7 @@ export const checklist: { group: string; items: CheckItem[] }[] = [
     group: "One week out",
     items: [
       { id: "timeslots", label: "Book Rijksmuseum timeslots for Thu Nov 26, 1 pm, in the I amsterdam app", when: "1w" },
-      { id: "weather", label: "Check the forecast. Pack a waterproof shell, warm layers and cobblestone-proof shoes", when: "1w" },
+      { id: "weather", label: "Check the forecast, then pack using the packing list below", when: "1w" },
       { id: "apps", label: "Apps: NS, GVB, 9292, I amsterdam, Light Festival, Sixt", when: "1w" },
       { id: "bank", label: "Tell your bank you're traveling. One Visa/Mastercard + a little euro cash", when: "1w" },
     ],

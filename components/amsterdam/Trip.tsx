@@ -22,7 +22,8 @@ import {
   type Stop,
   type Vibe,
 } from "@/lib/amsterdam";
-import { AlterEgos, BadDecisions, Bingo, Complaints, GezelligRain, RoastBooth, ShelterMode, Services, TripMap, Windmill, Windows } from "./Fun";
+import Packing from "./Packing";
+import { AlterEgos, BadDecisions, Complaints, GezelligRain, RoastBooth, ShelterMode, TripMap, Windmill } from "./Fun";
 
 const TZ = "Europe/Amsterdam";
 const ME_KEY = "ams26-me";
@@ -607,25 +608,6 @@ export default function Trip() {
         </div>
       </section>
 
-      {/* ---------- RED LIGHT WINDOWS ---------- */}
-      <section className="section dark ams-windows-sec">
-        <div className="wrap">
-          <div className="section-head">
-            <p className="eyebrow">Now appearing in the windows</p>
-            <h2 className="h2">
-              The Red Light District, <span className="italic">but it&apos;s just us.</span>
-            </h2>
-            <p className="lede">The only windows in De Wallen you&apos;re allowed to photograph. Tap a curtain.</p>
-          </div>
-          <Windows me={me} nasty={nasty} />
-          <div className="ams-services-head">
-            <p className="eyebrow">The menu</p>
-            <h3 className="h3">Services available. Prices non-negotiable.</h3>
-          </div>
-          <Services nasty={nasty} />
-        </div>
-      </section>
-
       {/* ---------- COMPLAINTS ---------- */}
       <section className="section orange ams-complaint-sec">
         <div className="wrap">
@@ -677,6 +659,20 @@ export default function Trip() {
         </div>
       </section>
 
+      {/* ---------- PACKING ---------- */}
+      <section className="section dark ams-pack-sec" id="packing">
+        <div className="wrap">
+          <div className="section-head">
+            <p className="eyebrow">Pack like you mean it</p>
+            <h2 className="h2">
+              Four guys, <span className="italic">no laundry.</span>
+            </h2>
+            <p className="lede">Late-November Amsterdam is cold, damp and cobbled. Pick your name for your own list, with quantities for your trip length. Your ticks save on this device.</p>
+          </div>
+          <Packing me={me} />
+        </div>
+      </section>
+
       {/* ---------- PHRASES ---------- */}
       <section className="section orange ams-phrase-sec">
         <div className="wrap">
@@ -702,20 +698,6 @@ export default function Trip() {
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      {/* ---------- BINGO ---------- */}
-      <section className="section light ams-bingo-sec">
-        <div className="wrap">
-          <div className="split-head">
-            <div>
-              <p className="eyebrow">Trip bingo</p>
-              <h2 className="h2">Things that will absolutely happen.</h2>
-            </div>
-            <p className="lede">Tap a square when it happens. First to a line buys the next round of bitterballen.</p>
-          </div>
-          <Bingo />
         </div>
       </section>
 
