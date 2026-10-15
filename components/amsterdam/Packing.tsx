@@ -49,7 +49,6 @@ const GROUPS: Group[] = [
       { id: "shoes2", label: "A second pair of shoes", qty: () => 1, note: "So one pair can dry. Clean sneakers cover the nicer dinners too." },
       { id: "hat", label: "Beanie, scarf and thin gloves", note: "Cheap, light, and the difference between enjoying the cruise and surviving it." },
       { id: "nice", label: "One nicer outfit for Thanksgiving dinner and a table at Goudfazant", qty: () => 1, note: "Smart casual: dark jeans or chinos and a good sweater or collared shirt." },
-      { id: "sleep", label: "Sleepwear", qty: () => 1 },
     ],
   },
   {
