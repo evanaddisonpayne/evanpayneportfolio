@@ -76,7 +76,7 @@ const GROUPS: Group[] = [
   {
     group: "Night out",
     items: [
-      { id: "night", label: "A dark outfit for Shelter and the Saturday bars", qty: () => 1, note: "Shelter is a basement club, but you'll walk there in the cold. It has a coat check." },
+      { id: "night", label: "A dark outfit for Shelter and the Saturday bars", qty: () => 1, note: "Shelter is a basement club, but you'll walk there in the cold. Keep the jacket handy." },
       { id: "smoke", label: "Leave all cannabis behind before you leave the Netherlands", note: "Don't fly with any, including to Iceland or the US. Finish it or leave it in Amsterdam. Smoke at the coffeeshop or on the Bulldog boat, and check the hotel's rules before lighting anything in the room." },
       { id: "water", label: "Reusable water bottle", note: "Water between rounds is how you do the Saturday plan on Sunday." },
     ],
