@@ -386,6 +386,52 @@
 .ams-map-label, .ams-map-quip { paint-order: stroke; stroke: color-mix(in srgb, var(--ivory) 88%, var(--brass)); stroke-width: 6px; stroke-linejoin: round; }
 .ams-map-water { stroke: color-mix(in srgb, var(--brass) 26%, var(--ivory)); }
 
+/* ==========================================================================
+   Nasty Mode + complaints
+   ========================================================================== */
+.ams.is-nasty { --signal: #b866f2; }
+.ams-nasty-bar { position: sticky; top: 0; z-index: 70; width: 100%; padding: 10px 16px; background: #5b1d8a; color: #fff; font-family: var(--caps); font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; text-align: center; }
+.ams-toast { position: fixed; left: 50%; top: 24px; transform: translateX(-50%); z-index: 80; padding: 12px 20px; background: var(--oxblood); color: var(--ivory); border: 2px solid var(--signal); font-size: 15px; box-shadow: 0 10px 30px rgba(0,0,0,.35); animation: ams-in .25s ease-out both; }
+.ams-stamp { cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+.ams-stamp.is-tapped { animation: ams-wiggle .25s ease-in-out; }
+@keyframes ams-wiggle { 0%, 100% { transform: rotate(-9deg); } 33% { transform: rotate(-13deg); } 66% { transform: rotate(-5deg); } }
+@media (prefers-reduced-motion: reduce) { .ams-stamp.is-tapped { animation: none; } }
+
+.ams-pin-hit { fill: transparent !important; stroke: none !important; }
+.ams-pin-egg { pointer-events: none; }
+.ams-pin-badge { fill: var(--oxblood) !important; stroke: var(--ivory) !important; stroke-width: 2 !important; }
+.ams-pin-badge-n { fill: var(--ivory); font-size: 13px; font-weight: 500; pointer-events: none; }
+.ams-pin.is-mine .ams-pin-badge { fill: var(--signal) !important; }
+
+/* complaints */
+.ams-complaints { display: grid; gap: 32px; align-items: start; }
+@media (min-width: 1024px) { .ams-complaints { grid-template-columns: minmax(0, 1fr) 400px; gap: 56px; } }
+.ams-complaint-form { display: grid; gap: 22px; }
+.ams-cf-label { font-family: var(--caps); font-weight: 700; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 8px; }
+.ams-cf-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.orange .ams-chip { border-color: var(--oxblood); background: color-mix(in srgb, var(--ivory) 18%, transparent); }
+.orange .ams-chip[aria-pressed="true"] { background: var(--oxblood); color: var(--ivory); }
+.ams-chip-nasty { border-style: dashed !important; }
+.ams-complaint-form .btn { justify-self: start; }
+.ams-complaint-form .btn:disabled { opacity: .45; cursor: default; }
+.ams-notice { position: relative; min-height: 280px; background: var(--ivory); color: var(--oxblood); padding: 28px 26px; border: 1.2px solid var(--oxblood); box-shadow: 8px 8px 0 var(--oxblood); overflow: hidden; }
+.ams-notice::after { content: ""; position: absolute; inset: 6px; border: .6px solid color-mix(in srgb, var(--oxblood) 45%, transparent); pointer-events: none; }
+.ams-notice-empty { color: var(--antique); font-style: italic; }
+.ams-notice-office { font-family: var(--caps); font-weight: 700; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--antique); }
+.ams-notice-title { font-family: var(--display); font-size: 34px; line-height: 1.1; margin-top: 6px; }
+.ams-notice-case { font-family: var(--caps); font-size: 13px; letter-spacing: .12em; margin-top: 4px; }
+.ams-notice dl { display: grid; gap: 10px; margin: 18px 0 0; }
+.ams-notice dl > div { display: grid; grid-template-columns: 96px 1fr; gap: 10px; }
+.ams-notice dt { font-family: var(--caps); font-weight: 700; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--antique); padding-top: 3px; }
+.ams-notice dd { margin: 0; font-size: 15px; }
+.ams-notice dd ul { display: grid; gap: 3px; }
+.ams-notice dd li::before { content: "§ "; color: var(--antique); }
+.ams-notice-ruling { font-family: var(--display); font-style: italic; font-size: 18px !important; }
+.ams-notice-fine { margin-top: 16px; font-size: 12px; color: var(--antique); }
+.ams-notice-stamp { position: absolute; right: 16px; bottom: 92px; z-index: 2; padding: 6px 14px; border: 3px solid #c8102e; color: #c8102e; font-family: var(--caps); font-weight: 700; font-size: 22px; letter-spacing: .2em; text-transform: uppercase; transform: rotate(12deg); opacity: .85; animation: ams-stamp-in .4s cubic-bezier(.2, 1.4, .4, 1) both; }
+.ams-notice-share { margin-top: 18px; position: relative; z-index: 1; }
+@media (prefers-reduced-motion: reduce) { .ams-notice-stamp { animation: none; } }
+
 /* ---------- the weird part ---------- */
 .ams-windmill-wrap { display: grid; gap: 28px; align-items: center; }
 @media (min-width: 900px) { .ams-windmill-wrap { grid-template-columns: 320px minmax(0, 1fr); gap: 64px; } }
