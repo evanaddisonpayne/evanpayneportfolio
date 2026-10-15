@@ -399,7 +399,7 @@ export const days: Day[] = [
     title: "Thanksgiving + Light Festival opening",
     mood: "The big group night",
     intro:
-      "The Amsterdam Light Festival switches on for the first time tonight. The day builds toward it: an easy morning, then the Rijksmuseum or a brewery depending on who you are, a rest, the lights cruise, then a long dinner. (The Lookout moved to Tuesday.)",
+      "The Amsterdam Light Festival switches on for the first time tonight. The day builds toward it: an easy morning, then the Rijksmuseum or a brewery depending on who you are, a rest, the lights cruise, then a long dinner.",
     stops: [
       {
         time: "10:30 am",
