@@ -18,8 +18,9 @@ export default function Nav() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  // The private /amsterdam trip page has its own chrome and isn't part of the portfolio.
-  if (pathname === "/amsterdam" || pathname.startsWith("/amsterdam/")) return null;
+  // The private trip pages have their own chrome and aren't part of the portfolio.
+  const isTrip = (base: string) => pathname === base || pathname.startsWith(base + "/");
+  if (isTrip("/amsterdam") || isTrip("/christmas2026")) return null;
 
   const brand = (
     <Link href="/" className="brand" aria-label={`${site.name}, home`}>
