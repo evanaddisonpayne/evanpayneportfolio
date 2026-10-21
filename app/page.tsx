@@ -79,8 +79,8 @@ export default function Home() {
                 <q>You’re not under-marketing. You’re under-differentiating.</q>
                 <figcaption>
                   <span className="ey-in">
-                    <span className="ey-seg"><span className="ey-sep" aria-hidden>{"   ·   "}</span>From issue (I)</span>
-                    <span className="ey-seg"><span className="ey-sep" aria-hidden>{"   ·   "}</span>You all sound the same. It’s costing millions.</span>
+                    <span className="ey-seg"><span className="ey-sep" aria-hidden>{"   ·   "}</span><span className="ey-txt">From issue (I)</span></span>
+                    <span className="ey-seg"><span className="ey-sep" aria-hidden>{"   ·   "}</span><span className="ey-txt">You all sound the same. It’s costing millions.</span></span>
                   </span>
                 </figcaption>
               </span>

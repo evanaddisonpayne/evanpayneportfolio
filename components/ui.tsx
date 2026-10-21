@@ -18,7 +18,7 @@ export function Eyebrow({ children, as: Tag = "p", className = "" }: { children:
             <span className="ey-sep" aria-hidden>
               {"   ·   "}
             </span>
-            {p}
+            <span className="ey-txt">{p}</span>
           </span>
         ))}
       </span>
@@ -88,7 +88,16 @@ export function CaseCard({ c, featured = false }: { c: Case; featured?: boolean 
           <div className="cc-meta">
             <p className="cc-label">
               <span className="cc-num">({c.n})</span>
-              <span className="cc-client">{c.client.replace(/\s+·\s+/g, "   ·   ")}</span>
+              <span className="cc-client">
+                <span className="ey-in">
+                  {c.client.split(/\s+·\s+/).map((part, i) => (
+                    <span className="ey-seg" key={i}>
+                      <span className="ey-sep" aria-hidden>{"   ·   "}</span>
+                      <span className="ey-txt">{part}</span>
+                    </span>
+                  ))}
+                </span>
+              </span>
             </p>
             {c.tag && <span className="cc-tag">{c.tag}</span>}
           </div>

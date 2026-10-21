@@ -229,7 +229,7 @@ export const cases: Case[] = [
     client: "Intercut Productions",
     tag: "Campaigns & content",
     category: "campaigns",
-    cardTitle: "Turning Fortune 500 initiatives into stories worth watching.",
+    cardTitle: "Turning Fortune 500 initiatives into stories worth\u00a0watching.",
     cardLine: "As Chief of Staff I ran the accounts and steered the creative behind Fortune 500 brand stories.",
     chips: ["Fortune 500 clients", "Emmy-nominated show"],
     art: "/art/art_intercut.webp",

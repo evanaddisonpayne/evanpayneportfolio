@@ -7,151 +7,122 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&display=swap">
 <style>
-/* Layout: one dark band, globe left as the hero object, a narrow index of countries and routes on the right. Stacks on phones. */
+/* Figma "Globe panel · live component": globe stage left (square), index right. Stacks below 1024. */
 :root {
   color-scheme: dark;
-  --oxblood: #2B0B10;
-  --deep: #1F070B;
-  --ground: #240910;
-  --ivory: #F2E8D5;
-  --brass: #C49A4A;
-  --antique: #735420;
-  --smoke: #A88E86;
-  --signal: #FF5B1F;
-  --rule: rgba(196, 154, 74, 0.28);
+  --oxblood: #2B0B10; --deep: #1F070B; --ground: #240910; --ivory: #F2E8D5; --brass: #C49A4A;
+  --antique: #735420; --smoke: #A88E86; --signal: #FF5B1F; --rule: rgba(196, 154, 74, 0.28);
   --display: "Fraunces", "Iowan Old Style", Georgia, serif;
   --smallcaps: "Cormorant SC", "Cormorant Garamond", Georgia, serif;
   --body: "DM Sans", "Helvetica Neue", Arial, sans-serif;
 }
 * { box-sizing: border-box; }
-html, body { background: var(--oxblood); color: var(--ivory); }
-body { font-family: var(--body); font-size: 16px; line-height: 1.55; padding-inline: 16px; padding-block: 0; }
+html, body { margin: 0; background: transparent; color: var(--ivory); }
+body { font-family: var(--body); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+p, h2, h3 { margin: 0; }
 
-.wib { max-width: 1240px; margin: 0 auto; padding-block: clamp(56px, 8vw, 104px); display: grid; gap: clamp(28px, 4vw, 44px); }
+.panel { position: relative; display: flex; background: var(--oxblood); border: 1.2px solid rgba(196, 154, 74, 0.55); overflow: hidden; }
+.panel::after { content: ""; position: absolute; inset: 4.8px; border: 0.6px solid rgba(196, 154, 74, 0.22); pointer-events: none; z-index: 4; }
 
-.eyebrow { font-family: var(--smallcaps); font-weight: 500; font-size: 18px; letter-spacing: 0.14em; color: var(--brass); text-transform: uppercase; margin: 0 0 14px; }
-.head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 24px 64px; align-items: end; }
-.head h2 { font-family: var(--display); font-weight: 300; font-size: clamp(34px, 4.4vw, 52px); line-height: 1.08; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
-.head p { margin: 0; color: var(--smoke); font-size: 16px; max-width: 46ch; }
-
-.stage { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: clamp(24px, 3vw, 48px); align-items: start; }
-
-/* Globe */
-.globe { position: sticky; top: max(24px, env(safe-area-inset-top, 0px)); border: 1px solid var(--rule); background: var(--ground); }
-.globe::after { content: ""; position: absolute; inset: 6px; border: 0.6px solid rgba(196,154,74,0.18); pointer-events: none; }
-.canvas-wrap { position: relative; aspect-ratio: 1 / 1; max-width: 100%; }
-canvas { display: block; width: 100%; height: 100%; cursor: grab; touch-action: pan-y; outline: none; }
+/* stage: square, half the panel; its controls scale with it (drawn on a 600 grid) */
+.stage { position: relative; flex: 0 0 49.67%; aspect-ratio: 1 / 1; background: var(--ground); overflow: hidden; container-type: inline-size; --u: calc(100cqw / 600); }
+canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; cursor: grab; touch-action: pan-y; outline: none; }
 canvas.dragging { cursor: grabbing; }
 canvas:focus-visible { box-shadow: inset 0 0 0 2px var(--brass); }
-
-.controls { position: absolute; top: 18px; left: 18px; right: 18px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; z-index: 2; pointer-events: none; }
-.controls > * { pointer-events: auto; }
-.views, .zoom { display: flex; border: 1px solid var(--rule); background: rgba(31, 7, 11, 0.82); backdrop-filter: blur(4px); }
+.views, .zoom { position: absolute; top: calc(20 * var(--u)); display: flex; z-index: 2; border: max(0.7px, calc(1 * var(--u))) solid rgba(196, 154, 74, 0.3); background: rgba(31, 7, 11, 0.85); }
+.views { left: calc(20 * var(--u)); }
+.zoom { left: calc(503 * var(--u)); }
 .views button, .zoom button {
-  font-family: var(--smallcaps); font-weight: 600; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--ivory); background: transparent; border: 0; padding: 8px 14px; cursor: pointer; min-height: 36px;
+  font-family: var(--smallcaps); font-weight: 700; font-size: calc(13 * var(--u)); line-height: normal; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ivory); background: transparent; border: 0; padding: calc(10 * var(--u)) calc(14 * var(--u)); cursor: pointer;
 }
-.views button + button, .zoom button + button { border-left: 1px solid var(--rule); }
+.views button + button, .zoom button + button { border-left: max(0.7px, calc(1 * var(--u))) solid rgba(196, 154, 74, 0.3); }
 .views button[aria-pressed="true"] { color: var(--oxblood); background: var(--brass); }
 .views button:hover:not([aria-pressed="true"]), .zoom button:hover { color: var(--brass); }
-.zoom button { font-family: var(--body); font-size: 18px; letter-spacing: 0; padding: 4px 14px; line-height: 1; }
+.zoom button { font-family: var(--body); font-weight: 500; font-size: calc(16 * var(--u)); letter-spacing: 0; }
 button:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
-
-.legend { position: absolute; left: 18px; bottom: 16px; display: grid; gap: 6px; font-family: var(--smallcaps); font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--smoke); pointer-events: none; z-index: 2; }
-.legend span { display: flex; align-items: center; gap: 10px; }
-.legend i { display: inline-block; width: 26px; flex: none; }
-.k-route { border-top: 1px solid rgba(242,232,213,0.75); }
-.k-rail { border-top: 1px dashed var(--brass); }
-.k-visited { height: 10px; background: rgba(196,154,74,0.34); border: 1px solid var(--brass); }
-.k-home { width: 10px !important; height: 10px; border-radius: 50%; border: 1.5px solid var(--signal); margin-inline: 8px; }
-
-.hint { position: absolute; right: 18px; bottom: 16px; font-size: 12px; color: var(--smoke); z-index: 2; pointer-events: none; text-align: right; }
-.status { position: absolute; inset: auto 18px 56px auto; font-size: 12px; color: var(--smoke); z-index: 2; }
-
+.hint { position: absolute; left: calc(377 * var(--u)); top: calc(564 * var(--u)); font-size: calc(12 * var(--u)); line-height: normal; color: var(--smoke); z-index: 2; pointer-events: none; white-space: pre; }
+.status { position: absolute; right: calc(20 * var(--u)); bottom: calc(56 * var(--u)); font-size: 12px; color: var(--smoke); z-index: 2; }
 .tip { position: absolute; z-index: 3; pointer-events: none; background: var(--deep); border: 1px solid var(--brass); padding: 8px 12px 9px; min-width: 120px; transform: translate(14px, -50%); }
 .tip b { display: block; font-family: var(--display); font-weight: 400; font-size: 17px; line-height: 1.2; }
 .tip small { display: block; font-family: var(--smallcaps); font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brass); margin-top: 2px; }
 
-/* Index */
-.index { display: grid; gap: 34px; min-width: 0; }
-.index h3 { font-family: var(--smallcaps); font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brass); margin: 0 0 10px; display: flex; justify-content: space-between; gap: 12px; }
-.index h3 span { color: var(--smoke); font-variant-numeric: tabular-nums; }
-.region { font-family: var(--smallcaps); font-weight: 500; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--smoke); margin: 16px 0 2px; }
-.list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
-.list li { border-bottom: 1px solid var(--rule); }
-.row { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; align-items: baseline; text-align: left; background: transparent; border: 0; color: var(--ivory); padding: 10px 2px; cursor: pointer; font: inherit; }
-.row .name { font-family: var(--display); font-weight: 300; font-size: 19px; line-height: 1.25; }
-.row .meta { grid-column: 1 / -1; font-size: 13px; color: var(--smoke); line-height: 1.4; }
-.row .tag { font-family: var(--smallcaps); font-weight: 700; font-size: 11px; letter-spacing: 0.14em; color: var(--signal); }
-.row .num { font-family: var(--smallcaps); font-weight: 600; font-size: 13px; letter-spacing: 0.08em; color: var(--brass); font-variant-numeric: tabular-nums; }
-.row:hover .name, .row[aria-pressed="true"] .name { color: var(--brass); }
-.row[aria-pressed="true"] { box-shadow: inset 2px 0 0 var(--signal); padding-left: 12px; }
-
-.home { font-family: var(--smallcaps); font-weight: 600; font-size: 12px; letter-spacing: 0.16em; color: var(--smoke); border-top: 1px solid var(--rule); padding-top: 14px; }
+/* index */
+.index { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 22px; padding: 44px 44px 36px 48px; border-left: 1px solid var(--rule); }
+.eyebrow { font-family: var(--smallcaps); font-weight: 500; font-size: 18px; line-height: normal; letter-spacing: 0.14em; color: var(--brass); text-transform: uppercase; }
+.caption { font-size: 16px; line-height: 1.55; color: var(--smoke); }
+.index h3 { display: flex; justify-content: space-between; font-family: var(--smallcaps); font-weight: 700; font-size: 14px; line-height: normal; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brass); }
+.index h3 span { color: var(--smoke); letter-spacing: 0.08em; }
+#countries { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; background: rgba(196, 154, 74, 0.1); border: 1px solid rgba(196, 154, 74, 0.45); color: var(--ivory); cursor: pointer;
+  font-family: var(--smallcaps); font-weight: 700; font-size: 13px; line-height: normal; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+.chip.home { background: transparent; border-color: rgba(255, 91, 31, 0.9); }
+.chip .tag { font-size: 11px; letter-spacing: 0.14em; color: var(--signal); }
+.chip:hover, .chip[aria-pressed="true"] { border-color: var(--brass); background: rgba(196, 154, 74, 0.28); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 22px; font-family: var(--smallcaps); font-weight: 700; font-size: 12px; line-height: normal; letter-spacing: 0.12em; text-transform: uppercase; color: var(--smoke); }
+.legend span { display: flex; align-items: center; gap: 10px; }
+.legend i { display: inline-block; width: 26px; flex: none; }
+.k-route { border-top: 1px solid rgba(242, 232, 213, 0.75); }
+.k-rail { border-top: 1px dashed var(--brass); }
+.k-visited { height: 10px; background: rgba(196, 154, 74, 0.34); border: 1px solid var(--brass); }
+.k-home { width: 10px !important; height: 10px; border-radius: 50%; border: 1.5px solid var(--signal); }
+.spacer { flex: 1; }
+.home { display: flex; gap: 8px; font-family: var(--smallcaps); font-weight: 700; font-size: 12px; line-height: normal; letter-spacing: 0.16em; color: var(--smoke); border-top: 1px solid var(--rule); padding-top: 14px; white-space: pre; text-transform: uppercase; }
 .home b { color: var(--signal); font-weight: 700; }
+#routes { display: none; }
 
-@media (max-width: 960px) {
-  .globe { position: relative; top: 0; }
-  .stage { grid-template-columns: minmax(0, 1fr); }
-  .head { grid-template-columns: minmax(0, 1fr); }
-  .index { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); column-gap: 32px; }
+@media (max-width: 1279px) {
+  .index { gap: 20px; padding: 35px 35px 29px 38px; }
+  .chip { padding: 6px 10px; }
+  .legend { gap: 15px 20px; }
+  .legend span { gap: 9px; }
+  .home { padding-top: 11px; }
 }
-@media (max-width: 520px) {
-  .controls { top: 10px; left: 10px; right: 10px; }
-  .views button { padding: 6px 9px; font-size: 12px; }
-  .legend { display: none; }
-  .hint { left: 12px; right: 12px; bottom: 10px; text-align: center; }
+/* stacked below 1024: stage keeps the 600 drawing grid, index sits underneath */
+@media (max-width: 1023px) {
+  .panel { flex-direction: column; }
+  .stage { flex: none; width: 100%; aspect-ratio: auto; height: 597.6px; --u: 1px; container-type: normal; }
+  .index { border-left: 0; border-top: 1px solid var(--rule); margin-top: 16px; padding: 31px 31px 26px 35px; min-height: 597.6px; }
+}
+@media (max-width: 767px) {
+  .zoom { left: auto; right: 20px; }
+  .hint { left: auto; right: 20px; }
+  .index { padding: 24px 24px 24px 27px; min-height: 0; }
 }
 </style>
 
-<section class="wib" aria-labelledby="wib-title">
-  <div class="head">
-    <div>
-      <p class="eyebrow">Where I've been</p>
-      <h2 id="wib-title">Every trip, on one globe.</h2>
+<section class="panel" aria-label="Where I've been: travel globe">
+  <div class="stage" id="wrap">
+    <canvas id="globe" tabindex="0" role="img" aria-label="Interactive globe showing the countries Evan has visited and the routes he has booked, centered on Chicago."></canvas>
+    <div class="views" role="group" aria-label="Preset views">
+      <button type="button" id="v-all" data-view="all" aria-pressed="true">Everything</button>
+      <button type="button" id="v-us" data-view="us" aria-pressed="false">U.S.</button>
+      <button type="button" id="v-eu" data-view="eu" aria-pressed="false">Europe</button>
     </div>
-    <p>Flight and train bookings from 2016 to 2026, pulled straight from my inbox. Drag to spin it. Pick a country or a route to fly there.</p>
+    <div class="zoom" role="group" aria-label="Zoom">
+      <button type="button" id="z-out" aria-label="Zoom out">−</button>
+      <button type="button" id="z-in" aria-label="Zoom in">+</button>
+    </div>
+    <div class="hint" id="hint">Drag to spin  ·  Double-click to zoom</div>
+    <div class="status" id="status" hidden></div>
+    <div class="tip" id="tip" hidden></div>
   </div>
 
-  <div class="stage">
-    <div class="globe">
-      <div class="canvas-wrap" id="wrap">
-        <canvas id="globe" tabindex="0" role="img" aria-label="Interactive globe showing the countries Evan has visited and the routes he has booked, centered on Chicago."></canvas>
-        <div class="controls">
-          <div class="views" role="group" aria-label="Preset views">
-            <button type="button" id="v-all" data-view="all" aria-pressed="true">Everything</button>
-            <button type="button" id="v-us" data-view="us" aria-pressed="false">U.S.</button>
-            <button type="button" id="v-eu" data-view="eu" aria-pressed="false">Europe</button>
-          </div>
-          <div class="zoom" role="group" aria-label="Zoom">
-            <button type="button" id="z-out" aria-label="Zoom out">−</button>
-            <button type="button" id="z-in" aria-label="Zoom in">+</button>
-          </div>
-        </div>
-        <div class="legend" aria-hidden="true">
-          <span><i class="k-route"></i>Flight</span>
-          <span><i class="k-rail"></i>Rail</span>
-          <span><i class="k-visited"></i>Been there</span>
-          <span><i class="k-home"></i>Home base</span>
-        </div>
-        <div class="hint" id="hint">Drag to spin · Double-click to zoom</div>
-        <div class="status" id="status" hidden></div>
-        <div class="tip" id="tip" hidden></div>
-      </div>
+  <aside class="index" aria-label="Places">
+    <p class="eyebrow">Where I've been</p>
+    <p class="caption">Flight and train bookings from 2016 to 2026, pulled straight from my inbox. Drag to spin it. Pick a country or a route to fly there.</p>
+    <h3>Countries <span id="ccount"></span></h3>
+    <div id="countries"></div>
+    <div class="legend" aria-hidden="true">
+      <span><i class="k-route"></i>Flight</span>
+      <span><i class="k-rail"></i>Rail</span>
+      <span><i class="k-visited"></i>Been there</span>
+      <span><i class="k-home"></i>Home base</span>
     </div>
-
-    <aside class="index" aria-label="Places and routes">
-      <div>
-        <h3>Countries <span id="ccount"></span></h3>
-        <div id="countries"></div>
-      </div>
-      <div>
-        <h3>Routes I book most <span>Bookings</span></h3>
-        <ul class="list" id="routes"></ul>
-      </div>
-      <p class="home">Home base · <b>41.8923° N · 87.6354° W</b></p>
-    </aside>
-  </div>
+    <ul id="routes" hidden></ul>
+    <div class="spacer"></div>
+    <p class="home">Home base  ·  <b>41.8923° N  ·  87.6354° W</b></p>
+  </aside>
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
@@ -291,12 +262,12 @@ button:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     W = r.width; H = r.height;
     canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-    R = Math.min(W, H) * 0.42;
+    R = Math.min(W, H) * 0.505; // Figma: 636 sphere on a 600 stage at view zoom 1.05
     draw();
   }
 
   function setProj() {
-    projection.rotate(rot).scale(R * zoom).translate([W / 2, H / 2 + (W < 520 ? 10 : 6)]);
+    projection.rotate(rot).scale(R * zoom).translate([W / 2, H / 2 + Math.min(W, H) * 0.12]);
   }
   // project a lon/lat lifted off the surface by factor e; returns [x, y, visible]
   const rotator = { fn: null, key: "" };
@@ -540,32 +511,19 @@ button:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
   const byCountry = {};
   for (const id in AP) (byCountry[AP[id][3]] = byCountry[AP[id][3]] || new Set()).add(city(id));
   const holder = document.getElementById("countries");
-  document.getElementById("ccount").textContent = String(COUNTRIES.filter(c => !c.home).length).padStart(2, "0");
-  let region = "";
-  let list = null;
+  document.getElementById("ccount").textContent = String(COUNTRIES.filter(c => !c.home).length);
   const rowsByCC = {};
   COUNTRIES.forEach(c => {
-    if (c.region !== region) {
-      region = c.region;
-      const h = document.createElement("p"); h.className = "region"; h.textContent = region; holder.append(h);
-      list = document.createElement("ul"); list.className = "list"; holder.append(list);
-    }
-    const li = document.createElement("li");
-    const btn = document.createElement("button"); btn.type = "button"; btn.className = "row"; btn.setAttribute("aria-pressed", "false");
-    const nm = document.createElement("span"); nm.className = "name"; nm.textContent = c.name;
-    const tg = document.createElement("span"); tg.className = c.home ? "tag" : "num";
+    const btn = document.createElement("button"); btn.type = "button"; btn.className = c.home ? "chip home" : "chip"; btn.setAttribute("aria-pressed", "false");
+    const nm = document.createElement("span"); nm.textContent = c.name;
+    btn.append(nm);
+    if (c.home) { const tg = document.createElement("span"); tg.className = "tag"; tg.textContent = "Home"; btn.append(tg); }
     const cities = byCountry[c.cc] ? [...byCountry[c.cc]] : [];
-    tg.textContent = c.home ? "Home" : "";
-    btn.append(nm, tg);
-    if (cities.length) {
-      const m = document.createElement("span"); m.className = "meta";
-      m.textContent = c.home ? `${cities.length} cities on the map, from Maui to New York` : cities.join(" · ");
-      btn.append(m);
-    }
+    if (cities.length) btn.title = c.home ? `${cities.length} cities on the map, from Maui to New York` : cities.join(" · ");
     btn.addEventListener("click", () => focusCountry(c));
     btn.addEventListener("mouseenter", () => { if (c.feature) { hover = { type: "country", feature: c.feature, country: c }; } });
     btn.addEventListener("mouseleave", () => { hover = null; });
-    li.append(btn); list.append(li); rowsByCC[c.cc] = btn;
+    holder.append(btn); rowsByCC[c.cc] = btn;
   });
   function select(c) {
     selected = c;
@@ -597,7 +555,7 @@ button:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
     li.append(btn); rl.append(li);
   });
 
-  if (reduceMotion) document.getElementById("hint").textContent = "Drag to spin · Use the buttons to zoom";
+  if (reduceMotion) document.getElementById("hint").textContent = "Drag to spin  ·  Use the buttons to zoom";
   new ResizeObserver(resize).observe(wrap);
   resize();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => draw());
