@@ -7,37 +7,53 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Let’s talk" };
 
+const steps: [string, string, string][] = [
+  ["(I)", "I read it myself.", "No assistant, no routing, no ticket number."],
+  ["(II)", "I write back.", "Usually within two business days."],
+  ["(III)", "We get on a call.", "Thirty minutes, if it looks like a fit. If it isn’t, I’ll tell you, and point you somewhere better when I can."],
+];
+
 export default function Contact() {
   return (
     <>
-      <section className="section dark">
-        <Pattern kind="rays" />
-        <div className="wrap">
-          <Eyebrow>Let’s talk</Eyebrow>
-          <h1 className="h1" style={{ marginTop: 20 }}>Tell me what’s going&nbsp;on.</h1>
-          <p className="lede" style={{ marginTop: 24 }}>
+      <section className="ct-hero dark">
+        <div className="pattern-corner c560" aria-hidden />
+        <div className="wrap ct-intro">
+          <Eyebrow as="p">Let’s talk</Eyebrow>
+          <h1 className="ct-h1">Tell me what’s going&nbsp;on.</h1>
+          <p className="ct-lede">
             A brand that sounds like everyone else, a growth number that won’t move, or a role you’re trying to fill. Start here, give me the short
             version, and I’ll take it from&nbsp;there.
           </p>
         </div>
       </section>
 
-      <section className="section light">
+      <section className="ct-body light">
         <Pattern kind="passport" />
-        <div className="wrap contact-grid">
+        <div className="wrap ct-row">
           <ContactForm />
-          <aside>
-            <div className="next-steps">
-              <Eyebrow>What happens next</Eyebrow>
+          <aside className="ct-side">
+            <div className="ct-next">
+              <p className="ct-label">What happens next</p>
               <ol>
-                <li><span className="num">(I)</span><span className="t">I read it myself.</span><span className="d">No assistant, no routing, no ticket number.</span></li>
-                <li><span className="num">(II)</span><span className="t">I write back.</span><span className="d">Usually within two business days.</span></li>
-                <li><span className="num">(III)</span><span className="t">We get on a call.</span><span className="d">Thirty minutes, if it looks like a fit. If it isn’t, I’ll tell you, and point you somewhere better when I&nbsp;can.</span></li>
+                {steps.map(([n, t, d]) => (
+                  <li key={n}>
+                    <span className="num">{n}</span>
+                    <span className="txt">
+                      <span className="t">{t}</span>
+                      <span className="d">{d}</span>
+                    </span>
+                  </li>
+                ))}
               </ol>
             </div>
-            <div className="elsewhere">
-              <Eyebrow>Elsewhere</Eyebrow>
-              {site.linkedin && <a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn&nbsp;&nbsp;→</a>}
+            <div className="ct-else">
+              <p className="ct-label">Elsewhere</p>
+              {site.linkedin && (
+                <a href={site.linkedin} target="_blank" rel="noopener noreferrer">
+                  LinkedIn&nbsp;&nbsp;→
+                </a>
+              )}
               <Link href="/resume">The full resume&nbsp;&nbsp;→</Link>
             </div>
           </aside>
