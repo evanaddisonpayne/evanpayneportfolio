@@ -74,7 +74,7 @@ const employers: Employer[] = [
     n: "IV", name: "The Starr Conspiracy", when: "April 2021 to Nov 2022", where: "Bentonville, AR", tour: "First tour",
     roles: [
       {
-        title: "Marketing Strategist, Key Accounts",
+        title: "Marketing Strategist",
         summary: "Product marketing and go-to-market for new software products across a key-account portfolio.",
         bullets: [
           "Oversaw $1.72M in recurring annual revenue with a 9.75 NPS.",

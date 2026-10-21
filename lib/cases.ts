@@ -37,7 +37,7 @@ export const cases: Case[] = [
     n: "I",
     client: "The Starr Conspiracy   ·   Two tours   ·   Featured",
     category: "featured",
-    cardTitle: "Two tours at the same agency, from key accounts to the director’s chair.",
+    cardTitle: "Two tours at the same agency, from strategist to the director’s chair.",
     cardLine:
       "Three chapters: taking new software products to market for key accounts, coming back to move enterprise clients from search to AI-generated answers, and now directing brand and growth strategy across B2B SaaS and HR tech.",
     chips: ["$1.72M ARR", "9.75 NPS", "9.5 NPS", "+$600K"],
@@ -45,7 +45,7 @@ export const cases: Case[] = [
     scene: "/art/scene_tsc.webp",
     eyebrow: "(I)   ·   Case study   ·   The Starr Conspiracy   ·   B2B SaaS and HR tech",
     meta: [
-      { label: "Roles", value: "Marketing Strategist, Key Accounts   ·   Marketing & Brand Strategist   ·   Director of Brand & Growth" },
+      { label: "Roles", value: "Marketing Strategist   ·   Marketing & Brand Strategist   ·   Director of Brand & Growth" },
       { label: "When", value: "2021 to 2022, and 2025 to now" },
       { label: "Where", value: "Bentonville, AR\nSan Francisco, CA\nChicago, IL" },
       { label: "What I led", value: "Go-to-market, AEO, brand and growth strategy" },
@@ -60,7 +60,7 @@ export const cases: Case[] = [
       {
         eyebrow: "Chapter (I)   ·   April 2021 to November 2022   ·   Bentonville, AR",
         title: "Key accounts: new software products, and the accounts that had to buy them.",
-        role: "Marketing Strategist, Key Accounts",
+        role: "Marketing Strategist",
         moves: [
           { title: "Ran the sprints and the launch", body: "I led collaborative design sprints and go-to-market strategy for new software products, and managed product marketing across the whole client portfolio." },
           { title: "Made the materials myself", body: "I researched the issues facing each client and turned them into sales strategy, then built the sales decks, investor and analyst decks, websites, and collateral to match." },
@@ -259,7 +259,7 @@ export const cases: Case[] = [
       { num: "Emmy", label: "nominated show I helped make at Intercut" },
     ],
     note: "That show’s Nielsen ratings climbed from 0.1 to 2.3 and from 5.1 to 7.7 in a single sixteen-week season.",
-    next: { slug: "the-starr-conspiracy", title: "Two tours at the same agency, from key accounts to the director’s chair.", sub: "The Starr Conspiracy   ·   Two tours   ·   Read the case  →" },
+    next: { slug: "the-starr-conspiracy", title: "Two tours at the same agency, from strategist to the director’s chair.", sub: "The Starr Conspiracy   ·   Two tours   ·   Read the case  →" },
   },
 ];
 

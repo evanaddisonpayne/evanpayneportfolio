@@ -129,7 +129,8 @@ h1, h2, h3, .balance { text-wrap: balance; }
   -webkit-mask-image: url(/art/passport.webp); mask-image: url(/art/passport.webp);
   -webkit-mask-repeat: repeat; mask-repeat: repeat; -webkit-mask-size: 1440px auto; mask-size: 1440px auto; -webkit-mask-position: center top; mask-position: center top; }
 .dark .pattern-passport { color: var(--brass); opacity: .08; }
-.pattern-sunrise { left: 50%; bottom: 0; width: 1440px; height: 900px; transform: translateX(-50%); color: var(--brass); opacity: .55;
+/* 1440 x 900 art; grows with the section past 1440 so the rays always reach the right edge */
+.pattern-sunrise { left: 50%; bottom: 0; width: max(1440px, 100%); height: auto; aspect-ratio: 1440 / 900; transform: translateX(-50%); color: var(--brass); opacity: .55;
   -webkit-mask-image: url(/art/sunrise.webp); mask-image: url(/art/sunrise.webp); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
 .pattern-rays { top: 50%; right: -360px; width: 1440px; height: 820px; transform: translateY(-50%); color: var(--brass); opacity: .35;
   -webkit-mask-image: url(/art/rays.webp); mask-image: url(/art/rays.webp); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }

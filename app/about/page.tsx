@@ -29,7 +29,7 @@ const chapters = [
   },
   {
     n: "III", title: "The number", meta: "2021 to now   ·   B2B SaaS and HR tech",
-    body: "Key accounts at The Starr Conspiracy, a $2.2M monthly number at hireEZ, then back to TSC to lead brand and growth. Everything I touch now gets measured against pipeline and revenue.",
+    body: "Marketing strategy at The Starr Conspiracy, a $2.2M monthly number at hireEZ, then back to TSC to lead brand and growth. Everything I touch now gets measured against pipeline and revenue.",
     chips: ["$1.72M ARR", "+15–20% over target"],
   },
 ];
