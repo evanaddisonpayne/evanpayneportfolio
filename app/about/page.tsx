@@ -19,12 +19,12 @@ const stops: [string, string, string][] = [
 const chapters = [
   {
     n: "I", title: "The room", meta: "2017 to 2020   ·   Production",
-    body: "Three years as Chief of Staff at Intercut Productions, running accounts and turning Fortune 500 initiatives into stories people would actually sit through. Most of what I know about getting and keeping a room’s attention, I learned there.",
+    body: "Three years as Chief of Staff at Intercut Productions, running accounts and turning Fortune 500 initiatives into stories people would actually sit through. Most of what I know about getting and keeping a room’s attention, I learned there.",
     chips: ["Fortune 500 clients", "Emmy-nominated show"],
   },
   {
     n: "II", title: "The mission", meta: "2020 to 2024   ·   Civic and nonprofit",
-    body: "A chamber of commerce competing nationally for talent, then a $10M nonprofit program where every dollar had to show up for the mission. The work had to make sense to the people it was for, not just the people approving it.",
+    body: "A chamber of commerce competing nationally for talent, then a $10M nonprofit program where every dollar had to show up for the mission. The work had to make sense to the people it was for, not just the people approving it.",
     chips: ["+78% impressions", "$10M budget"],
   },
   {
@@ -35,9 +35,9 @@ const chapters = [
 ];
 
 const habits = [
-  { title: "Wrong out loud", body: "I’ll put a clear point of view on the table early, even if it turns out to be wrong. A team can react to something specific. It can’t do much with a deck that’s careful enough to agree with everyone." },
+  { title: "Wrong out loud", body: "I’ll put a clear point of view on the table early, even if it turns out to be wrong. A team can react to something specific. It can’t do much with a deck that’s careful enough to agree with everyone." },
   { title: "Diagnose, then spend", body: "Before we add budget, I want to know what’s actually broken. Soft pipeline is often a positioning problem, and spending more on a message nobody remembers just makes it more\u00a0expensive." },
-  { title: "I make the thing", body: "I can open Figma and build it myself, so the idea you approve is the one that ships. Nothing gets lost between the strategy deck and the designer." },
+  { title: "I make the thing", body: "I can open Figma and build it myself, so the idea you approve is the one that ships. Nothing gets lost between the strategy deck and the designer." },
 ];
 
 function Segs({ text }: { text: string }) {
@@ -157,17 +157,17 @@ export default function About() {
                 way. I find the good bar, then I walk until I’m lost. If you ask me where to go next, I’ll say&nbsp;Prague.
               </p>
               <p>
-                Back in Chicago, my favorite nights are the ones I host. A long table, a big dinner, and friends who stay a lot later than they
+                Back in Chicago, my favorite nights are the ones I host. A long table, a big dinner, and friends who stay a lot later than they
                 planned. Lollapalooza is my festival. Industry is my show right now. And late at night it’s Charli XCX, John Summit or Slayyyter,
                 usually while I’m working on something I couldn’t crack during the&nbsp;day.
               </p>
             </div>
           </div>
           <dl className="otc-list off">
-            <div><dt>On repeat</dt><dd>Charli XCX, John Summit, Slayyyter.</dd></div>
+            <div><dt>On repeat</dt><dd>Charli XCX, John Summit, Slayyyter.</dd></div>
             <div><dt>Watching</dt><dd>Industry, on HBO.</dd></div>
             <div><dt>Send a friend to</dt><dd>Prague.</dd></div>
-            <div><dt>Someday</dt><dd>A canal house in Amsterdam.</dd></div>
+            <div><dt>Someday</dt><dd>A canal house in Amsterdam.</dd></div>
           </dl>
         </div>
         <div className="wrap ab-globe">

@@ -30,9 +30,9 @@ export default function Contact() {
             <div className="next-steps">
               <Eyebrow>What happens next</Eyebrow>
               <ol>
-                <li><span className="num">(I)</span><span className="t">I read it myself.</span><span className="d">No assistant, no routing, no ticket number.</span></li>
-                <li><span className="num">(II)</span><span className="t">I write back.</span><span className="d">Usually within two business days.</span></li>
-                <li><span className="num">(III)</span><span className="t">We get on a call.</span><span className="d">Thirty minutes, if it looks like a fit. If it isn’t, I’ll tell you, and point you somewhere better when I&nbsp;can.</span></li>
+                <li><span className="num">(I)</span><span className="t">I read it myself.</span><span className="d">No assistant, no routing, no ticket number.</span></li>
+                <li><span className="num">(II)</span><span className="t">I write back.</span><span className="d">Usually within two business days.</span></li>
+                <li><span className="num">(III)</span><span className="t">We get on a call.</span><span className="d">Thirty minutes, if it looks like a fit. If it isn’t, I’ll tell you, and point you somewhere better when I&nbsp;can.</span></li>
               </ol>
             </div>
             <div className="elsewhere">

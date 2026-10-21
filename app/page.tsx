@@ -5,11 +5,11 @@ import { cases } from "@/lib/cases";
 import { site } from "@/lib/site";
 
 const stances = [
-  { n: 1, name: "The Crowd", title: "Sameness is a revenue problem.", body: "When buyers can’t tell you apart, they go with whoever’s cheapest or whoever they heard of first, and you end up paying full price for marketing nobody remembers." },
-  { n: 2, name: "The Committee", title: "Consensus kills\u00a0brands.", body: "Every round of “can we soften this a little” sands off another edge, until you’re left with a message everyone signed off on and nobody can repeat." },
-  { n: 3, name: "The Spark", title: "AI is an accelerant, not a substitute.", body: "I use it every day, and it’s brilliant at going faster. It’s useless at deciding where you should be going in the first place, which is still your job." },
-  { n: 4, name: "The Compass", title: "Positioning before demand\u00a0gen.", body: "When pipeline goes soft, the instinct is to spend more. Usually the problem sits upstream, in a story that never gave anyone a reason to pick you." },
-  { n: 5, name: "The Ghost", title: "Safe is not low\u00a0risk.", body: "Playing it safe feels responsible right up until you realize nobody noticed you were in the room." },
+  { n: 1, name: "The Crowd", title: "Sameness is a revenue problem.", body: "When buyers can’t tell you apart, they go with whoever’s cheapest or whoever they heard of first, and you end up paying full price for marketing nobody remembers." },
+  { n: 2, name: "The Committee", title: "Consensus kills\u00a0brands.", body: "Every round of “can we soften this a little” sands off another edge, until you’re left with a message everyone signed off on and nobody can repeat." },
+  { n: 3, name: "The Spark", title: "AI is an accelerant, not a substitute.", body: "I use it every day, and it’s brilliant at going faster. It’s useless at deciding where you should be going in the first place, which is still your job." },
+  { n: 4, name: "The Compass", title: "Positioning before demand\u00a0gen.", body: "When pipeline goes soft, the instinct is to spend more. Usually the problem sits upstream, in a story that never gave anyone a reason to pick you." },
+  { n: 5, name: "The Ghost", title: "Safe is not low\u00a0risk.", body: "Playing it safe feels responsible right up until you realize nobody noticed you were in the room." },
 ];
 
 export default function Home() {
@@ -80,7 +80,7 @@ export default function Home() {
                 <figcaption>
                   <span className="ey-in">
                     <span className="ey-seg"><span className="ey-sep" aria-hidden>{"   ·   "}</span><span className="ey-txt">From issue (I)</span></span>
-                    <span className="ey-seg"><span className="ey-sep" aria-hidden>{"   ·   "}</span><span className="ey-txt">You all sound the same. It’s costing millions.</span></span>
+                    <span className="ey-seg"><span className="ey-sep" aria-hidden>{"   ·   "}</span><span className="ey-txt">You all sound the same. It’s costing millions.</span></span>
                   </span>
                 </figcaption>
               </span>
@@ -93,7 +93,7 @@ export default function Home() {
             </div>
           </div>
           <div className="hb-card">
-            <Tarot src="/art/tarot_issue.webp" alt="Issue (I) card, You all sound the same" />
+            <Tarot src="/art/tarot_issue.webp" alt="Issue (I) card, You all sound the same" />
           </div>
         </div>
       </section>
@@ -140,7 +140,7 @@ export default function Home() {
               <p className="habits off">
                 <span>Wrong out loud</span><span className="diamond" aria-hidden />
                 <span>Diagnose, then spend</span><span className="diamond" aria-hidden />
-                <span>I make the thing</span>
+                <span>I make the thing</span>
               </p>
               <p className="ha-italic off">
                 Most of my time off goes to getting somewhere new. Twelve countries so far, and I’m nowhere near done. Back in Chicago, my favorite
@@ -149,7 +149,7 @@ export default function Home() {
             </div>
           </div>
           <div className="ha-btn">
-            <Link href="/about" className="btn btn-ghost">Read the long version</Link>
+            <Link href="/about" className="btn btn-ghost">Read the long version</Link>
           </div>
           <img className="stamps" src="/art/stamps.webp" alt="Passport stamps: ORD, home base. AMS, someday. PRG, go here." width={720} height={520} loading="lazy" />
         </div>

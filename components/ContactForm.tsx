@@ -47,12 +47,12 @@ export default function ContactForm() {
         </div>
         <div className="field">
           <label htmlFor="email">Email <span className="req">Required</span></label>
-          <input id="email" name="email" type="email" autoComplete="email" placeholder="So I can write back" required />
+          <input id="email" name="email" type="email" autoComplete="email" placeholder="So I can write back" required />
         </div>
       </div>
       <div className="field">
         <label htmlFor="company">Company or role</label>
-        <input id="company" name="company" autoComplete="organization" placeholder="Where you work, or what you do" />
+        <input id="company" name="company" autoComplete="organization" placeholder="Where you work, or what you do" />
       </div>
       <fieldset className="field">
         <legend>What’s this about?</legend>
@@ -67,13 +67,13 @@ export default function ContactForm() {
       </fieldset>
       <div className="field">
         <label htmlFor="message">The short version <span className="req">Required</span></label>
-        <textarea id="message" name="message" placeholder="What’s going on, what you’ve tried, and what good would look like." required />
+        <textarea id="message" name="message" placeholder="What’s going on, what you’ve tried, and what good would look like." required />
       </div>
       <div className="submit-row">
         <button type="submit" className="btn btn-signal" disabled={state === "sending"}>
           {state === "sending" ? "Sending…" : "Send it"}
         </button>
-        <p className="italic">No newsletter sign-up, no follow-up sequence. Just a reply.</p>
+        <p className="italic">No newsletter sign-up, no follow-up sequence. Just a reply.</p>
       </div>
       {state === "error" && (
         <p className="form-note" role="alert">

@@ -29,7 +29,7 @@ export default function Writing() {
             <div className="content">
               <Eyebrow>(I)   ·   Positioning   ·   Featured</Eyebrow>
               <h2 className="title">
-                <Link href="/writing/you-all-sound-the-same">You all sound the same. It’s costing&nbsp;millions.</Link>
+                <Link href="/writing/you-all-sound-the-same">You all sound the same. It’s costing&nbsp;millions.</Link>
               </h2>
               <p className="lede">The Work Tech industry has a sameness problem. And no, another messaging workshop isn’t going to fix&nbsp;it.</p>
               <p className="meta">April 2026&nbsp;&nbsp;·&nbsp;&nbsp;6 min read</p>

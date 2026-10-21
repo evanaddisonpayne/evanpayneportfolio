@@ -73,7 +73,7 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
 /* ---------- type ---------- */
 .eyebrow {
   --ey-track: 0.14em;
-  font-family: var(--caps); font-weight: 500; font-size: 18px; line-height: normal;
+  font-family: var(--caps); font-weight: 500; font-size: 18px; line-height: 1.211;
   letter-spacing: var(--ey-track); text-transform: uppercase; color: var(--brass);
   overflow: hidden;
 }
@@ -99,19 +99,19 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
 .italic { font-family: var(--display); font-style: italic; font-weight: 300; }
 
 /* ---------- buttons (Figma Button: DM Sans Medium 16, padding scales per size) ---------- */
-.btns { display: flex; flex-wrap: wrap; gap: 15px; }
+.btns { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 15px; }
 .btn {
   --by: 9px; --bx: 15px;
   display: inline-flex; align-items: center; justify-content: center;
   padding: var(--by) var(--bx); font-family: var(--body); font-weight: 500; font-size: 16px; line-height: normal;
-  border: 1px solid transparent; transition: background-color .2s, color .2s, border-color .2s; white-space: nowrap;
+  border: 0; transition: background-color .2s, color .2s, border-color .2s; white-space: nowrap;
 }
 @media (min-width: 768px) { .btns { gap: 18px; } .btn { --by: 11px; --bx: 20px; } }
 @media (min-width: 1024px) { .btn { --by: 13px; --bx: 22px; } }
 @media (min-width: 1280px) { .btns { gap: 20px; } .btn { --by: 16px; --bx: 28px; } }
 .btn-signal { background: var(--signal); color: var(--oxblood); }
 .btn-signal:hover { background: #ff7440; }
-.btn-ghost { border-color: var(--ivory); color: var(--ivory); }
+.btn-ghost { border: 1px solid var(--ivory); color: var(--ivory); }
 .btn-ghost:hover { background: var(--ivory); color: var(--oxblood); }
 .light .btn-ghost, .orange .btn-ghost { border-color: var(--oxblood); color: var(--oxblood); }
 .light .btn-ghost:hover, .orange .btn-ghost:hover { background: var(--oxblood); color: var(--ivory); }
@@ -666,37 +666,6 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
 .next-case .sub { margin-top: 16px; color: var(--smoke); font-size: 15px; }
 .next-case:hover .what { color: var(--signal); }
 
-/* ==========================================================================
-   RESUME
-   ========================================================================== */
-.resume-head { display: grid; gap: 48px; }
-@media (min-width: 1024px) { .resume-head { grid-template-columns: minmax(0, 760px) minmax(0, 340px); gap: 100px; justify-content: space-between; } }
-.facts { display: grid; gap: 22px; border-left: 1px solid var(--antique); padding-left: 24px; align-self: start; }
-.facts dt { font-family: var(--caps); font-size: 13px; letter-spacing: .14em; color: var(--brass); }
-.facts dd { margin: 4px 0 0; font-family: var(--display); font-size: 19px; }
-.proof-head { display: grid; gap: 16px 48px; margin-bottom: 48px; }
-@media (min-width: 1024px) { .proof-head { grid-template-columns: minmax(0, 1fr) 340px; align-items: end; } }
-.proof-head .italic { font-size: 20px; }
-.employer { display: grid; gap: 24px 40px; padding-block: 48px; border-top: 1px solid var(--antique); }
-.employer:last-child { border-bottom: 1px solid var(--antique); }
-@media (min-width: 1024px) { .employer { grid-template-columns: 300px minmax(0, 1fr); } }
-.employer .name { font-family: var(--display); font-size: clamp(24px, 0.6vw + 21px, 30px); line-height: 1.2; margin-top: 10px; }
-.employer .when { margin-top: 12px; font-family: var(--caps); font-size: 13px; letter-spacing: .12em; }
-.employer .where { font-family: var(--caps); font-size: 12px; letter-spacing: .12em; color: var(--antique); margin-top: 4px; }
-.employer .tour { display: inline-block; margin-top: 14px; border: 1px solid var(--antique); padding: 4px 10px; font-family: var(--caps); font-size: 11px; letter-spacing: .14em; }
-.role + .role { margin-top: 40px; padding-top: 40px; border-top: 0.6px dashed color-mix(in srgb, var(--antique) 60%, transparent); }
-.role .title { font-family: var(--display); font-size: clamp(22px, 0.4vw + 20px, 26px); line-height: 1.25; }
-.role .dates { margin-top: 6px; font-family: var(--caps); font-size: 12px; letter-spacing: .12em; color: var(--antique); }
-.role .summary { margin-top: 12px; font-family: var(--display); font-style: italic; font-weight: 300; font-size: 18px; line-height: 1.5; }
-.bullets { margin-top: 20px; display: grid; gap: 10px; }
-.bullets li { display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 14px; font-size: 16px; line-height: 1.55; }
-.bullets li::before { content: ""; width: 6px; height: 6px; margin-top: 9px; border: 1px solid var(--antique); transform: rotate(45deg); }
-.role .chips { margin-top: 24px; }
-.skills-foot { display: grid; gap: 32px; margin-top: 64px; padding-top: 40px; border-top: 0.6px solid var(--antique); }
-@media (min-width: 1024px) { .skills-foot { grid-template-columns: 1fr 1fr; } }
-.skills-foot .name { font-family: var(--display); font-size: 26px; margin-top: 8px; }
-.inline-links { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 12px; }
-.inline-links a { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 0.6px; }
 @media print {
   .nav, .footer, .btns, .pattern, .color-bar, .menu { display: none !important; }
   body, .dark, .orange, .light { background: #fff !important; color: #111 !important; }
@@ -1029,4 +998,199 @@ fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; }
   .otc-list { padding-top: 123px; }
   .otc-list div { gap: 24px; padding: 14px 0; }
   .ab-globe { margin-top: 72px; width: min(1208px, 100% - 2 * var(--gut) + 8px); }
+}
+
+/* ==========================================================================
+   RESUME  (Figma Resume · Desktop 1440 / Laptop 1024 / Tablet 768 / Mobile 390)
+   ========================================================================== */
+.pattern-corner.tall { height: 640px; background-image: url(/art/rays_corner_640.webp); background-size: 1440px 640px; }
+.rs-head { position: relative; overflow: hidden; padding: 61px 0; }
+.rs-head-row { display: flex; flex-direction: column; gap: 32px; }
+.rs-intro { display: flex; flex-direction: column; gap: 21px; }
+.rs-ey { font-size: 16px; }
+.rs-h1 { font-family: var(--display); font-weight: 300; font-size: 34px; line-height: 1.06; }
+.rs-lede { font-size: 18px; line-height: 1.6; color: var(--smoke); }
+.rs-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 15px; }
+.rs-link { font-weight: 500; font-size: 16px; line-height: normal; text-decoration: underline; text-underline-offset: 3px; white-space: pre; }
+.rs-link:hover { color: var(--signal); }
+.facts { margin: 0; display: flex; flex-direction: column; }
+.facts div { display: flex; flex-direction: column; gap: 6px; padding: 9px 0; border-bottom: 1px solid rgba(196, 154, 74, .5); }
+.facts div:first-child { border-top: 1px solid rgba(196, 154, 74, .5); }
+.facts dt { font-family: var(--caps); font-weight: 500; font-size: 13px; line-height: normal; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brass); }
+.facts dd { margin: 0; font-family: var(--display); font-weight: 300; font-size: 20px; line-height: 1.25; }
+@media (min-width: 768px) { .facts div { padding: 11px 0; } .facts dd { font-size: 21px; max-width: 340px; } }
+@media (min-width: 1024px) { .facts dd { max-width: none; } }
+@media (min-width: 1024px) { .facts div { padding: 13px 0; } }
+
+.rs-proof { position: relative; padding: 55px 0 61px; }
+.rs-proof-stack { display: flex; flex-direction: column; gap: 24px; }
+.rs-proof-head { display: flex; flex-direction: column; gap: 24px; color: var(--oxblood); }
+.rs-proof-title { display: flex; flex-direction: column; gap: 12px; }
+.rs-h2 { font-family: var(--display); font-weight: 300; font-size: 33px; line-height: normal; }
+.rs-proof-head .italic { font-size: 20px; line-height: 1.3; max-width: 340px; }
+.rs-proof-grid { display: flex; flex-direction: column; gap: 20px; }
+.rs-proof-row { display: flex; flex-direction: column; gap: 20px; }
+.rs-stat { display: flex; flex-direction: column; gap: 9px; padding-top: 11px; border-top: 1.2px solid var(--oxblood); color: var(--oxblood); }
+.rs-stat .num { font-family: var(--display); font-weight: 300; font-size: 36px; line-height: normal; white-space: nowrap; }
+.rs-stat .label { font-size: 16px; line-height: 1.5; color: rgba(43, 11, 16, .9); }
+.rs-stat .org { font-family: var(--caps); font-weight: 700; font-size: 12px; line-height: normal; letter-spacing: 0.12em; text-transform: uppercase; }
+
+.rs-exp { position: relative; overflow: hidden; padding: 61px 0 66px; }
+.rs-exp-head { display: flex; flex-direction: column; gap: 12px; padding-bottom: 29px; }
+.employer { display: flex; flex-direction: column; gap: 20px; padding: 26px 0; border-top: 1px solid rgba(196, 154, 74, .7); }
+.emp-info { display: flex; flex-direction: column; gap: 8px; }
+.emp-info .num { font-family: var(--display); font-weight: 300; font-size: 26px; line-height: normal; color: var(--antique); }
+.emp-info .name { font-family: var(--display); font-weight: 300; font-size: 24px; line-height: 1.12; }
+@media (min-width: 768px) { .emp-info .name { max-width: 300px; } }
+.emp-info .when, .emp-info .where { font-family: var(--caps); font-weight: 500; font-size: 13px; line-height: 1.4; letter-spacing: 0.1em; text-transform: uppercase; color: var(--antique); }
+.tour-wrap { padding-top: 10px; }
+.tour { display: inline-block; background: var(--ivory); border: 1px solid var(--oxblood); padding: 8px 12px; font-family: var(--caps); font-weight: 700; font-size: 11px; line-height: 1.4; letter-spacing: 0.1em; text-transform: uppercase; }
+.roles { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.role { display: flex; flex-direction: column; gap: 12px; }
+.role + .role { padding-top: 20px; border-top: 1px solid rgba(196, 154, 74, .3); }
+.role .title { font-family: var(--display); font-weight: 400; font-size: 21px; line-height: 1.234; }
+.role .dates { --ey-track: 0.1em; font-family: var(--caps); font-weight: 500; font-size: 13px; line-height: normal; letter-spacing: 0.1em; text-transform: uppercase; color: var(--antique); overflow: hidden; }
+.role .summary { font-family: var(--display); font-style: italic; font-weight: 300; font-size: 18px; line-height: 1.35; }
+.bullets { display: flex; flex-direction: column; gap: 8px; }
+.bullets li { display: flex; gap: 11px; font-size: 16px; line-height: 25px; color: rgba(43, 11, 16, .85); }
+.bullets li::before { content: ""; flex: 0 0 10px; height: 1.2px; margin-top: 7px; background: var(--signal); }
+.role-proof { margin-top: 3px; display: flex; flex-wrap: wrap; gap: 4px 11px; border: 1px solid var(--oxblood); padding: 6px 9px; font-family: var(--caps); font-weight: 700; font-size: 12px; line-height: 15px; letter-spacing: 0.08em; text-transform: uppercase; }
+.role-proof .pipe { font-weight: 500; letter-spacing: 0; }
+
+.rs-skills { position: relative; padding: 61px 0 60px; }
+.rs-skills-stack { display: flex; flex-direction: column; gap: 11px; }
+.rs-skills-h2 { font-family: var(--display); font-weight: 300; font-size: 30px; line-height: 1.12; }
+.rs-skill-row { display: flex; flex-wrap: wrap; gap: 18px; padding-top: 13px; }
+.rs-skill { position: relative; display: flex; flex-direction: column; gap: 12px; padding: 20px; width: 100%; box-shadow: inset 0 0 0 1.2px var(--brass); }
+.rs-skill::after { content: ""; position: absolute; inset: 5px; border: 0.6px solid color-mix(in srgb, var(--brass) 55%, transparent); pointer-events: none; }
+.rs-skill .num { font-family: var(--display); font-weight: 300; font-size: 23px; line-height: normal; color: var(--brass); }
+.rs-skill .t { font-family: var(--display); font-weight: 400; font-size: 21px; line-height: normal; }
+.rs-skill .b { font-size: 15px; line-height: 1.55; color: var(--smoke); }
+.rs-rule { padding-top: 20px; }
+.rs-rule span { display: block; height: 1px; background: rgba(196, 154, 74, .4); }
+.rs-foot { display: flex; flex-direction: column; gap: 30px; padding-top: 8px; line-height: normal; }
+.rs-foot > div { display: flex; flex-direction: column; gap: 6px; }
+.rs-foot .lbl { font-family: var(--caps); font-weight: 500; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brass); }
+.rs-foot .name { font-family: var(--display); font-weight: 300; font-size: 22px; }
+.rs-foot .det span { display: block; }
+.rs-foot .det .sep { display: none; }
+.rs-foot .det { font-size: 15px; color: var(--smoke); }
+.rs-foot .links { display: flex; flex-wrap: wrap; gap: 16px 21px; font-size: 16px; }
+.rs-foot .links a { text-decoration: underline; text-underline-offset: 3px; }
+.rs-foot .links a:hover { color: var(--signal); }
+
+@media (min-width: 768px) {
+  .rs-head { padding: 77px 0; }
+  .rs-head-row { gap: 48px; }
+  .rs-intro { gap: 25px; }
+  .rs-h1 { font-size: 39px; }
+  .rs-lede { font-size: 19px; }
+  .rs-btns { gap: 18px; }
+  .rs-proof { padding: 70px 0 77px; }
+  .rs-proof-stack { gap: 31px; }
+  .rs-proof-head { flex-direction: row; justify-content: space-between; align-items: flex-end; }
+  .rs-proof-head .italic { flex: 0 0 267px; }
+  .rs-h2 { font-size: 37px; }
+  .rs-proof-grid { gap: 26px; }
+  .rs-proof-row { flex-direction: row; flex-wrap: wrap; gap: 26px; }
+  .rs-stat { width: calc((100% - 26px) / 2); gap: 10px; padding-top: 15px; }
+  .rs-stat .num { font-size: 42px; }
+  .rs-exp { padding: 77px 0 84px; }
+  .rs-exp-head { padding-bottom: 38px; }
+  .employer { gap: 26px; padding: 34px 0; }
+  .emp-info { gap: 9px; }
+  .emp-info .num { font-size: 29px; }
+  .emp-info .name { font-size: 27px; }
+  .roles { gap: 26px; }
+  .role { gap: 14px; }
+  .role + .role { padding-top: 26px; }
+  .role .title { font-size: 24px; }
+  .role .summary { font-size: 19px; }
+  .bullets { gap: 9px; }
+  .bullets li { gap: 13px; }
+  .bullets li::before { margin-top: 8px; }
+  .role-proof { margin-top: 4px; gap: 4px 13px; padding: 7px 11px; }
+  .rs-skills { padding: 77px 0 74px; }
+  .rs-skills-stack { gap: 13px; }
+  .rs-skills-h2 { font-size: 34px; }
+  .rs-skill-row { gap: 22px; padding-top: 16px; }
+  .rs-skill { width: calc((100% - 22px) / 2); height: 230px; padding: 24px; gap: 16px; }
+  .rs-skill .t { font-size: 24px; }
+  .rs-rule { padding-top: 25px; }
+  .rs-foot { flex-direction: row; flex-wrap: nowrap; gap: 39px; padding-top: 11px; }
+  .rs-foot > div:first-child { flex: 0 0 373px; }
+  .rs-foot .name { font-size: 25px; }
+  .rs-foot .links { flex-wrap: nowrap; gap: 25px; }
+}
+@media (min-width: 1024px) {
+  .rs-head { padding: 88px 0; }
+  .rs-head-row { flex-direction: row; align-items: flex-end; justify-content: space-between; gap: 80px; }
+  .rs-intro { flex: 0 1 563px; gap: 25px; }
+  .rs-h1 { font-size: 43px; }
+  .facts { flex: 0 0 252px; }
+  .rs-proof { padding: 80px 0 88px; }
+  .rs-proof-stack { gap: 38px; }
+  .rs-proof-head .italic { flex-basis: 340px; }
+  .rs-h2 { font-size: 41px; }
+  .rs-proof-grid { gap: 32px; }
+  .rs-proof-row { flex-wrap: nowrap; gap: 32px; }
+  .rs-stat { width: auto; flex: 1 1 0; gap: 11px; padding-top: 17px; }
+  .rs-stat .num { font-size: 51px; }
+  .rs-exp { padding: 88px 0 96px; }
+  .rs-exp-head { padding-bottom: 44px; }
+  .employer { flex-direction: row; gap: 32px; padding: 38px 0; }
+  .emp-info { flex: 0 0 300px; }
+  .emp-info .num { font-size: 32px; }
+  .emp-info .name { font-size: 30px; }
+  .roles { flex: 1; gap: 32px; }
+  .role + .role { padding-top: 27px; }
+  .bullets li::before { margin-top: 10px; }
+  .role-proof { margin-top: 5px; padding: 8px 13px; }
+  .rs-skills { padding: 88px 0 86px; }
+  .rs-skills-h2 { font-size: 37px; }
+  .rs-skill-row { flex-wrap: nowrap; gap: 22px; padding-top: 18px; }
+  .rs-skill { flex: 1 1 0; width: auto; height: 280px; }
+  .rs-skill .num { font-size: 26px; }
+  .rs-foot > div:first-child { flex: 0 0 auto; }
+  .rs-foot .name { font-size: 28px; }
+  .rs-foot .det span { display: inline; }
+  .rs-foot .det .sep { display: inline; }
+  .rs-rule { padding-top: 29px; }
+  .rs-foot { flex-direction: column; gap: 36px; padding-top: 12px; }
+}
+@media (min-width: 1280px) {
+  .rs-head { padding: 110px 0; }
+  .rs-head-row { gap: 100px; }
+  .rs-intro { flex: 0 1 760px; gap: 28px; }
+  .rs-h1 { font-size: 50px; }
+  .rs-lede { max-width: 680px; }
+  .rs-btns { gap: 20px; }
+  .facts { flex: 0 0 340px; }
+  .facts div { padding: 16px 0; }
+  .rs-proof { padding: 100px 0 110px; }
+  .rs-proof-stack { gap: 48px; }
+  .rs-h2 { font-size: 48px; }
+  .rs-proof-grid, .rs-proof-row { gap: 40px; }
+  .rs-stat .num { font-size: 60px; }
+  .rs-stat { gap: 12px; padding-top: 20px; }
+  .rs-exp { padding: 110px 0 120px; }
+  .rs-exp-head { padding-bottom: 56px; }
+  .employer { gap: 40px; padding: 48px 0; }
+  .emp-info { gap: 10px; }
+  .roles { gap: 40px; }
+  .role { gap: 16px; }
+  .role + .role { padding-top: 32px; }
+  .bullets { gap: 10px; }
+  .bullets li { gap: 14px; }
+  .bullets li::before { margin-top: 12px; }
+  .role-proof { margin-top: 6px; align-self: flex-start; padding: 10px 16px; gap: 14px; }
+  .rs-skills { padding: 110px 0 107px; }
+  .rs-skills-stack { gap: 14px; left: -4px; }
+  .rs-skills-h2 { font-size: 44px; max-width: 900px; }
+  .rs-skill-row { gap: 24px; padding-top: 23px; }
+  .rs-skill { flex: 0 0 282px; height: 260px; padding: 28px; gap: 0; }
+  .rs-skill .num { height: 44px; }
+  .rs-skill .t { height: 44px; }
+  .rs-rule { padding-top: 36px; }
+  .rs-foot { flex-direction: row; flex-wrap: nowrap; gap: 60px; padding-top: 15px; }
 }
