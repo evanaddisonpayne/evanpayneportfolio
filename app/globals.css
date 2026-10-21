@@ -808,6 +808,60 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
   .ct-sent .h { max-width: 600px; }
 }
 /* ==========================================================================
+   WRITING INDEX  (Figma Writing · Desktop 1440 / Laptop 1024 / Tablet 768 / Mobile 390)
+   ========================================================================== */
+.wr-head { padding: 61px 0 53px; }
+.wr-intro { display: flex; flex-direction: column; gap: 18px; }
+.wr-h1 { font-family: var(--display); font-weight: 300; font-size: 35px; line-height: 1.06; }
+.wr-lede { font-size: 18px; line-height: 1.6; color: var(--smoke); }
+.wr-pieces { padding: 55px 0 66px; }
+.wr-feature { display: flex; flex-direction: column; gap: 24px; padding: 13px 26px 13px 13px; background: var(--oxblood); color: var(--ivory); border: 0.6px solid rgba(196, 154, 74, .55); }
+.wr-art { display: flex; align-items: center; justify-content: center; background: var(--ground); width: 100%; }
+.wr-art img { display: block; width: 216px; height: 360px; }
+.wr-text { display: flex; flex-direction: column; align-items: flex-start; gap: 17px; min-width: 0; }
+.wr-meta { font-family: var(--caps); font-weight: 500; font-size: 14px; line-height: normal; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brass); white-space: pre; }
+.wr-meta.sm { font-size: 13px; }
+.wr-title { font-family: var(--display); font-weight: 300; font-size: 31px; line-height: 1.08; }
+.wr-title a:hover { color: var(--signal); }
+.wr-dek { font-size: 17px; line-height: 1.58; color: var(--smoke); }
+.wr-read { padding-top: 4px; font-weight: 500; font-size: 16px; line-height: normal; }
+.wr-read span { margin-left: 4px; color: var(--signal); }
+.wr-read a:hover { color: var(--signal); }
+@media (min-width: 768px) {
+  .wr-head { padding: 77px 0 67px; }
+  .wr-intro { gap: 22px; }
+  .wr-h1 { font-size: 41px; }
+  .wr-lede { font-size: 19px; }
+  .wr-pieces { padding: 70px 0 84px; }
+  .wr-feature { gap: 31px; padding: 17px 34px 17px 17px; }
+  .wr-text { gap: 20px; }
+  .wr-title { font-size: 36px; }
+  .wr-read { padding-top: 6px; }
+}
+@media (min-width: 1024px) {
+  .wr-head { padding: 88px 0 77px; }
+  .wr-h1 { font-size: 44px; }
+  .wr-lede { max-width: 620px; }
+  .wr-pieces { padding: 80px 0 96px; }
+  .wr-feature { flex-direction: row; align-items: center; gap: 38px; padding: 19px 38px 19px 19px; }
+  .wr-art { flex: 0 0 415px; }
+  .wr-text { flex: 1 1 0; }
+  .wr-title { font-size: 39px; }
+}
+@media (min-width: 1280px) {
+  .wr-head { padding: 110px 0 96px; }
+  .wr-intro { gap: 24px; }
+  .wr-h1 { font-size: 52px; max-width: 900px; }
+  .wr-pieces { padding: 100px 0 120px; }
+  .wr-feature { gap: 48px; padding: 24px 48px 24px 24px; }
+  .wr-art { flex: 0 0 560px; height: 480px; }
+  .wr-text { gap: 22px; }
+  .wr-title { font-size: 46px; max-width: 520px; }
+  .wr-dek { max-width: 500px; }
+  .wr-read { padding-top: 8px; }
+}
+
+/* ==========================================================================
    WRITING + ARTICLE
    ========================================================================== */
 .piece { display: grid; gap: 40px; background: var(--oxblood); color: var(--ivory); padding: 24px; position: relative; border: 1.2px solid var(--brass); }
