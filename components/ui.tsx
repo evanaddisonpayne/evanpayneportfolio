@@ -3,17 +3,25 @@ import type { CSSProperties, ReactNode } from "react";
 import type { Case, Stat } from "@/lib/cases";
 import { site } from "@/lib/site";
 
-/** "A   ·   B" strings render with even dot spacing. */
-export function Eyebrow({ children, as: Tag = "p" }: { children: string; as?: "p" | "h2" | "h3" | "span" }) {
+/**
+ * "A   ·   B" strings. Each part stays on one line. When the line wraps, the part that
+ * starts a new line carries its separator into a clipped gutter, so no line ever starts
+ * or ends with a dot (Figma: "break at a separator and drop the dot at the line end").
+ */
+export function Eyebrow({ children, as: Tag = "p", className = "" }: { children: string; as?: "p" | "h2" | "h3" | "span"; className?: string }) {
   const parts = children.split(/\s+·\s+/);
   return (
-    <Tag className="eyebrow">
-      {parts.map((p, i) => (
-        <span key={i}>
-          {i > 0 && <span className="dot" aria-hidden>·</span>}
-          {p}
-        </span>
-      ))}
+    <Tag className={`eyebrow ${className}`.trim()}>
+      <span className="ey-in">
+        {parts.map((p, i) => (
+          <span className="ey-seg" key={i}>
+            <span className="ey-sep" aria-hidden>
+              {"   ·   "}
+            </span>
+            {p}
+          </span>
+        ))}
+      </span>
     </Tag>
   );
 }
@@ -71,26 +79,28 @@ export function SectionHead({ eyebrow, title, children }: { eyebrow: string; tit
 export function CaseCard({ c, featured = false }: { c: Case; featured?: boolean }) {
   const href = `/work/${c.slug}`;
   return (
-    <article className={`card case-card${featured ? " featured" : ""}`}>
-      <Link href={href} className="art" tabIndex={-1} aria-hidden>
+    <article className={`case-card${featured ? " featured" : ""}`}>
+      <Link href={href} className="cc-art" tabIndex={-1} aria-hidden>
         <img src={c.art} alt="" loading="lazy" width={featured ? 560 : 532} height={featured ? 572 : 260} />
       </Link>
-      <div className="content">
-        <div className="meta">
-          <div className="meta-left">
-            <span className="numeral">({c.n})</span>
-            <Eyebrow as="span">{c.client}</Eyebrow>
+      <div className="cc-body">
+        <div className="cc-main">
+          <div className="cc-meta">
+            <p className="cc-label">
+              <span className="cc-num">({c.n})</span>
+              <span className="cc-client">{c.client.replace(/\s+·\s+/g, "   ·   ")}</span>
+            </p>
+            {c.tag && <span className="cc-tag">{c.tag}</span>}
           </div>
-          {c.tag && <span className="tag">{c.tag}</span>}
+          <h3 className="cc-title">
+            <Link href={href}>{c.cardTitle}</Link>
+          </h3>
+          <p className="cc-line">{c.cardLine}</p>
+          <Chips items={c.chips} />
         </div>
-        <h3 className="title">
-          <Link href={href}>{c.cardTitle}</Link>
-        </h3>
-        <p className="body">{c.cardLine}</p>
-        <Chips items={c.chips} />
-        <Link href={href} className="link-arrow read">
-          Read the case <span aria-hidden>→</span>
-        </Link>
+        <p className="cc-read">
+          <Link href={href}>Read the case&nbsp;&nbsp;→</Link>
+        </p>
       </div>
     </article>
   );
@@ -99,12 +109,10 @@ export function CaseCard({ c, featured = false }: { c: Case; featured?: boolean 
 export function CaseRow({ c }: { c: Case }) {
   return (
     <Link href={`/work/${c.slug}`} className="case-row">
-      <span className="numeral">({c.n})</span>
-      <span className="who">{c.client}</span>
-      <span className="what">{c.cardTitle}</span>
-      <span className="go link-arrow">
-        Read the case <span aria-hidden>→</span>
-      </span>
+      <span className="cr-num">({c.n})</span>
+      <span className="cr-who">{c.client.split(/\s+·\s+/)[0]}</span>
+      <span className="cr-what">{c.cardTitle}</span>
+      <span className="cr-go">Read the case&nbsp;&nbsp;→</span>
     </Link>
   );
 }
@@ -119,7 +127,7 @@ export function Tarot({ src, alt, className = "" }: { src: string; alt: string; 
 
 export function Portrait() {
   return (
-    <div className="frame portrait">
+    <div className="portrait">
       <div className="inner">
         <img src="/art/portrait.svg" alt="Engraved line portrait of Evan in a cap and aviator sunglasses, smiling" width={768} height={1024} />
       </div>
