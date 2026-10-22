@@ -579,3 +579,10 @@
 .ams-next-todo li { position: relative; padding-left: 20px; line-height: 1.5; }
 .ams-next-todo li::before { content: ""; position: absolute; left: 0; top: .6em; width: 8px; height: 8px; background: var(--signal); transform: rotate(45deg); }
 .ams-map-wrap { margin-top: 8px; }
+.ams-next-list { display: grid; gap: 12px; margin: 16px 0 22px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.ams-next-list li { display: grid; }
+.ams-next-card { color: inherit; }
+.ams-next-card:hover { border-color: var(--brass); }
+.ams-next-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
+.ams-next-link { font-size: 14px; color: var(--smoke); border-bottom: 1px solid color-mix(in srgb, var(--brass) 55%, transparent); }
+.ams-next-link:hover { color: var(--signal); }

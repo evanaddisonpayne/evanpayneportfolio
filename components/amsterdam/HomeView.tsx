@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { PEOPLE, TRIP_START, checklist, days, profiles } from "@/lib/amsterdam";
 import { useAms } from "./AmsProvider";
-import { amsNow, forYou, stopHref, toMins } from "./util";
+import { amsNow, forYou, stopHref } from "./util";
 
 export default function HomeView() {
   const { now, me, pickMe, nasty, tapStamp, stampTapped, checks } = useAms();
@@ -185,76 +185,67 @@ export default function HomeView() {
   );
 }
 
-/** Before the trip: what to do next. During it: what's on now and next. */
+/** The next three things on the itinerary (plus what's on right now, during the trip). */
 function NextUp() {
-  const { now, me, checks, todayId } = useAms();
+  const { now, me, checks } = useAms();
   if (!now) return null;
   const ams = amsNow(now);
-  const today = days.find((d) => d.id === todayId);
+  const nowKey = `${ams.date} ${String(Math.floor(ams.mins / 60)).padStart(2, "0")}:${String(ams.mins % 60).padStart(2, "0")}`;
 
-  if (today) {
-    const stops = today.stops.filter((s) => forYou(s, me));
-    const nowIdx = stops.reduce((acc, s, i) => (toMins(s.start) <= ams.mins ? i : acc), -1);
-    const current = nowIdx >= 0 ? stops[nowIdx] : null;
-    const next = stops[nowIdx + 1] ?? null;
-    return (
-      <section className="section dark ams-next">
-        <div className="wrap">
-          <p className="eyebrow">
-            Today · {today.dow} {today.num} — {today.title}
-          </p>
-          <div className="ams-next-grid">
-            {current && (
-              <Link className="ams-next-card is-now" href={stopHref(today, current)}>
+  // Every stop that applies to this viewer, in order. Optional "Or:" alternatives are left out.
+  const all = days
+    .flatMap((d) => d.stops.map((s) => ({ d, s, key: `${d.date} ${s.start}` })))
+    .filter(({ s }) => forYou(s, me) && !s.optional);
+
+  const upcoming = all.filter((x) => x.key > nowKey).slice(0, 3);
+  const live = [...all].reverse().find((x) => x.key <= nowKey && x.d.date === ams.date) ?? null;
+  if (!upcoming.length) return null;
+
+  const left = checklist.flatMap((g) => g.items).filter((i) => !checks[i.id]).length;
+
+  return (
+    <section className="section dark ams-next">
+      <div className="wrap">
+        <p className="eyebrow">Next up{me ? ` for ${me}` : ""}</p>
+        <ol className="ams-next-list">
+          {live && (
+            <li>
+              <Link className="ams-next-card is-now" href={stopHref(live.d, live.s)}>
                 <span className="ams-live">Now</span>
-                <strong>{current.title}</strong>
-                <span>{current.time}</span>
+                <strong>{live.s.title}</strong>
+                <span>
+                  {live.d.dow} {live.d.num} · {live.s.time}
+                  {live.s.where ? ` · ${live.s.where}` : ""}
+                </span>
               </Link>
-            )}
-            {next ? (
-              <Link className="ams-next-card" href={stopHref(today, next)}>
-                <span className="ams-next-k">Next</span>
-                <strong>{next.title}</strong>
-                <span>{next.time}</span>
-              </Link>
-            ) : (
-              <div className="ams-next-card">
-                <span className="ams-next-k">Next</span>
-                <strong>Nothing left. Go to bed.</strong>
-              </div>
-            )}
-          </div>
-          <Link className="btn btn-signal" href={`/amsterdam/plan/${today.id}`}>
-            Today&apos;s full plan
-          </Link>
-        </div>
-      </section>
-    );
-  }
-
-  if (now.getTime() < new Date(TRIP_START).getTime()) {
-    const todo = checklist.flatMap((g) => g.items).filter((i) => !checks[i.id]).slice(0, 3);
-    return (
-      <section className="section dark ams-next">
-        <div className="wrap">
-          <p className="eyebrow">Next up</p>
-          {todo.length ? (
-            <ul className="ams-next-todo">
-              {todo.map((i) => (
-                <li key={i.id}>{i.label}</li>
-              ))}
-            </ul>
-          ) : (
-            <p className="body">Every box on the checklist is ticked. Nicely done.</p>
+            </li>
           )}
-          <Link className="btn btn-signal" href="/amsterdam/prep">
-            Open the checklist
+          {upcoming.map(({ d, s }, i) => (
+            <li key={d.id + s.start + s.title}>
+              <Link className="ams-next-card" href={stopHref(d, s)}>
+                <span className="ams-next-k">{i === 0 ? "Next" : `Then`}</span>
+                <strong>{s.title}</strong>
+                <span>
+                  {d.dow} {d.num} · {s.time}
+                  {s.where ? ` · ${s.where}` : ""}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ol>
+        <div className="ams-next-foot">
+          <Link className="btn btn-signal" href={`/amsterdam/plan/${(live ?? upcoming[0]).d.id}`}>
+            Full day plan
           </Link>
+          {left > 0 && (
+            <Link className="ams-next-link" href="/amsterdam/prep#checklist">
+              {left} {left === 1 ? "booking" : "bookings"} still unticked →
+            </Link>
+          )}
         </div>
-      </section>
-    );
-  }
-  return null;
+      </div>
+    </section>
+  );
 }
 
 function Countdown({ now, nasty }: { now: Date | null; nasty?: boolean }) {
