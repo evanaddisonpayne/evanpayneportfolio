@@ -1,4 +1,4 @@
-export type Stat = { num: string; label: string; org?: string };
+export type Stat = { num: string; label: string; org?: string; small?: boolean };
 export type Move = { title: string; body: string };
 export type Chapter = {
   eyebrow: string;
@@ -139,7 +139,7 @@ export const cases: Case[] = [
     resultsTitle: "The numbers.",
     stats: [
       { num: "$2.2M", label: "monthly revenue target" },
-      { num: "+15–20%", label: "above target, consistently" },
+      { num: "+15–20%", label: "above target, consistently", small: true },
       { num: "3", label: "disciplines on one team" },
       { num: "Weekly", label: "performance sprints" },
     ],
