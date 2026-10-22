@@ -7,122 +7,128 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,14,400;0,14,500;1,14,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&display=swap">
 <style>
-/* Travel map: flat Mercator chart, engraved in brass on oxblood. Map left, index right; stacks when the frame is under 860 wide. */
+/* Travel map: a flat Mercator chart printed on the page. Transparent, so the section's wave pattern reads as the ocean;
+   land is ivory paper with antique hairline coasts, visited countries in brass. Map left, index right; stacks under 860 wide. */
 :root {
-  color-scheme: dark;
-  --oxblood: #2B0B10; --deep: #1F070B; --ground: #240910; --ivory: #F2E8D5; --brass: #C49A4A;
-  --antique: #735420; --smoke: #A88E86; --signal: #FF5B1F; --rule: rgba(196, 154, 74, 0.28);
+  color-scheme: light;
+  --oxblood: #2B0B10; --ivory: #F2E8D5; --brass: #C49A4A; --antique: #735420; --signal: #FF5B1F;
+  --ink: rgba(43, 11, 16, 0.8); --rule: rgba(115, 84, 32, 0.35);
   --display: "Fraunces", "Iowan Old Style", Georgia, serif;
   --caps: "Cormorant SC", "Cormorant Garamond", Georgia, serif;
   --body: "DM Sans", "Helvetica Neue", Arial, sans-serif;
 }
 * { box-sizing: border-box; }
-html, body { margin: 0; background: transparent; color: var(--ivory); }
+html, body { margin: 0; background: transparent; color: var(--oxblood); }
 body { font-family: var(--body); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
 p, h3, ul { margin: 0; padding: 0; }
 button { font: inherit; color: inherit; }
 
-.panel { position: relative; display: flex; width: 100%; aspect-ratio: 1208 / 600; background: var(--oxblood); border: 1.2px solid rgba(196, 154, 74, 0.55); overflow: hidden; }
-.panel::after { content: ""; position: absolute; inset: 4.8px; border: 0.6px solid rgba(196, 154, 74, 0.22); pointer-events: none; z-index: 5; }
+.panel { position: relative; display: flex; gap: 48px; width: 100%; aspect-ratio: 1208 / 600; }
 
 /* ---------- map stage ---------- */
-.stage { position: relative; flex: 0 0 66.5%; background: var(--ground); overflow: hidden; }
-svg.map { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; touch-action: pan-y; outline: none; user-select: none; -webkit-user-select: none; }
+.stage { position: relative; flex: 0 0 68%; overflow: hidden; }
+svg.map { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; touch-action: pan-y; outline: none; user-select: none; -webkit-user-select: none;
+  /* feather every edge so the chart dissolves into the paper instead of ending in a box */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent), linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
+  -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent), linear-gradient(to bottom, transparent, #000 9%, #000 91%, transparent);
+  mask-composite: intersect; }
 svg.map.dragging { cursor: grabbing; }
-svg.map:focus-visible { box-shadow: inset 0 0 0 2px var(--brass); }
+svg.map:focus-visible { outline: 1px solid var(--antique); outline-offset: -1px; }
 .zoomed path { vector-effect: non-scaling-stroke; }
-.grat { fill: none; stroke: rgba(196, 154, 74, 0.10); stroke-width: 0.6; }
-.equator { fill: none; stroke: rgba(196, 154, 74, 0.22); stroke-width: 0.6; stroke-dasharray: 2 4; }
-.land path { fill: rgba(196, 154, 74, 0.06); stroke: rgba(196, 154, 74, 0.42); stroke-width: 0.6; stroke-linejoin: round; }
-.land path.been { fill: rgba(196, 154, 74, 0.26); stroke: var(--brass); stroke-width: 1; cursor: pointer; }
-.land path.home { fill: rgba(196, 154, 74, 0.15); }
-.land path.hover { fill: rgba(242, 232, 213, 0.16); stroke: rgba(242, 232, 213, 0.9); }
+.grat { fill: none; stroke: rgba(115, 84, 32, 0.16); stroke-width: 0.6; }
+.equator { fill: none; stroke: rgba(115, 84, 32, 0.32); stroke-width: 0.6; stroke-dasharray: 2 4; }
+.land path { fill: var(--ivory); stroke: rgba(115, 84, 32, 0.55); stroke-width: 0.6; stroke-linejoin: round; }
+.land path.been { fill: #E4D1AB; stroke: var(--antique); stroke-width: 0.9; cursor: pointer; }
+.land path.home { fill: #EBDDBF; }
+.land path.hover { fill: #D9C08E; stroke: var(--oxblood); }
 .land path.sel { stroke: var(--signal); stroke-width: 1.6; }
-.routes path.r { fill: none; stroke: rgba(242, 232, 213, 0.58); stroke-linecap: round; pointer-events: none; }
-.routes path.r.rail { stroke: var(--brass); }
+.routes path.r { fill: none; stroke: rgba(43, 11, 16, 0.55); stroke-linecap: round; pointer-events: none; }
+.routes path.r.rail { stroke: var(--antique); }
 .routes path.r.hot { stroke: var(--signal); }
 .routes path.hit { fill: none; stroke: transparent; stroke-width: 10; pointer-events: stroke; cursor: pointer; }
 .overlay { pointer-events: none; }
-.overlay .ap { fill: var(--ground); stroke: rgba(242, 232, 213, 0.9); stroke-width: 0.9; pointer-events: all; cursor: pointer; }
+.overlay .ap { fill: var(--ivory); stroke: var(--oxblood); stroke-width: 0.9; pointer-events: all; cursor: pointer; }
 .overlay .ap.hot { stroke: var(--signal); }
-.overlay text { font-family: var(--caps); font-weight: 600; letter-spacing: 0.08em; paint-order: stroke; stroke: rgba(31, 7, 11, 0.9); stroke-width: 3px; stroke-linejoin: round; }
-.overlay .city { font-size: 12px; fill: rgba(242, 232, 213, 0.88); }
-.overlay .home-label { font-size: 13px; fill: var(--signal); }
-.overlay .tick { font-size: 11px; fill: rgba(196, 154, 74, 0.6); stroke-width: 2.5px; letter-spacing: 0.1em; }
+.overlay text { font-family: var(--caps); font-weight: 600; letter-spacing: 0.08em; paint-order: stroke; stroke: rgba(242, 232, 213, 0.92); stroke-width: 3.5px; stroke-linejoin: round; }
+.overlay .city { font-size: 12px; fill: var(--oxblood); }
+.overlay .home-label { font-size: 13px; fill: var(--signal); font-weight: 700; }
+.overlay .tick { font-size: 11px; fill: var(--antique); stroke-width: 3px; letter-spacing: 0.1em; }
 .home-dot { fill: var(--signal); }
 .home-ring { fill: none; stroke: var(--signal); stroke-width: 1; }
 .home-pulse { fill: none; stroke: var(--signal); stroke-width: 1; transform-box: fill-box; transform-origin: center; animation: pulse 2.4s ease-out infinite; }
 @keyframes pulse { from { transform: scale(0.6); opacity: 0.8; } to { transform: scale(3); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .home-pulse { animation: none; opacity: 0; } }
 
-.views, .zoom { position: absolute; top: 20px; display: flex; z-index: 3; border: 1px solid rgba(196, 154, 74, 0.3); background: rgba(31, 7, 11, 0.88); }
-.views { left: 20px; }
-.zoom { right: 20px; }
+/* controls match the Contact page chips: oxblood outline, filled when active */
+.views, .zoom { position: absolute; top: 16px; display: flex; gap: 6px; z-index: 3; }
+.views { left: 16px; }
+.zoom { right: 16px; }
 .views button, .zoom button { font-family: var(--caps); font-weight: 700; font-size: 13px; line-height: normal; letter-spacing: 0.12em; text-transform: uppercase;
-  background: transparent; border: 0; padding: 10px 14px; cursor: pointer; color: var(--ivory); }
-.views button + button, .zoom button + button { border-left: 1px solid rgba(196, 154, 74, 0.3); }
-.views button[aria-pressed="true"] { color: var(--oxblood); background: var(--brass); }
-.views button:hover:not([aria-pressed="true"]), .zoom button:hover { color: var(--brass); }
-.zoom button { font-family: var(--body); font-weight: 500; font-size: 16px; letter-spacing: 0; padding: 8px 14px; }
+  background: var(--ivory); border: 1px solid var(--oxblood); padding: 7px 12px; cursor: pointer; color: var(--oxblood); }
+.views button[aria-pressed="true"] { color: var(--ivory); background: var(--oxblood); }
+.views button:hover:not([aria-pressed="true"]), .zoom button:hover { color: var(--signal); border-color: var(--signal); }
+.zoom button { font-family: var(--body); font-weight: 500; font-size: 16px; letter-spacing: 0; padding: 4px 12px; }
 button:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
-.hint { position: absolute; right: 20px; bottom: 18px; z-index: 3; font-size: 12px; line-height: normal; color: var(--smoke); pointer-events: none; white-space: pre; }
-.scale { position: absolute; left: 20px; bottom: 18px; z-index: 3; pointer-events: none; font-family: var(--caps); font-weight: 600; font-size: 11px; letter-spacing: 0.12em; color: rgba(196, 154, 74, 0.8); }
-.scale i { display: block; height: 5px; margin-top: 4px; border: 0.8px solid rgba(196, 154, 74, 0.8); border-top: 0; }
-.status { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 13px; color: var(--smoke); z-index: 3; text-align: center; }
-.tip { position: absolute; z-index: 4; pointer-events: none; background: var(--deep); border: 1px solid var(--brass); padding: 8px 12px 9px; min-width: 120px; }
-.tip b { display: block; font-family: var(--display); font-weight: 400; font-size: 17px; line-height: 1.2; }
-.tip small { display: block; white-space: nowrap; font-family: var(--caps); font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brass); margin-top: 3px; }
+.hint { position: absolute; right: 16px; bottom: 12px; z-index: 3; font-family: var(--display); font-style: italic; font-weight: 300; font-size: 14px; line-height: normal; color: var(--ink); pointer-events: none; white-space: pre; }
+.scale { position: absolute; left: 16px; bottom: 12px; z-index: 3; pointer-events: none; font-family: var(--caps); font-weight: 600; font-size: 11px; letter-spacing: 0.12em; color: var(--antique); }
+.scale i { display: block; height: 5px; margin-top: 4px; border: 0.8px solid var(--antique); border-top: 0; }
+.status { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 13px; color: var(--ink); z-index: 3; text-align: center; }
+.tip { position: absolute; z-index: 4; pointer-events: none; background: var(--ivory); border: 1px solid var(--oxblood); padding: 8px 12px 9px; min-width: 120px; box-shadow: 0 0 0 3px var(--ivory); }
+.tip b { display: block; font-family: var(--display); font-weight: 400; font-size: 17px; line-height: 1.2; color: var(--oxblood); }
+.tip small { display: block; white-space: nowrap; font-family: var(--caps); font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--antique); margin-top: 3px; }
 
-/* ---------- index ---------- */
-.index { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 20px; padding: 40px 36px 32px 38px; border-left: 1px solid var(--rule); }
-.eyebrow { font-family: var(--caps); font-weight: 500; font-size: 18px; line-height: 1.211; letter-spacing: 0.14em; color: var(--brass); text-transform: uppercase; }
-.caption { font-size: 15px; line-height: 1.55; color: var(--smoke); }
-.index h3 { display: flex; justify-content: space-between; font-family: var(--caps); font-weight: 700; font-size: 14px; line-height: normal; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brass); }
-.index h3 span { color: var(--smoke); letter-spacing: 0.08em; }
+/* ---------- index: same typography as the On repeat list above it ---------- */
+.index { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 20px; padding: 8px 0 4px; }
+.eyebrow { font-family: var(--caps); font-weight: 500; font-size: 18px; line-height: 1.211; letter-spacing: 0.14em; color: var(--antique); text-transform: uppercase; }
+.caption { font-size: 16px; line-height: 1.6; color: var(--ink); }
+.index h3 { display: flex; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--rule); font-family: var(--caps); font-weight: 500; font-size: 14px; line-height: normal; letter-spacing: 0.14em; text-transform: uppercase; color: var(--antique); }
+.index h3 span { color: var(--oxblood); font-family: var(--display); font-weight: 300; font-size: 16px; letter-spacing: 0; }
 #countries { display: flex; flex-wrap: wrap; gap: 7px; }
-.chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; background: rgba(196, 154, 74, 0.1); border: 1px solid rgba(196, 154, 74, 0.45); cursor: pointer;
-  font-family: var(--caps); font-weight: 700; font-size: 12.5px; line-height: normal; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
-.chip.home { background: transparent; border-color: rgba(255, 91, 31, 0.9); }
-.chip .tag { font-size: 11px; letter-spacing: 0.14em; color: var(--signal); }
-.chip:hover, .chip[aria-pressed="true"] { border-color: var(--brass); background: rgba(196, 154, 74, 0.28); }
-.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-family: var(--caps); font-weight: 700; font-size: 12px; line-height: normal; letter-spacing: 0.12em; text-transform: uppercase; color: var(--smoke); }
+.chip { display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px; background: transparent; border: 1px solid rgba(43, 11, 16, 0.55); cursor: pointer; color: var(--oxblood);
+  font-family: var(--body); font-weight: 500; font-size: 13px; line-height: normal; white-space: nowrap; }
+.chip.home { border-color: var(--signal); }
+.chip .tag { font-family: var(--caps); font-weight: 700; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--signal); }
+.chip:hover { border-color: var(--oxblood); background: rgba(196, 154, 74, 0.18); }
+.chip[aria-pressed="true"] { background: var(--oxblood); border-color: var(--oxblood); color: var(--ivory); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-family: var(--caps); font-weight: 600; font-size: 12px; line-height: normal; letter-spacing: 0.12em; text-transform: uppercase; color: var(--antique); }
 .legend span { display: flex; align-items: center; gap: 9px; }
 .legend i { display: inline-block; width: 24px; flex: none; }
-.k-route { border-top: 1px solid rgba(242, 232, 213, 0.75); }
-.k-rail { border-top: 1px dashed var(--brass); }
-.k-visited { height: 10px; background: rgba(196, 154, 74, 0.34); border: 1px solid var(--brass); }
+.k-route { border-top: 1px solid rgba(43, 11, 16, 0.7); }
+.k-rail { border-top: 1px dashed var(--antique); }
+.k-visited { height: 10px; background: #E4D1AB; border: 0.9px solid var(--antique); }
 .k-home { width: 10px !important; height: 10px; border-radius: 50%; border: 1.5px solid var(--signal); }
 .spacer { flex: 1; }
-.home { display: flex; gap: 8px; font-family: var(--caps); font-weight: 700; font-size: 12px; line-height: normal; letter-spacing: 0.16em; color: var(--smoke); border-top: 1px solid var(--rule); padding-top: 13px; flex-wrap: wrap; text-transform: uppercase; }
-.home span, .home b { white-space: pre; }
-.home b { color: var(--signal); font-weight: 700; }
+.homebase { display: flex; gap: 8px; font-family: var(--caps); font-weight: 600; font-size: 12px; line-height: normal; letter-spacing: 0.16em; color: var(--antique); border-top: 1px solid var(--rule); padding-top: 13px; flex-wrap: wrap; text-transform: uppercase; }
+.homebase span, .homebase b { white-space: pre; }
+.homebase b { color: var(--signal); font-weight: 700; }
 
 @media (max-width: 1199px) {
-  .panel { aspect-ratio: auto; min-height: 49.67vw; }   /* grows if the index needs more room */
-  .index { gap: 16px; padding: 30px 26px 24px 28px; }
-  .caption { font-size: 14px; }
-  .chip { padding: 5px 8px; font-size: 11.5px; }
+  .panel { aspect-ratio: auto; min-height: 49.67vw; gap: 36px; }
+  .stage { flex-basis: 66%; }
+  .index { gap: 16px; }
+  .caption { font-size: 15px; }
+  .chip { padding: 4px 8px; font-size: 12px; }
   .legend { gap: 8px 14px; font-size: 11px; }
-  .views button { padding: 8px 11px; font-size: 12px; }
+  .views button { padding: 6px 9px; font-size: 12px; }
 }
 /* stacked under 860: map on top, index underneath */
 @media (max-width: 859px) {
-  .panel { flex-direction: column; aspect-ratio: auto; }
-  .stage { flex: none; width: 100%; height: 480px; }
-  .index { flex: none; border-left: 0; border-top: 1px solid var(--rule); padding: 30px 32px 26px; gap: 20px; }
-  .caption { font-size: 15px; }
-  .chip { padding: 6px 10px; font-size: 12.5px; }
+  .panel { flex-direction: column; aspect-ratio: auto; gap: 24px; }
+  .stage { flex: none; width: 100%; height: 460px; }
+  .index { flex: none; gap: 18px; padding: 0; }
+  .caption { font-size: 16px; }
+  .chip { padding: 5px 10px; font-size: 13px; }
 }
 @media (max-width: 767px) {
-  .stage { height: 380px; }
-  .views, .zoom { top: 14px; }
-  .views { left: 14px; }
-  .zoom { right: 14px; }
-  .views button { padding: 7px 9px; font-size: 11.5px; }
-  .zoom button { padding: 5px 11px; }
-  .hint { right: 14px; bottom: 12px; font-size: 11px; }
-  .scale { left: 14px; bottom: 12px; }
-  .index { padding: 24px 22px 22px; }
+  .stage { height: 360px; }
+  .views, .zoom { top: 10px; }
+  .views { left: 0; }
+  .zoom { right: 0; }
+  .views { gap: 4px; }
+  .views button { padding: 5px 7px; font-size: 11.5px; }
+  .zoom button { padding: 3px 10px; }
+  .hint { right: 0; bottom: 6px; font-size: 13px; }
+  .scale { left: 0; bottom: 6px; }
 }
 </style>
 
@@ -130,7 +136,7 @@ button:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
   <div class="stage" id="stage">
     <svg class="map" id="map" tabindex="0" role="application" aria-roledescription="map"
       aria-label="Interactive map of the countries Evan has visited and the routes he has booked, with Chicago as home base. Use arrow keys to pan and plus or minus to zoom.">
-      <rect id="sea" width="100%" height="100%" fill="#240910"/>
+      <rect id="sea" width="100%" height="100%" fill="transparent"/>
       <g class="zoomed" id="zoomed">
         <path class="grat" id="grat"/>
         <path class="equator" id="equator"/>
@@ -166,7 +172,7 @@ button:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
       <span><i class="k-home"></i>Home base</span>
     </div>
     <div class="spacer"></div>
-    <p class="home"><span>Home base  ·</span> <b>41.8923° N  ·  87.6354° W</b></p>
+    <p class="homebase"><span>Home base  ·</span> <b>41.8923° N  ·  87.6354° W</b></p>
   </aside>
 </section>
 

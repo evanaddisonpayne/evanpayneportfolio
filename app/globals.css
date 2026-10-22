@@ -1226,7 +1226,7 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
   .ab-otc-text { padding-top: 22px; max-width: 564px; }
   .otc-list { padding-top: 123px; }
   .otc-list div { gap: 24px; padding: 14px 0; }
-  .ab-globe { margin-top: 72px; width: min(1208px, 100% - 2 * var(--gut) + 8px); }
+  .ab-globe { margin-top: 72px; }
 }
 
 /* ==========================================================================
