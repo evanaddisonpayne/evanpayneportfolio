@@ -142,7 +142,7 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
   -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
 .pattern-passport { inset: 0; color: var(--oxblood); opacity: 1;   /* vector art carries Figma's own stroke opacities */
   -webkit-mask-image: url(/art/passport.svg); mask-image: url(/art/passport.svg);
-  -webkit-mask-repeat: repeat-x; mask-repeat: repeat-x; -webkit-mask-size: 1440px 1060px; mask-size: 1440px 1060px; -webkit-mask-position: center top; mask-position: center top; }
+  -webkit-mask-repeat: repeat-x; mask-repeat: repeat-x; -webkit-mask-size: 1440px 12000px; mask-size: 1440px 12000px; -webkit-mask-position: center top; mask-position: center top; }
 .dark .pattern-passport { color: var(--brass); opacity: .53; }
 /* 1440 x 900 art, top-anchored and centered; on screens wider than 1440 it grows with the
    section (bottom-anchored) so the rays always reach both edges */
@@ -1360,7 +1360,7 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
 .ab-habit .b { font-size: 16px; line-height: 1.6; color: var(--smoke); }
 
 .ab-otc { position: relative; overflow: hidden; padding: 61px 0; }
-.ab-otc .pattern-passport { -webkit-mask-repeat: repeat; mask-repeat: repeat; -webkit-mask-size: 1440px 980px; mask-size: 1440px 980px; }
+.ab-otc .pattern-passport { -webkit-mask-size: 1440px 11094.34px; mask-size: 1440px 11094.34px; }
 .ab-otc-cols { display: flex; flex-direction: column; gap: 32px; }
 .ab-otc-copy { display: flex; flex-direction: column; gap: 11px; }
 .ab-otc-text { padding-top: 15px; font-size: 18px; line-height: 1.65; color: rgba(43, 11, 16, .82); }
