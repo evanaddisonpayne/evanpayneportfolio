@@ -138,7 +138,7 @@ export function Portrait() {
   return (
     <div className="portrait">
       <div className="inner">
-        <img src="/art/portrait.svg" alt="Engraved line portrait of Evan in a cap and aviator sunglasses, smiling" width={768} height={1024} />
+        <img src="/art/portrait.svg" alt="Engraved line portrait of Evan in a cap and aviator sunglasses, smiling" width={420} height={560} />
       </div>
     </div>
   );

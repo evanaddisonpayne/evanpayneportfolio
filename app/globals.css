@@ -140,17 +140,17 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
 /* ---------- patterns (alpha masks tinted per section, desktop size, centered and clipped) ---------- */
 .pattern { position: absolute; pointer-events: none; z-index: 0; background: currentColor;
   -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
-.pattern-passport { inset: 0; color: var(--antique); opacity: .22;
-  -webkit-mask-image: url(/art/passport.webp); mask-image: url(/art/passport.webp);
+.pattern-passport { inset: 0; color: var(--oxblood); opacity: 1;   /* vector art carries Figma's own stroke opacities */
+  -webkit-mask-image: url(/art/passport.svg); mask-image: url(/art/passport.svg);
   -webkit-mask-repeat: repeat-x; mask-repeat: repeat-x; -webkit-mask-size: 1440px 1060px; mask-size: 1440px 1060px; -webkit-mask-position: center top; mask-position: center top; }
-.dark .pattern-passport { color: var(--brass); opacity: .08; }
+.dark .pattern-passport { color: var(--brass); opacity: .53; }
 /* 1440 x 900 art, top-anchored and centered; on screens wider than 1440 it grows with the
    section (bottom-anchored) so the rays always reach both edges */
-.pattern-sunrise { left: 50%; top: 0; width: 1440px; height: 900px; transform: translateX(-50%); color: var(--brass); opacity: .55;
-  -webkit-mask-image: url(/art/sunrise.webp); mask-image: url(/art/sunrise.webp); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
+.pattern-sunrise { left: 50%; top: 0; width: 1440px; height: 900px; transform: translateX(-50%); color: var(--brass); opacity: 1;
+  -webkit-mask-image: url(/art/sunrise.svg); mask-image: url(/art/sunrise.svg); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
 @media (min-width: 1280px) { .pattern-sunrise { top: auto; bottom: 0; width: max(1440px, 100%); height: auto; aspect-ratio: 1440 / 900; } }
-.pattern-rays { left: 50%; top: 0; width: 1440px; height: 820px; transform: translateX(-50%); color: var(--oxblood); opacity: .55;
-  -webkit-mask-image: url(/art/rays.webp); mask-image: url(/art/rays.webp); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
+.pattern-rays { left: 50%; top: 0; width: 1440px; height: 820px; transform: translateX(-50%); color: var(--oxblood); opacity: 1;
+  -webkit-mask-image: url(/art/rays.svg); mask-image: url(/art/rays.svg); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
 .dark .pattern-rays { color: var(--brass); opacity: .35; }
 
 /* microprint tape (Figma: DM Sans Medium 6 / 1.2 tracking, oxblood 50%) */
@@ -442,7 +442,7 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
 .portrait::before { inset: calc(1.7241% - 0.6px) calc(2.2727% - 0.6px); border: 1.2px solid var(--brass); }
 .portrait::after { inset: calc(2.7586% - 0.3px) calc(3.6364% - 0.3px); border: 0.6px solid color-mix(in srgb, var(--brass) 85%, transparent); }
 .portrait .inner { position: absolute; inset: 1.7241% 2.2727%; overflow: hidden; }
-.portrait .inner img { position: absolute; left: -1.905%; top: -1.071%; width: 105.714%; height: auto; max-width: none; object-fit: unset; }
+.portrait .inner img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: unset; }
 
 /* tarot */
 .tarot { width: 100%; aspect-ratio: 216 / 360; }
@@ -678,7 +678,7 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
 /* ==========================================================================
    CONTACT  (Figma Contact · Desktop 1440 / Laptop 1024 / Tablet 768 / Mobile 390, Sent state)
    ========================================================================== */
-.pattern-corner.c560 { height: 471px; background-image: url(/art/rays_corner_560.webp); background-size: 1440px 471px; }
+.pattern-corner.c560 { height: 471px; background-image: url(/art/rays_corner_560.svg); background-size: 1440px 471px; }
 .ct-hero { position: relative; overflow: hidden; padding: 66px 0 61px; }
 .ct-intro { display: flex; flex-direction: column; gap: 18px; }
 .ct-h1 { font-family: var(--display); font-weight: 300; font-size: 43px; line-height: 1.04; }
@@ -1006,7 +1006,7 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
    ========================================================================== */
 /* rays from the top-right corner (exported from Figma "Pattern/Rays", 1440 wide, centered) */
 .pattern-corner { position: absolute; left: 50%; top: 0; width: 1440px; height: 481px; transform: translateX(-50%); pointer-events: none; z-index: 0;
-  background: url(/art/rays_corner.webp) no-repeat left top / 1440px 481px; }
+  background: url(/art/rays_corner.svg) no-repeat left top / 1440px 481px; }
 .wk-head { position: relative; overflow: hidden; padding: 61px 0 34px; }
 .wk-stack { display: flex; flex-direction: column; gap: 11px; }
 .wk-h1 { font-family: var(--display); font-weight: 300; font-size: 35px; line-height: 1.06; }
@@ -1232,7 +1232,7 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
 /* ==========================================================================
    RESUME  (Figma Resume · Desktop 1440 / Laptop 1024 / Tablet 768 / Mobile 390)
    ========================================================================== */
-.pattern-corner.tall { height: 640px; background-image: url(/art/rays_corner_640.webp); background-size: 1440px 640px; }
+.pattern-corner.tall { height: 640px; background-image: url(/art/rays_corner_640.svg); background-size: 1440px 640px; }
 .rs-head { position: relative; overflow: hidden; padding: 61px 0; }
 .rs-head-row { display: flex; flex-direction: column; gap: 32px; }
 .rs-intro { display: flex; flex-direction: column; gap: 21px; }
