@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where I've Been</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,14,400;0,14,500;1,14,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&display=swap">
+<style>
+/* Travel map: flat Mercator chart, engraved in brass on oxblood. Map left, index right; stacks when the frame is under 860 wide. */
+:root {
+  color-scheme: dark;
+  --oxblood: #2B0B10; --deep: #1F070B; --ground: #240910; --ivory: #F2E8D5; --brass: #C49A4A;
+  --antique: #735420; --smoke: #A88E86; --signal: #FF5B1F; --rule: rgba(196, 154, 74, 0.28);
+  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --caps: "Cormorant SC", "Cormorant Garamond", Georgia, serif;
+  --body: "DM Sans", "Helvetica Neue", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: transparent; color: var(--ivory); }
+body { font-family: var(--body); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+p, h3, ul { margin: 0; padding: 0; }
+button { font: inherit; color: inherit; }
+
+.panel { position: relative; display: flex; width: 100%; aspect-ratio: 1208 / 600; background: var(--oxblood); border: 1.2px solid rgba(196, 154, 74, 0.55); overflow: hidden; }
+.panel::after { content: ""; position: absolute; inset: 4.8px; border: 0.6px solid rgba(196, 154, 74, 0.22); pointer-events: none; z-index: 5; }
+
+/* ---------- map stage ---------- */
+.stage { position: relative; flex: 0 0 66.5%; background: var(--ground); overflow: hidden; }
+svg.map { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; touch-action: pan-y; outline: none; user-select: none; -webkit-user-select: none; }
+svg.map.dragging { cursor: grabbing; }
+svg.map:focus-visible { box-shadow: inset 0 0 0 2px var(--brass); }
+.zoomed path { vector-effect: non-scaling-stroke; }
+.grat { fill: none; stroke: rgba(196, 154, 74, 0.10); stroke-width: 0.6; }
+.equator { fill: none; stroke: rgba(196, 154, 74, 0.22); stroke-width: 0.6; stroke-dasharray: 2 4; }
+.land path { fill: rgba(196, 154, 74, 0.06); stroke: rgba(196, 154, 74, 0.42); stroke-width: 0.6; stroke-linejoin: round; }
+.land path.been { fill: rgba(196, 154, 74, 0.26); stroke: var(--brass); stroke-width: 1; cursor: pointer; }
+.land path.home { fill: rgba(196, 154, 74, 0.15); }
+.land path.hover { fill: rgba(242, 232, 213, 0.16); stroke: rgba(242, 232, 213, 0.9); }
+.land path.sel { stroke: var(--signal); stroke-width: 1.6; }
+.routes path.r { fill: none; stroke: rgba(242, 232, 213, 0.58); stroke-linecap: round; pointer-events: none; }
+.routes path.r.rail { stroke: var(--brass); }
+.routes path.r.hot { stroke: var(--signal); }
+.routes path.hit { fill: none; stroke: transparent; stroke-width: 10; pointer-events: stroke; cursor: pointer; }
+.overlay { pointer-events: none; }
+.overlay .ap { fill: var(--ground); stroke: rgba(242, 232, 213, 0.9); stroke-width: 0.9; pointer-events: all; cursor: pointer; }
+.overlay .ap.hot { stroke: var(--signal); }
+.overlay text { font-family: var(--caps); font-weight: 600; letter-spacing: 0.08em; paint-order: stroke; stroke: rgba(31, 7, 11, 0.9); stroke-width: 3px; stroke-linejoin: round; }
+.overlay .city { font-size: 12px; fill: rgba(242, 232, 213, 0.88); }
+.overlay .home-label { font-size: 13px; fill: var(--signal); }
+.overlay .tick { font-size: 11px; fill: rgba(196, 154, 74, 0.6); stroke-width: 2.5px; letter-spacing: 0.1em; }
+.home-dot { fill: var(--signal); }
+.home-ring { fill: none; stroke: var(--signal); stroke-width: 1; }
+.home-pulse { fill: none; stroke: var(--signal); stroke-width: 1; transform-box: fill-box; transform-origin: center; animation: pulse 2.4s ease-out infinite; }
+@keyframes pulse { from { transform: scale(0.6); opacity: 0.8; } to { transform: scale(3); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .home-pulse { animation: none; opacity: 0; } }
+
+.views, .zoom { position: absolute; top: 20px; display: flex; z-index: 3; border: 1px solid rgba(196, 154, 74, 0.3); background: rgba(31, 7, 11, 0.88); }
+.views { left: 20px; }
+.zoom { right: 20px; }
+.views button, .zoom button { font-family: var(--caps); font-weight: 700; font-size: 13px; line-height: normal; letter-spacing: 0.12em; text-transform: uppercase;
+  background: transparent; border: 0; padding: 10px 14px; cursor: pointer; color: var(--ivory); }
+.views button + button, .zoom button + button { border-left: 1px solid rgba(196, 154, 74, 0.3); }
+.views button[aria-pressed="true"] { color: var(--oxblood); background: var(--brass); }
+.views button:hover:not([aria-pressed="true"]), .zoom button:hover { color: var(--brass); }
+.zoom button { font-family: var(--body); font-weight: 500; font-size: 16px; letter-spacing: 0; padding: 8px 14px; }
+button:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+.hint { position: absolute; right: 20px; bottom: 18px; z-index: 3; font-size: 12px; line-height: normal; color: var(--smoke); pointer-events: none; white-space: pre; }
+.scale { position: absolute; left: 20px; bottom: 18px; z-index: 3; pointer-events: none; font-family: var(--caps); font-weight: 600; font-size: 11px; letter-spacing: 0.12em; color: rgba(196, 154, 74, 0.8); }
+.scale i { display: block; height: 5px; margin-top: 4px; border: 0.8px solid rgba(196, 154, 74, 0.8); border-top: 0; }
+.status { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 13px; color: var(--smoke); z-index: 3; text-align: center; }
+.tip { position: absolute; z-index: 4; pointer-events: none; background: var(--deep); border: 1px solid var(--brass); padding: 8px 12px 9px; min-width: 120px; }
+.tip b { display: block; font-family: var(--display); font-weight: 400; font-size: 17px; line-height: 1.2; }
+.tip small { display: block; white-space: nowrap; font-family: var(--caps); font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brass); margin-top: 3px; }
+
+/* ---------- index ---------- */
+.index { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 20px; padding: 40px 36px 32px 38px; border-left: 1px solid var(--rule); }
+.eyebrow { font-family: var(--caps); font-weight: 500; font-size: 18px; line-height: 1.211; letter-spacing: 0.14em; color: var(--brass); text-transform: uppercase; }
+.caption { font-size: 15px; line-height: 1.55; color: var(--smoke); }
+.index h3 { display: flex; justify-content: space-between; font-family: var(--caps); font-weight: 700; font-size: 14px; line-height: normal; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brass); }
+.index h3 span { color: var(--smoke); letter-spacing: 0.08em; }
+#countries { display: flex; flex-wrap: wrap; gap: 7px; }
+.chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; background: rgba(196, 154, 74, 0.1); border: 1px solid rgba(196, 154, 74, 0.45); cursor: pointer;
+  font-family: var(--caps); font-weight: 700; font-size: 12.5px; line-height: normal; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+.chip.home { background: transparent; border-color: rgba(255, 91, 31, 0.9); }
+.chip .tag { font-size: 11px; letter-spacing: 0.14em; color: var(--signal); }
+.chip:hover, .chip[aria-pressed="true"] { border-color: var(--brass); background: rgba(196, 154, 74, 0.28); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-family: var(--caps); font-weight: 700; font-size: 12px; line-height: normal; letter-spacing: 0.12em; text-transform: uppercase; color: var(--smoke); }
+.legend span { display: flex; align-items: center; gap: 9px; }
+.legend i { display: inline-block; width: 24px; flex: none; }
+.k-route { border-top: 1px solid rgba(242, 232, 213, 0.75); }
+.k-rail { border-top: 1px dashed var(--brass); }
+.k-visited { height: 10px; background: rgba(196, 154, 74, 0.34); border: 1px solid var(--brass); }
+.k-home { width: 10px !important; height: 10px; border-radius: 50%; border: 1.5px solid var(--signal); }
+.spacer { flex: 1; }
+.home { display: flex; gap: 8px; font-family: var(--caps); font-weight: 700; font-size: 12px; line-height: normal; letter-spacing: 0.16em; color: var(--smoke); border-top: 1px solid var(--rule); padding-top: 13px; flex-wrap: wrap; text-transform: uppercase; }
+.home span, .home b { white-space: pre; }
+.home b { color: var(--signal); font-weight: 700; }
+
+@media (max-width: 1199px) {
+  .panel { aspect-ratio: auto; min-height: 49.67vw; }   /* grows if the index needs more room */
+  .index { gap: 16px; padding: 30px 26px 24px 28px; }
+  .caption { font-size: 14px; }
+  .chip { padding: 5px 8px; font-size: 11.5px; }
+  .legend { gap: 8px 14px; font-size: 11px; }
+  .views button { padding: 8px 11px; font-size: 12px; }
+}
+/* stacked under 860: map on top, index underneath */
+@media (max-width: 859px) {
+  .panel { flex-direction: column; aspect-ratio: auto; }
+  .stage { flex: none; width: 100%; height: 480px; }
+  .index { flex: none; border-left: 0; border-top: 1px solid var(--rule); padding: 30px 32px 26px; gap: 20px; }
+  .caption { font-size: 15px; }
+  .chip { padding: 6px 10px; font-size: 12.5px; }
+}
+@media (max-width: 767px) {
+  .stage { height: 380px; }
+  .views, .zoom { top: 14px; }
+  .views { left: 14px; }
+  .zoom { right: 14px; }
+  .views button { padding: 7px 9px; font-size: 11.5px; }
+  .zoom button { padding: 5px 11px; }
+  .hint { right: 14px; bottom: 12px; font-size: 11px; }
+  .scale { left: 14px; bottom: 12px; }
+  .index { padding: 24px 22px 22px; }
+}
+</style>
+
+<section class="panel" aria-label="Where I've been: travel map">
+  <div class="stage" id="stage">
+    <svg class="map" id="map" tabindex="0" role="application" aria-roledescription="map"
+      aria-label="Interactive map of the countries Evan has visited and the routes he has booked, with Chicago as home base. Use arrow keys to pan and plus or minus to zoom.">
+      <rect id="sea" width="100%" height="100%" fill="#240910"/>
+      <g class="zoomed" id="zoomed">
+        <path class="grat" id="grat"/>
+        <path class="equator" id="equator"/>
+        <g class="land" id="land"></g>
+        <g class="routes" id="routes"></g>
+      </g>
+      <g class="overlay" id="overlay"></g>
+    </svg>
+    <div class="views" role="group" aria-label="Preset views">
+      <button type="button" data-view="all" aria-pressed="true">Everything</button>
+      <button type="button" data-view="us" aria-pressed="false">U.S.</button>
+      <button type="button" data-view="eu" aria-pressed="false">Europe</button>
+    </div>
+    <div class="zoom" role="group" aria-label="Zoom">
+      <button type="button" id="z-out" aria-label="Zoom out">−</button>
+      <button type="button" id="z-in" aria-label="Zoom in">+</button>
+    </div>
+    <div class="scale" id="scale" aria-hidden="true"><span></span><i></i></div>
+    <div class="hint" id="hint">Drag to pan  ·  Double-click to zoom</div>
+    <div class="status" id="status" hidden></div>
+    <div class="tip" id="tip" hidden></div>
+  </div>
+
+  <aside class="index" aria-label="Places">
+    <p class="eyebrow">Where I've been</p>
+    <p class="caption">Flight and train bookings from 2016 to 2026, pulled straight from my inbox. Drag to spin it. Pick a country or a route to fly there.</p>
+    <h3>Countries <span id="ccount"></span></h3>
+    <div id="countries"></div>
+    <div class="legend" aria-hidden="true">
+      <span><i class="k-route"></i>Flight</span>
+      <span><i class="k-rail"></i>Rail</span>
+      <span><i class="k-visited"></i>Been there</span>
+      <span><i class="k-home"></i>Home base</span>
+    </div>
+    <div class="spacer"></div>
+    <p class="home"><span>Home base  ·</span> <b>41.8923° N  ·  87.6354° W</b></p>
+  </aside>
+</section>
+
+<script src="/map/d3.v7.9.0.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  const DATA = {"ap":{"SFO":["San Francisco",37.62,-122.38,"US","SFO"],"OAK":["Oakland",37.72,-122.22,"US","OAK"],"BUR":["Burbank",34.2,-118.36,"US","BUR"],"LAX":["Los Angeles",33.94,-118.41,"US","LAX"],"SAN":["San Diego",32.73,-117.19,"US","SAN"],"LAS":["Las Vegas",36.08,-115.15,"US","LAS"],"PHX":["Phoenix",33.43,-112.01,"US","PHX"],"DEN":["Denver",39.86,-104.67,"US","DEN"],"DFW":["Dallas–Fort Worth",32.9,-97.04,"US","DFW"],"DAL":["Dallas Love Field",32.85,-96.85,"US","DAL"],"IAH":["Houston",29.98,-95.34,"US","IAH"],"TUL":["Tulsa",36.2,-95.89,"US","TUL"],"XNA":["Northwest Arkansas",36.28,-94.31,"US","XNA"],"SGF":["Springfield, MO",37.25,-93.39,"US","SGF"],"MSP":["Minneapolis",44.88,-93.22,"US","MSP"],"ORD":["Chicago O'Hare",41.98,-87.9,"US","ORD"],"MDW":["Chicago Midway",41.79,-87.75,"US","MDW"],"Chicago Union Station":["Chicago Union Station",41.879,-87.64,"US",""],"Milwaukee Intermodal":["Milwaukee",43.034,-87.917,"US",""],"BNA":["Nashville",36.12,-86.68,"US","BNA"],"ATL":["Atlanta",33.64,-84.43,"US","ATL"],"MOB":["Mobile",30.69,-88.24,"US","MOB"],"VPS":["Destin",30.48,-86.53,"US","VPS"],"MCO":["Orlando",28.43,-81.31,"US","MCO"],"DCA":["Washington",38.85,-77.04,"US","DCA"],"LGA":["New York LaGuardia",40.78,-73.87,"US","LGA"],"JFK":["New York JFK",40.64,-73.78,"US","JFK"],"CUN":["Cancún",21.04,-86.88,"MX","CUN"],"OGG":["Maui",20.9,-156.43,"US","OGG"],"DUB":["Dublin",53.42,-6.27,"IE","DUB"],"STN":["London Stansted",51.89,0.24,"GB","STN"],"LGW":["London Gatwick",51.15,-0.19,"GB","LGW"],"AMS":["Amsterdam Schiphol",52.31,4.76,"NL","AMS"],"Amsterdam Centraal":["Amsterdam Centraal",52.379,4.9,"NL",""],"CPH":["Copenhagen",55.62,12.65,"DK","CPH"],"BER":["Berlin",52.37,13.5,"DE","BER"],"MUC":["Munich",48.35,11.79,"DE","MUC"],"KRK":["Kraków",50.08,19.78,"PL","KRK"],"Paris Nord":["Paris Nord",48.88,2.355,"FR",""],"Paris Est":["Paris Est",48.877,2.359,"FR",""],"Lille Flandres":["Lille",50.637,3.071,"FR",""],"Reims":["Reims",49.259,4.024,"FR",""],"Karlsruhe Hbf":["Karlsruhe",48.994,8.4,"DE",""],"Basel SBB":["Basel",47.547,7.59,"CH",""],"Zurich HB":["Zurich",47.378,8.54,"CH",""],"Luzern":["Lucerne",47.05,8.31,"CH",""],"Munich Hbf":["Munich Hbf",48.14,11.558,"DE",""],"Innsbruck Hbf":["Innsbruck Hbf",47.263,11.401,"AT",""],"Prague hl.n.":["Prague hl.n.",50.083,14.435,"CZ",""],"Kraków Główny":["Kraków Główny",50.068,19.947,"PL",""],"Brussels-Midi":["Brussels-Midi",50.836,4.336,"BE",""],"Frankfurt Hbf":["Frankfurt Hbf",50.107,8.663,"DE",""],"Berlin Hbf":["Berlin Hbf",52.525,13.369,"DE",""]},"routes":[["ORD","XNA",17,"F","2018","2026"],["BUR","OAK",16,"F","2023","2024"],["DEN","SFO",14,"F","2023","2025"],["BUR","SFO",12,"F","2023","2024"],["LAX","SFO",10,"F","2023","2024"],["ORD","SFO",9,"F","2023","2026"],["LAS","TUL",8,"F","2016","2023"],["DFW","XNA",7,"F","2019","2024"],["DFW","SFO",7,"F","2023","2024"],["Chicago Union Station","Milwaukee Intermodal",6,"R","2025","2026"],["LGA","XNA",5,"F","2019","2022"],["LAS","SFO",5,"F","2023","2025"],["LAS","XNA",4,"F","2016","2022"],["OGG","SFO",4,"F","2023","2024"],["ATL","XNA",3,"F","2020","2022"],["DCA","LGA",3,"F","2021","2021"],["DCA","XNA",3,"F","2021","2021"],["DAL","DEN",3,"F","2023","2024"],["PHX","SFO",3,"F","2024","2024"],["ORD","PHX",3,"F","2024","2024"],["SGF","VPS",2,"F","2017","2017"],["ORD","TUL",2,"F","2018","2018"],["LAX","TUL",2,"F","2018","2018"],["DEN","DFW",2,"F","2019","2019"],["ATL","MOB",2,"F","2020","2020"],["LGA","ORD",2,"F","2021","2022"],["VPS","XNA",2,"F","2021","2021"],["LAX","XNA",2,"F","2022","2023"],["DEN","XNA",2,"F","2023","2023"],["DEN","TUL",2,"F","2023","2023"],["BUR","PHX",2,"F","2024","2024"],["MDW","SFO",2,"F","2024","2024"],["MUC","SFO",2,"F","2024","2024"],["IAH","SFO",2,"F","2024","2025"],["PHX","TUL",2,"F","2024","2024"],["CPH","ORD",2,"F","2026","2026"],["AMS","CPH",2,"F","2026","2026"],["DUB","ORD",2,"F","2026","2026"],["MSP","XNA",1,"F","2022","2022"],["MSP","SFO",1,"F","2022","2022"],["AMS","ATL",1,"F","2022","2022"],["Lille Flandres","Paris Nord",1,"R","2022","2022"],["Paris Est","Reims",1,"R","2022","2022"],["Karlsruhe Hbf","Paris Est",1,"R","2022","2022"],["BER","STN",1,"F","2023","2023"],["JFK","LGW",1,"F","2023","2023"],["DFW","JFK",1,"F","2023","2023"],["OAK","OGG",1,"F","2023","2023"],["DAL","LAX",1,"F","2023","2023"],["DAL","LAS",1,"F","2023","2023"],["SAN","SFO",1,"F","2024","2024"],["DAL","SAN",1,"F","2024","2024"],["DAL","ORD",1,"F","2024","2024"],["DFW","ORD",1,"F","2024","2024"],["BNA","DEN",1,"F","2024","2024"],["BNA","MDW",1,"F","2024","2024"],["KRK","MUC",1,"F","2024","2024"],["DFW","IAH",1,"F","2024","2024"],["LAS","ORD",1,"F","2025","2025"],["DEN","ORD",1,"F","2025","2025"],["CUN","ORD",1,"F","2025","2025"],["CUN","MCO",1,"F","2025","2025"],["MCO","ORD",1,"F","2025","2025"],["IAH","XNA",1,"F","2025","2025"],["Amsterdam Centraal","Basel SBB",1,"R","2026","2026"],["Amsterdam Centraal","Zurich HB",1,"R","2026","2026"],["Luzern","Zurich HB",1,"R","2026","2026"],["Munich Hbf","Innsbruck Hbf",1,"R","2024","2024"],["Innsbruck Hbf","Prague hl.n.",1,"R","2024","2024"],["Prague hl.n.","Kraków Główny",1,"R","2024","2024"],["Amsterdam Centraal","Brussels-Midi",1,"R","2022","2022"],["Brussels-Midi","Lille Flandres",1,"R","2022","2022"],["Karlsruhe Hbf","Frankfurt Hbf",1,"R","2022","2022"],["Frankfurt Hbf","Berlin Hbf",1,"R","2022","2022"]]};
+  const AP = DATA.ap;            // id -> [name, lat, lon, countryCode, iata]
+  const CITY = { STN: "London", LGW: "London", AMS: "Amsterdam", "Amsterdam Centraal": "Amsterdam", "Paris Nord": "Paris", "Paris Est": "Paris",
+    ORD: "Chicago", MDW: "Chicago", "Chicago Union Station": "Chicago", DFW: "Dallas", DAL: "Dallas", LGA: "New York", JFK: "New York",
+    XNA: "NW Arkansas", OAK: "Oakland", "Munich Hbf": "Munich", "Innsbruck Hbf": "Innsbruck", "Prague hl.n.": "Prague", "Kraków Główny": "Kraków",
+    "Brussels-Midi": "Brussels", "Frankfurt Hbf": "Frankfurt", "Berlin Hbf": "Berlin", BER: "Berlin", MUC: "Munich", KRK: "Kraków" };
+  const city = id => CITY[id] || AP[id][0];
+
+  // The twelve countries plus home. Boxes are [west, south, east, north] for the mainland, so overseas territories don't skew the framing.
+  const COUNTRIES = [
+    { cc: "US", name: "United States", iso: "USA", box: [-125, 24.5, -66.9, 49.5], home: true },
+    { cc: "MX", name: "Mexico", iso: "MEX", box: [-117.5, 14.5, -86.5, 32.8] },
+    { cc: "IE", name: "Ireland", iso: "IRL", box: [-10.6, 51.4, -5.9, 55.4] },
+    { cc: "GB", name: "United Kingdom", iso: "GBR", box: [-8.2, 49.9, 1.8, 58.7] },
+    { cc: "FR", name: "France", iso: "FRA", box: [-4.8, 42.3, 8.3, 51.1] },
+    { cc: "BE", name: "Belgium", iso: "BEL", box: [2.5, 49.5, 6.4, 51.5] },
+    { cc: "NL", name: "Netherlands", iso: "NLD", box: [3.3, 50.75, 7.25, 53.55] },
+    { cc: "DE", name: "Germany", iso: "DEU", box: [5.8, 47.2, 15.1, 55.1] },
+    { cc: "DK", name: "Denmark", iso: "DNK", box: [8, 54.5, 12.7, 57.8] },
+    { cc: "PL", name: "Poland", iso: "POL", box: [14.1, 49, 24.2, 54.9] },
+    { cc: "CZ", name: "Czechia", iso: "CZE", box: [12.1, 48.5, 18.9, 51.1] },
+    { cc: "AT", name: "Austria", iso: "AUT", box: [9.5, 46.4, 17.2, 49.05] },
+    { cc: "CH", name: "Switzerland", iso: "CHE", box: [5.9, 45.8, 10.5, 47.85] }
+  ];
+  const VIEWS = { all: [-160, 14, 30, 62], us: [-125, 24, -66, 50], eu: [-11, 41, 25, 59.5] };
+  const MAJOR = new Set(["SFO", "LAX", "DEN", "DFW", "XNA", "LGA", "ATL", "OGG", "CUN", "DUB", "STN", "AMS", "CPH", "BER", "MUC", "KRK", "Paris Nord", "Zurich HB",
+    "Prague hl.n.", "Innsbruck Hbf", "Brussels-Midi", "Frankfurt Hbf", "LAS", "PHX", "TUL", "MSP", "MCO", "IAH", "DCA"]);
+  const HOME = [-87.6354, 41.8923];
+  const KMAX = 60;
+
+  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const stage = document.getElementById("stage");
+  const svgEl = document.getElementById("map");
+  const tip = document.getElementById("tip");
+  const statusEl = document.getElementById("status");
+  const fail = msg => { statusEl.hidden = false; statusEl.textContent = msg; };
+  if (!window.d3) { fail("The map needs a script that didn't load. Refresh to try again."); return; }
+
+  const svg = d3.select(svgEl);
+  const gZoom = d3.select("#zoomed"), gLand = d3.select("#land"), gRoutes = d3.select("#routes"), gOver = d3.select("#overlay");
+  const projection = d3.geoMercator();
+  const path = d3.geoPath(projection);
+  let W = 0, H = 0, T = d3.zoomIdentity, box = VIEWS.all, selected = null, hotRoute = null, gratStep = 0, world = null;
+
+  // ---------- routes: gentle arcs bowed toward the pole, drawn in base (unzoomed) map space ----------
+  const routes = DATA.routes.map(([a, b, n, m, y0, y1], i) => ({ i, a, b, n, rail: m === "R", y0, y1 }));
+  const maxN = d3.max(routes, r => r.n);
+  const arc = r => {
+    const p = projection([AP[r.a][2], AP[r.a][1]]), q = projection([AP[r.b][2], AP[r.b][1]]);
+    const mx = (p[0] + q[0]) / 2, my = (p[1] + q[1]) / 2, dx = q[0] - p[0], dy = q[1] - p[1], len = Math.hypot(dx, dy) || 1;
+    let nx = -dy / len, ny = dx / len; if (ny > 0) { nx = -nx; ny = -ny; }
+    const bend = len * (r.rail ? 0.08 : 0.2);
+    return `M${p[0]},${p[1]}Q${mx + nx * bend},${my + ny * bend} ${q[0]},${q[1]}`;
+  };
+  const widthOf = r => 0.7 + 1.5 * Math.sqrt(r.n / maxN);
+
+  // ---------- layout ----------
+  function baseProjection() {
+    // whole world (360°) spans the stage width at zoom 1
+    projection.scale(W / (2 * Math.PI)).translate([W / 2, H / 2]).center([0, 30]);
+  }
+  function fit(b, pad) {
+    const p = projection([b[0], b[3]]), q = projection([b[2], b[1]]);
+    const k = Math.max(1, Math.min(KMAX, (pad || 0.86) * Math.min(W / (q[0] - p[0]), H / (q[1] - p[1]))));
+    return d3.zoomIdentity.translate(W / 2, H / 2).scale(k).translate(-(p[0] + q[0]) / 2, -(p[1] + q[1]) / 2);
+  }
+  const zoom = d3.zoom().scaleExtent([1, KMAX])
+    .filter(e => {
+      if (e.type === "wheel") return e.ctrlKey || e.metaKey;           // trackpad pinch, or ⌘/Ctrl + scroll; plain scroll keeps scrolling the page
+      if (e.type === "touchstart") return e.touches.length > 1;        // one finger scrolls the page, two fingers move the map
+      if (e.type === "dblclick") return false;                          // handled below (smoother)
+      return !e.button;
+    })
+    .on("start", e => { if (e.sourceEvent && e.sourceEvent.type !== "wheel") svgEl.classList.add("dragging"); hideTip(); })
+    .on("zoom", e => { T = e.transform; render(); if (e.sourceEvent) setView(null); })
+    .on("end", () => { svgEl.classList.remove("dragging"); box = currentBox(); });
+  svg.call(zoom).style("touch-action", "pan-y");
+
+  function currentBox() {
+    const [a, b] = corners();
+    return [a[0], b[1], b[0], a[1]];
+  }
+  // lon/lat of the stage's top-left and bottom-right corners, without the ±180° wrap
+  function corners() {
+    const a = projection.invert(T.invert([0, 0])), b = projection.invert(T.invert([W, H]));
+    const degPerPx = 360 / (2 * Math.PI * projection.scale() * T.k);
+    const c = projection.invert(T.invert([W / 2, H / 2]));
+    a[0] = c[0] - (W / 2) * degPerPx; b[0] = c[0] + (W / 2) * degPerPx;
+    return [a, b];
+  }
+  function go(b, animate) {
+    box = b;
+    const t = fit(b);
+    if (animate && !reduceMotion) svg.transition().duration(1000).ease(d3.easeCubicInOut).call(zoom.transform, t);
+    else svg.call(zoom.transform, t);
+  }
+  function resize() {
+    const r = stage.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    W = r.width; H = r.height;
+    baseProjection();
+    const n = projection([180, -62]), s = projection([-180, 84]);
+    zoom.extent([[0, 0], [W, H]]).translateExtent([[s[0], s[1]], [n[0], n[1]]]);
+    gLand.selectAll("path").attr("d", f => path(f));
+    gRoutes.selectAll("path").attr("d", arc);
+    d3.select("#equator").attr("d", path({ type: "LineString", coordinates: [[-180, 0], [-90, 0], [0, 0], [90, 0], [180, 0]] }));
+    gratStep = 0;
+    svg.call(zoom.transform, fit(box));
+  }
+
+  // ---------- drawing ----------
+  function render() {
+    const k = T.k;
+    gZoom.attr("transform", T);
+    // graticule density follows the zoom
+    const step = k < 2.5 ? 20 : k < 6 ? 10 : k < 16 ? 5 : 1;
+    if (step !== gratStep) {
+      gratStep = step;
+      d3.select("#grat").attr("d", path(d3.geoGraticule().extent([[-180, -80], [180.01, 85]]).step([step, step])()));
+    }
+    gRoutes.selectAll("path.r").attr("stroke-dasharray", r => (r.rail ? "4 3" : null))
+      .classed("hot", r => r.i === hotRoute);
+    drawOverlay(step);
+    drawScale();
+  }
+
+  function drawOverlay(step) {
+    const k = T.k, place = ll => T.apply(projection(ll));
+    const placed = [[0, 0, W, 58], [W - 230, H - 40, W, H], [0, H - 44, 150, H]];   // controls, hint, scale bar
+    const free = bx => bx[0] > 4 && bx[2] < W - 4 && bx[1] > 4 && bx[3] < H - 4 &&
+      !placed.some(p => !(bx[2] < p[0] || bx[0] > p[2] || bx[3] < p[1] || bx[1] > p[3]));
+
+    // airports
+    const pts = Object.keys(AP).filter(id => id !== "ORD").map(id => { const p = place([AP[id][2], AP[id][1]]); return { id, x: p[0], y: p[1] }; })
+      .filter(d => d.x > -10 && d.x < W + 10 && d.y > -10 && d.y < H + 10);
+    const hotIds = hotRoute == null ? new Set() : new Set([routes[hotRoute].a, routes[hotRoute].b]);
+    const ap = gOver.selectAll("circle.ap").data(pts, d => d.id);
+    ap.exit().remove();
+    ap.enter().append("circle").attr("class", "ap").attr("r", 2.4)
+      .on("pointerenter", (e, d) => airportTip(e, d.id)).on("pointerleave", hideTip)
+      .on("click", (e, d) => { const a = AP[d.id]; const c = [a[2], a[1]]; const half = 6 / Math.max(1, T.k / 4); go([c[0] - half, c[1] - half / 2, c[0] + half, c[1] + half / 2], true); })
+      .merge(ap).attr("cx", d => d.x).attr("cy", d => d.y).classed("hot", d => hotIds.has(d.id));
+
+    // home
+    const [hx, hy] = place(HOME);
+    let home = gOver.select("g.homeg");
+    if (home.empty()) {
+      home = gOver.append("g").attr("class", "homeg");
+      home.append("circle").attr("class", "home-pulse").attr("r", 5);
+      home.append("circle").attr("class", "home-ring").attr("r", 7);
+      home.append("circle").attr("class", "home-dot").attr("r", 3.2);
+      home.append("text").attr("class", "home-label").text("CHICAGO").attr("x", 12).attr("y", -9);
+    }
+    home.attr("transform", `translate(${hx},${hy})`).raise();
+    placed.push([hx - 9, hy - 22, hx + 76, hy + 9]);
+
+    // city labels, greedy, majors first, more as you zoom in
+    const want = pts.filter(d => (MAJOR.has(d.id) && k >= 1.6) || k >= 7).sort((a, b) => MAJOR.has(b.id) - MAJOR.has(a.id));
+    const seen = new Set(["Chicago"]), labels = [];
+    for (const d of want) {
+      const t = city(d.id).toUpperCase(), c = city(d.id);
+      if (seen.has(c)) continue;
+      const w = t.length * 8.8 + 4, bx = [d.x + 6, d.y - 15, d.x + 6 + w, d.y - 2];
+      if (!free(bx)) continue;
+      placed.push(bx); seen.add(c); labels.push({ id: c, t, x: d.x + 7, y: d.y - 5 });
+    }
+    const lb = gOver.selectAll("text.city").data(labels, d => d.id);
+    lb.exit().remove();
+    lb.enter().append("text").attr("class", "city").merge(lb).text(d => d.t).attr("x", d => d.x).attr("y", d => d.y);
+
+    // degree ticks along the left and bottom edges, like a chart's neatline
+    const ticks = [];
+    const [tl, br] = corners();
+    const tStep = step;
+    for (let lat = Math.ceil(br[1] / tStep) * tStep; lat <= tl[1]; lat += tStep) {
+      if (lat < -75 || lat > 82) continue;
+      const y = place([0, lat])[1], bx = [10, y - 13, 60, y + 2];
+      if (y < 70 || y > H - 50 || !free(bx)) continue;
+      placed.push(bx);
+      ticks.push({ id: "lat" + lat, t: `${Math.abs(lat)}°${lat === 0 ? "" : lat > 0 ? " N" : " S"}`, x: 12, y: y - 4 });
+    }
+    for (let lon = Math.ceil(tl[0] / tStep) * tStep; lon <= br[0]; lon += tStep) {
+      if (lon <= -180 || lon >= 180) continue;
+      const x = place([lon, 0])[0], bx = [x + 2, H - 30, x + 54, H - 14];
+      if (x < 70 || !free(bx)) continue;
+      placed.push(bx);
+      ticks.push({ id: "lon" + lon, t: `${Math.abs(lon)}°${lon === 0 ? "" : lon > 0 ? " E" : " W"}`, x: x + 4, y: H - 18 });
+    }
+    const tk = gOver.selectAll("text.tick").data(ticks, d => d.id);
+    tk.exit().remove();
+    tk.enter().append("text").attr("class", "tick").merge(tk).text(d => d.t).attr("x", d => d.x).attr("y", d => d.y);
+  }
+
+  // scale bar in miles, measured at the map's center latitude
+  const scaleEl = document.getElementById("scale");
+  function drawScale() {
+    const c = projection.invert(T.invert([W / 2, H / 2]));
+    if (!c) return;
+    const pxPerDeg = T.k * projection.scale() * Math.PI / 180;          // horizontal pixels per degree of longitude
+    const miPerDeg = 69.17 * Math.cos(c[1] * Math.PI / 180);
+    const target = 110 / pxPerDeg * miPerDeg;                            // miles in ~110px
+    const nice = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000].reduce((a, b) => (b <= target ? b : a), 1);
+    scaleEl.querySelector("span").textContent = `${nice.toLocaleString("en-US")} mi`;
+    scaleEl.querySelector("i").style.width = Math.round(nice / miPerDeg * pxPerDeg) + "px";
+  }
+
+  // ---------- tooltips ----------
+  function localXY(e) { const r = stage.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+  function showTip(e, title, sub) {
+    const p = localXY(e);
+    tip.hidden = false; tip.innerHTML = "";
+    const b = document.createElement("b"); b.textContent = title;
+    const s = document.createElement("small"); s.textContent = sub;
+    tip.append(b, s);
+    const tw = tip.offsetWidth, th = tip.offsetHeight;
+    let x = p[0] + 14, y = p[1] - th / 2;
+    if (x + tw > W - 8) x = p[0] - tw - 14;
+    y = Math.max(8, Math.min(H - th - 8, y));
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+  }
+  function hideTip() { tip.hidden = true; }
+  function airportTip(e, id) {
+    const rs = routes.filter(r => r.a === id || r.b === id), n = d3.sum(rs, r => r.n), a = AP[id];
+    showTip(e, a[0] + (a[4] ? ` (${a[4]})` : ""), `${rs.length} route${rs.length === 1 ? "" : "s"}  ·  ${n} booking${n === 1 ? "" : "s"}`);
+  }
+  const years = r => (r.y0 === r.y1 ? r.y0 : `${r.y0} to ${r.y1}`);
+
+  // ---------- countries ----------
+  const byIso = new Map(COUNTRIES.map(c => [c.iso, c]));
+  function buildLand(features) {
+    world = features.map(f => ({ type: "Feature", properties: { name: f.n, iso: f.a }, geometry: { type: f.c.length > 1 ? "MultiPolygon" : "Polygon", coordinates: f.c.length > 1 ? f.c : f.c[0] } }));
+    // Natural Earth rings are counter-clockwise; d3 wants clockwise exteriors on the sphere
+    world.forEach(f => {
+      const fix = poly => { if (d3.geoArea({ type: "Polygon", coordinates: poly }) > 2 * Math.PI) poly.forEach(r => r.reverse()); };
+      if (f.geometry.type === "Polygon") fix(f.geometry.coordinates); else f.geometry.coordinates.forEach(fix);
+    });
+    gLand.selectAll("path").data(world).join("path")
+      .attr("d", f => path(f))
+      .attr("class", f => { const c = byIso.get(f.properties.iso); return c ? (c.home ? "been home" : "been") : null; })
+      .on("pointerenter", function (e, f) {
+        const c = byIso.get(f.properties.iso);
+        d3.select(this).classed("hover", true).raise();
+        gLand.selectAll("path.sel").raise();
+        showTip(e, c ? c.name : f.properties.name, c ? (c.home ? "Home" : "Been there") : "Not yet");
+      })
+      .on("pointermove", (e, f) => { const c = byIso.get(f.properties.iso); showTip(e, c ? c.name : f.properties.name, c ? (c.home ? "Home" : "Been there") : "Not yet"); })
+      .on("pointerleave", function () { d3.select(this).classed("hover", false); hideTip(); })
+      .on("click", (e, f) => { const c = byIso.get(f.properties.iso); if (c) focusCountry(c); });
+    gLand.selectAll("path.been").raise();
+  }
+
+  function buildRoutes() {
+    const sorted = routes.slice().sort((a, b) => a.n - b.n);
+    gRoutes.selectAll("path.r").data(sorted).join("path").attr("class", r => (r.rail ? "r rail" : "r"))
+      .attr("d", arc).attr("stroke-width", widthOf);
+    gRoutes.selectAll("path.hit").data(sorted).join("path").attr("class", "hit").attr("d", arc)
+      .on("pointerenter", (e, r) => { hotRoute = r.i; render(); showTip(e, `${city(r.a)} ⇄ ${city(r.b)}`, `${r.rail ? "Rail" : "Flight"}  ·  ${r.n} booking${r.n === 1 ? "" : "s"}  ·  ${years(r)}`); })
+      .on("pointermove", (e, r) => showTip(e, `${city(r.a)} ⇄ ${city(r.b)}`, `${r.rail ? "Rail" : "Flight"}  ·  ${r.n} booking${r.n === 1 ? "" : "s"}  ·  ${years(r)}`))
+      .on("pointerleave", () => { hotRoute = null; render(); hideTip(); })
+      .on("click", (e, r) => {
+        const A = [AP[r.a][2], AP[r.a][1]], B = [AP[r.b][2], AP[r.b][1]];
+        const w = Math.max(2, Math.abs(A[0] - B[0])) * 0.3, h = Math.max(1, Math.abs(A[1] - B[1])) * 0.3;
+        setView(null); select(null);
+        go([Math.min(A[0], B[0]) - w, Math.min(A[1], B[1]) - h, Math.max(A[0], B[0]) + w, Math.max(A[1], B[1]) + h * 2], true);
+      });
+  }
+
+  // ---------- controls ----------
+  function setView(key) { document.querySelectorAll("[data-view]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.view === key))); }
+  document.querySelectorAll("[data-view]").forEach(b => b.addEventListener("click", () => { setView(b.dataset.view); select(null); go(VIEWS[b.dataset.view], true); }));
+  const zoomBy = f => svg.transition().duration(reduceMotion ? 0 : 400).call(zoom.scaleBy, f);
+  document.getElementById("z-in").addEventListener("click", () => { setView(null); zoomBy(1.6); });
+  document.getElementById("z-out").addEventListener("click", () => { setView(null); zoomBy(1 / 1.6); });
+  svgEl.addEventListener("dblclick", e => {
+    e.preventDefault(); setView(null);
+    const p = localXY(e);
+    svg.transition().duration(reduceMotion ? 0 : 500).call(zoom.scaleBy, e.shiftKey ? 1 / 2 : 2, p);
+  });
+  svgEl.addEventListener("keydown", e => {
+    const step = 60; let hit = true;
+    if (e.key === "ArrowLeft") svg.call(zoom.translateBy, step / T.k, 0);
+    else if (e.key === "ArrowRight") svg.call(zoom.translateBy, -step / T.k, 0);
+    else if (e.key === "ArrowUp") svg.call(zoom.translateBy, 0, step / T.k);
+    else if (e.key === "ArrowDown") svg.call(zoom.translateBy, 0, -step / T.k);
+    else if (e.key === "+" || e.key === "=") zoomBy(1.6);
+    else if (e.key === "-" || e.key === "_") zoomBy(1 / 1.6);
+    else hit = false;
+    if (hit) { e.preventDefault(); setView(null); box = currentBox(); }
+  });
+  const isTouch = window.matchMedia && window.matchMedia("(hover: none)").matches;
+  const mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+  document.getElementById("hint").textContent = isTouch ? "Two fingers to pan and zoom" : `Drag to pan  ·  ${mac ? "⌘" : "Ctrl"} + scroll to zoom`;
+
+  // ---------- index ----------
+  const holder = document.getElementById("countries");
+  document.getElementById("ccount").textContent = String(COUNTRIES.filter(c => !c.home).length);
+  const byCountry = {};
+  for (const id in AP) (byCountry[AP[id][3]] = byCountry[AP[id][3]] || new Set()).add(city(id));
+  const chips = {};
+  COUNTRIES.forEach(c => {
+    const btn = document.createElement("button"); btn.type = "button"; btn.className = c.home ? "chip home" : "chip"; btn.setAttribute("aria-pressed", "false");
+    const nm = document.createElement("span"); nm.textContent = c.name; btn.append(nm);
+    if (c.home) { const tg = document.createElement("span"); tg.className = "tag"; tg.textContent = "Home"; btn.append(tg); }
+    const cities = byCountry[c.cc] ? [...byCountry[c.cc]] : [];
+    if (cities.length) btn.title = c.home ? `${cities.length} cities on the map, from Maui to New York` : cities.join(" · ");
+    btn.addEventListener("click", () => focusCountry(c));
+    btn.addEventListener("mouseenter", () => gLand.selectAll("path").filter(f => f.properties.iso === c.iso).classed("hover", true));
+    btn.addEventListener("mouseleave", () => gLand.selectAll("path.hover").classed("hover", false));
+    holder.append(btn); chips[c.cc] = btn;
+  });
+  function select(c) {
+    selected = c;
+    Object.entries(chips).forEach(([cc, b]) => b.setAttribute("aria-pressed", String(!!c && c.cc === cc)));
+    gLand.selectAll("path").classed("sel", f => !!c && f.properties.iso === c.iso);
+    gLand.selectAll("path.sel").raise();
+  }
+  function focusCountry(c) { select(c); setView(null); go(c.box, true); }
+
+  // ---------- go ----------
+  new ResizeObserver(resize).observe(stage);
+  buildRoutes();
+  resize();
+  fetch("/map/world.json").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(f => { buildLand(f); render(); })
+    .catch(() => fail("Country borders didn't load. Routes still work."));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(render);
+})();
+</script>
+<script>(function(){function s(){try{parent.postMessage({globeHeight:document.documentElement.scrollHeight},"*")}catch(e){}}addEventListener("load",s);addEventListener("resize",s);if(window.ResizeObserver)new ResizeObserver(s).observe(document.documentElement);setTimeout(s,800);})();</script>

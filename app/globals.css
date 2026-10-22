@@ -1102,7 +1102,7 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
 .otc-list dd { margin: 0; flex: 1; font-family: var(--display); font-weight: 300; font-size: 20px; }
 .ab-globe { margin-top: 36px; }
 .globe-panel { position: relative; }
-.globe-panel iframe { display: block; width: 100%; height: 1213.6px; border: 0; background: transparent; }
+.globe-panel iframe { display: block; width: 100%; height: 880px; border: 0; background: transparent; }
 @media (min-width: 1024px) { .globe-panel iframe { height: auto; aspect-ratio: 1 / 0.4967; } }
 
 @media (min-width: 768px) {
