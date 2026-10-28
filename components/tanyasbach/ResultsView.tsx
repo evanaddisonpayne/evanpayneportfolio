@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { BASE, BUDGET_BANDS, DESTS, WEEKENDS, type Results } from "@/lib/tanyasbach";
+import { StickerSheet } from "./Breaks";
 import { fetchResults } from "./util";
 
 export default function ResultsView() {
@@ -61,6 +62,8 @@ export default function ResultsView() {
           </div>
         </div>
       </section>
+
+      <StickerSheet />
 
       <section className="section light tb-results">
         <div className="wrap tb-results-grid">

@@ -1,15 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import type { CSSProperties } from "react";
-import { BASE, DESTS, GROUP_SIZE, STAMPS, TRIP_TARGET } from "@/lib/tanyasbach";
+import { useEffect, useState, type CSSProperties } from "react";
+import { BASE, DESTS, GROUP_SIZE, STAMPS, TRIP_TARGET, TRIP_TARGET_LABEL } from "@/lib/tanyasbach";
 import { Hibiscus, Motif, Palm, PapelPicado } from "./Art";
+import { Awning, Marquee, Neon, Postcard, StickerSheet } from "./Breaks";
 import { NameField } from "./Forms";
 import { useTb } from "./TbProvider";
 import { firstName } from "./util";
 
 export default function HomeView() {
-  const { now, name, done, fiesta, tapStamp, stampTapped } = useTb();
+  const { name, done, fiesta, tapStamp, stampTapped } = useTb();
   const count = STAMPS.filter((s) => done[s.id]).length;
 
   return (
@@ -33,7 +34,7 @@ export default function HomeView() {
               One bride, {GROUP_SIZE} of her favorite people, a long weekend in May, and four places with warm water. We haven&apos;t picked
               one yet. That&apos;s where you come in.
             </p>
-            <Countdown now={now} />
+            <Countdown />
           </div>
           <div className="tb-stamp-wrap">
             <div
@@ -57,6 +58,11 @@ export default function HomeView() {
           <NameField />
         </div>
       </section>
+
+      <Marquee
+        a={["¡Salud!", "Sol", "Salsa", "Tanya", "Mojitos", "La novia", "Bachata", "Playa"]}
+        b={["Lo que pasa en la despedida", "se queda en la despedida", "Mayo 2027", "Vamos"]}
+      />
 
       <section className="section light tb-passport-sec" id="passport">
         <div className="wrap">
@@ -101,6 +107,8 @@ export default function HomeView() {
         </div>
       </section>
 
+      <StickerSheet caption="Packing list: SPF 50, a tiny bikini, questionable decisions, and Tanya." />
+
       <section className="section orange tb-ballot">
         <div className="wrap">
           <div className="section-head">
@@ -130,6 +138,11 @@ export default function HomeView() {
         </div>
       </section>
 
+      <Postcard />
+
+      <Neon kicker="Regla número uno" line="Lo que pasa en la despedida, se queda en la despedida." />
+
+      <Awning tone="signal" />
       <section className="section light tb-tiles-sec tb-bg-sun">
         <div className="wrap">
           <ul className="tb-tiles">
@@ -168,28 +181,37 @@ export default function HomeView() {
   );
 }
 
-function Countdown({ now }: { now: Date | null }) {
-  if (!now) return <div className="tb-count" aria-hidden />;
-  const diff = new Date(TRIP_TARGET).getTime() - now.getTime();
-  if (diff <= 0) return <p className="tb-count-live">¡Ya llegó mayo! It&apos;s May.</p>;
-  const days = Math.floor(diff / 86_400_000);
-  const weeks = Math.floor(days / 7);
-  const months = Math.round(days / 30.4);
+function Countdown() {
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => {
+    setNow(Date.now());
+    const t = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(t);
+  }, []);
+  if (now === null) return <div className="tb-count" aria-hidden />;
+  const diff = new Date(TRIP_TARGET).getTime() - now;
+  if (diff <= 0) return <p className="tb-count-live">¡Ya llegó! It&apos;s trip time.</p>;
+  const d = Math.floor(diff / 86_400_000);
+  const h = Math.floor((diff % 86_400_000) / 3_600_000);
+  const m = Math.floor((diff % 3_600_000) / 60_000);
+  const sec = Math.floor((diff % 60_000) / 1000);
+  const cells: [number, string][] = [
+    [d, d === 1 ? "day" : "days"],
+    [h, h === 1 ? "hour" : "hours"],
+    [m, "min"],
+    [sec, "sec"],
+  ];
   return (
     <div className="tb-count">
-      <div className="tb-count-row" role="timer" aria-label={`About ${days} days until mid-May 2027`}>
-        {[
-          [months, "months"],
-          [weeks, "weeks"],
-          [days, "days"],
-        ].map(([v, l]) => (
-          <div key={l as string} className="tb-count-cell">
-            <span className="tb-count-num">{v}</span>
+      <div className="tb-count-row" role="timer" aria-live="off" aria-label={`${d} days, ${h} hours, ${m} minutes ${TRIP_TARGET_LABEL}`}>
+        {cells.map(([v, l]) => (
+          <div key={l} className="tb-count-cell">
+            <span className="tb-count-num">{l === "days" || l === "day" ? v : String(v).padStart(2, "0")}</span>
             <span className="tb-count-label">{l}</span>
           </div>
         ))}
       </div>
-      <p className="tb-hint">Until mid-May, give or take. The real countdown starts once the group picks a weekend.</p>
+      <p className="tb-count-cap">{TRIP_TARGET_LABEL}</p>
     </div>
   );
 }

@@ -13,8 +13,9 @@ const SHEET_ENV = process.env.NEXT_PUBLIC_TANYASBACH_SHEET_URL;
 export const SHEET_URL = SHEET_ENV === "demo" ? "" : SHEET_ENV || SHEET_DEFAULT;
 
 export const GROUP_SIZE = "15–20";
-/** Middle of May 2027, used only for the "roughly how far away" line until dates are locked. */
-export const TRIP_TARGET = "2027-05-14T12:00:00-04:00";
+/** Countdown target. May 1, 2027 until the group locks a weekend; then set this to the departure time. */
+export const TRIP_TARGET = "2027-05-01T00:00:00-04:00";
+export const TRIP_TARGET_LABEL = "until May 2027";
 
 export type FormKind = "rsvp" | "destination" | "dates" | "budget" | "vibes";
 

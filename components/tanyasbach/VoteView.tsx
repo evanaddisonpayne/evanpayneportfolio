@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { DESTS, NIGHTS, VIBES, WEEKENDS } from "@/lib/tanyasbach";
 import { Palm } from "./Art";
+import { Awning, Marquee, StickerSheet } from "./Breaks";
 import { Chips, NameField, SubmitRow, useSend } from "./Forms";
 
 export default function VoteView() {
@@ -25,8 +26,11 @@ export default function VoteView() {
           <NameField compact />
         </div>
       </section>
+      <Marquee a={["República Dominicana", "Cartagena", "Tulum", "Turks & Caicos"]} b={["Vota", "Elige", "Baila", "Brinda", "Repite"]} />
       <DestinationVote />
+      <Awning tone="mango" />
       <DatesVote />
+      <StickerSheet />
       <VibesVote />
     </>
   );
