@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useEffect, useState, type CSSProperties } from "react";
 import { BASE, DESTS, GROUP_SIZE, TRIP_TARGET, TRIP_TARGET_LABEL, VOTE_DEADLINE_LABEL } from "@/lib/tanyasbach";
 import { Hibiscus, Palm, PapelPicado } from "./Art";
-import { Arch, Marquee, Neon, Postcard } from "./Breaks";
+import { Marquee, Neon, Postcard } from "./Breaks";
+import PackingList from "./PackingList";
 import { Rules, VoteClock } from "./Deadline";
 import { useTb } from "./TbProvider";
 import { firstName } from "./util";
@@ -67,7 +68,7 @@ export default function HomeView() {
 
       <Rules />
 
-      <Arch kicker="Packing list" caption="SPF 50, a very small swimsuit, one good dress, questionable decisions, and Tanya." />
+      <PackingList />
 
       <section className="section orange tb-ballot">
         <div className="wrap">
