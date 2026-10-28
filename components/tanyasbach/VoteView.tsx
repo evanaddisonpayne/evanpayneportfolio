@@ -3,7 +3,6 @@
 import { useState, type FormEvent } from "react";
 import { DESTS, NIGHTS, SAILINGS, VIBES, WEEKENDS } from "@/lib/tanyasbach";
 import { Palm } from "./Art";
-import { Awning, Marquee, StickerSheet } from "./Breaks";
 import { VoteClock } from "./Deadline";
 import { Chips, NameField, SubmitRow, useSend } from "./Forms";
 
@@ -28,11 +27,8 @@ export default function VoteView() {
           <NameField compact />
         </div>
       </section>
-      <Marquee a={["Virgin Voyages", "Cartagena", "Tulum", "Turks & Caicos"]} b={["Vota", "Elige", "Baila", "Brinda", "Repite"]} />
       <DestinationVote />
-      <Awning tone="mango" />
       <DatesVote />
-      <StickerSheet />
       <VibesVote />
     </>
   );
@@ -155,7 +151,6 @@ function DateChip({
 function VibesVote() {
   const { send, sending, status } = useSend("vibes");
   const [picks, setPicks] = useState<string[]>([]);
-  const icon = Object.fromEntries(VIBES.map((v) => [v.label, v.icon]));
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const idea = String(new FormData(e.currentTarget).get("idea") || "");
@@ -175,14 +170,6 @@ function VibesVote() {
             options={VIBES.map((v) => v.label)}
             value={picks}
             onChange={setPicks}
-            render={(o) => (
-              <>
-                <span className="tb-chip-i" aria-hidden>
-                  {icon[o]}
-                </span>
-                {o}
-              </>
-            )}
           />
           <div className="tb-field">
             <label className="tb-label" htmlFor="v-idea">

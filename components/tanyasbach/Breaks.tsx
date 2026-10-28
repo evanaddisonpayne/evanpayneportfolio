@@ -114,7 +114,7 @@ export function Sticker({ kind, className = "", style }: { kind: StickerKind; cl
 /* Marquee: two crossing tapes scrolling in opposite directions.       */
 /* ------------------------------------------------------------------ */
 
-export function Marquee({ a, b }: { a: string[]; b: string[] }) {
+export function Marquee({ a, b }: { a: string[]; b?: string[] }) {
   // Each run holds the list twice so it's wider than any screen; two runs back to back loop seamlessly.
   const run = (items: string[]) => {
     const list = [...items, ...items];
@@ -133,9 +133,9 @@ export function Marquee({ a, b }: { a: string[]; b: string[] }) {
     );
   };
   return (
-    <div className="tb-marquee" aria-hidden>
+    <div className={`tb-marquee${b ? "" : " is-single"}`} aria-hidden>
       <div className="tb-mq tb-mq-a">{run(a)}</div>
-      <div className="tb-mq tb-mq-b">{run(b)}</div>
+      {b && <div className="tb-mq tb-mq-b">{run(b)}</div>}
     </div>
   );
 }
@@ -147,13 +147,26 @@ export function Marquee({ a, b }: { a: string[]; b: string[] }) {
 export function Neon({ kicker, line, children }: { kicker: string; line: string; children?: ReactNode }) {
   return (
     <section className="tb-neon">
-      <div className="tb-neon-wall" aria-hidden />
-      <Sticker kind="cocktail" className="tb-neon-icon tb-neon-icon-l" />
-      <Sticker kind="lips" className="tb-neon-icon tb-neon-icon-r" />
-      <div className="wrap tb-neon-inner">
-        <p className="tb-neon-kicker">{kicker}</p>
-        <p className="tb-neon-line">{line}</p>
-        {children}
+      <div className="wrap">
+        <div className="tb-menu">
+          <svg className="tb-menu-glass" viewBox="0 0 100 100" aria-hidden>
+            <path d="M14 30 Q50 70 86 30 Z" />
+            <path d="M14 30 H86 M50 52 V88 M34 90 H66" />
+            <path d="M70 30 L84 8" />
+            <circle cx="86" cy="6" r="4" />
+            {[
+              [40, 22],
+              [52, 16],
+              [60, 24],
+            ].map(([x, y]) => (
+              <circle key={`${x}${y}`} cx={x} cy={y} r="1.6" />
+            ))}
+          </svg>
+          <p className="tb-neon-kicker">{kicker}</p>
+          <p className="tb-neon-line">{line}</p>
+          <p className="tb-menu-foot">Tanya ’27 · House rules</p>
+          {children}
+        </div>
       </div>
     </section>
   );
@@ -288,14 +301,14 @@ export function Talavera() {
     <svg className="tb-talavera" aria-hidden width="100%" height="72">
       <defs>
         <pattern id="tb-tile" width="72" height="72" patternUnits="userSpaceOnUse">
-          <rect width="72" height="72" fill="#fff8f0" />
-          <rect x="1.5" y="1.5" width="69" height="69" fill="none" stroke="#2b0f2e" strokeWidth="1" />
-          <path d="M0 0 A18 18 0 0 1 18 18 L0 18 Z M72 0 A18 18 0 0 0 54 18 L72 18 Z M0 72 A18 18 0 0 0 18 54 L0 54 Z M72 72 A18 18 0 0 1 54 54 L72 54 Z" fill="#3ccfc0" stroke="#2b0f2e" strokeWidth=".8" />
+          <rect width="72" height="72" fill="#fbf8f3" />
+          <rect x="1.5" y="1.5" width="69" height="69" fill="none" stroke="#2a1a22" strokeWidth=".6" />
+          <path d="M0 0 A18 18 0 0 1 18 18 L0 18 Z M72 0 A18 18 0 0 0 54 18 L72 18 Z M0 72 A18 18 0 0 0 18 54 L0 54 Z M72 72 A18 18 0 0 1 54 54 L72 54 Z" fill="#c9dbd3" stroke="#2a1a22" strokeWidth=".6" />
           {Array.from({ length: 8 }, (_, i) => (
-            <ellipse key={i} cx="36" cy="22" rx="5" ry="12" transform={`rotate(${i * 45} 36 36)`} fill={i % 2 ? "#ffc94a" : "#ff5c93"} stroke="#2b0f2e" strokeWidth=".8" />
+            <ellipse key={i} cx="36" cy="22" rx="5" ry="12" transform={`rotate(${i * 45} 36 36)`} fill={i % 2 ? "#e6cf9c" : "#d9a6a0"} stroke="#2a1a22" strokeWidth=".6" />
           ))}
-          <circle cx="36" cy="36" r="6" fill="#b388ff" stroke="#2b0f2e" strokeWidth=".8" />
-          <path d="M36 2 l4 6 -4 6 -4 -6 z M36 58 l4 6 -4 6 -4 -6 z M2 36 l6 -4 6 4 -6 4 z M58 36 l6 -4 6 4 -6 4 z" fill="#2b0f2e" />
+          <circle cx="36" cy="36" r="6" fill="#9e2a4f" stroke="#2a1a22" strokeWidth=".6" />
+          <path d="M36 2 l4 6 -4 6 -4 -6 z M36 58 l4 6 -4 6 -4 -6 z M2 36 l6 -4 6 4 -6 4 z M58 36 l6 -4 6 4 -6 4 z" fill="#b08a3e" />
         </pattern>
       </defs>
       <rect width="100%" height="72" fill="url(#tb-tile)" />
@@ -305,4 +318,58 @@ export function Talavera() {
 
 export function Awning({ tone = "signal" }: { tone?: "signal" | "lagoon" | "mango" }) {
   return <div className={`tb-awning tb-awning-${tone}`} aria-hidden />;
+}
+
+/* ------------------------------------------------------------------ */
+/* Arch: a plaster wall, an arched window to the sea, palm shadows.   */
+/* ------------------------------------------------------------------ */
+
+export function Arch({ caption, kicker }: { caption: string; kicker?: string }) {
+  return (
+    <section className="tb-arch-sec">
+      <div className="wrap tb-arch-grid">
+        <svg className="tb-arch" viewBox="0 0 400 480" aria-hidden>
+          <defs>
+            <linearGradient id="tb-arch-sky" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stopColor="#efc9b8" />
+              <stop offset=".62" stopColor="#f2dcb6" />
+              <stop offset=".63" stopColor="#4f8f88" />
+              <stop offset="1" stopColor="#2f6d68" />
+            </linearGradient>
+            <clipPath id="tb-arch-clip">
+              <path d="M80 470 V200 A120 120 0 0 1 320 200 V470 Z" />
+            </clipPath>
+            <filter id="tb-arch-blur">
+              <feGaussianBlur stdDeviation="3" />
+            </filter>
+          </defs>
+          <rect width="400" height="480" fill="#efe6da" />
+          <g clipPath="url(#tb-arch-clip)">
+            <rect width="400" height="480" fill="url(#tb-arch-sky)" />
+            <circle cx="200" cy="300" r="34" fill="#e7a07f" opacity=".9" />
+            {[318, 336, 358, 384, 414].map((y, i) => (
+              <path key={y} d={`M${100 + i * 4} ${y} H${300 - i * 4}`} stroke="#f6efe6" strokeWidth=".9" strokeDasharray={`${26 - i * 3} ${10 + i * 3}`} opacity=".7" />
+            ))}
+          </g>
+          <path d="M80 470 V200 A120 120 0 0 1 320 200 V470" fill="none" stroke="#2a1a22" strokeWidth="1.2" />
+          <path d="M66 470 V200 A134 134 0 0 1 334 200 V470" fill="none" stroke="#b08a3e" strokeWidth=".7" />
+          <path d="M60 470 H340" stroke="#2a1a22" strokeWidth="1.2" />
+          {/* palm frond shadow falling across the wall */}
+          <g opacity=".16" filter="url(#tb-arch-blur)" fill="#2a1a22">
+            <path d="M-20 40 C80 60 170 120 230 210 C200 150 120 90 -20 70 Z" />
+            {Array.from({ length: 14 }, (_, i) => {
+              const t = i / 14;
+              const x = -10 + t * 230;
+              const y = 50 + t * t * 150;
+              return <path key={i} d={`M${x} ${y} l${-8 + t * 6} ${54 - t * 20} l10 2 Z`} />;
+            })}
+          </g>
+        </svg>
+        <div className="tb-arch-copy">
+          {kicker && <p className="eyebrow">{kicker}</p>}
+          <p className="tb-arch-cap">{caption}</p>
+        </div>
+      </div>
+    </section>
+  );
 }
