@@ -725,3 +725,129 @@ html:has(.tb), body:has(.tb) { background: #f6efe6; }
 
 /* toast */
 .tb-toast { background: var(--oxblood); color: var(--paper); border: 1px solid var(--gold); }
+
+/* ==========================================================================
+   Color pass (Oct 27): chic structure, full color. Ink text on every ground
+   (≥ 5.6:1); raspberry accent text on bone/pink/cornflower (≥ 5:1), navy accent
+   text on coral/saffron/turquoise; white on raspberry buttons 5.6:1; bone and
+   gold on navy ≥ 7.4:1. Blue-and-white Talavera ties in the blue.
+   ========================================================================== */
+.tb {
+  --oxblood: #1e1b2e;     /* ink */
+  --ivory: #fbf4ea;       /* bone */
+  --paper: #fffdf9;
+  --antique: #a3164a;     /* raspberry accent text */
+  --brass: #c79a2e;
+  --signal: #e23c78;      /* hot pink, decorative */
+  --mango: #f5b731;
+  --lagoon: #1fb5a8;
+  --lime: #9fd35b;
+  --coral: #f26b4f;
+  --orchid: #6f8fe0;      /* cornflower */
+  --navy: #1d2f6f;
+  --gold: #f5c04a;
+  --blush: #f9c6d3;
+  --sky: #c9d6fa;
+  --raspberry: #c2185b;
+  background: var(--ivory);
+}
+html:has(.tb), body:has(.tb) { background: #fbf4ea; }
+
+/* grounds: color back on, accents switch to navy where raspberry would be too faint */
+.tb .tb-bg-blush { background: var(--grain), var(--blush); }
+.tb .tb-bg-sky { background: var(--grain), var(--sky); }
+.tb .tb-bg-sun { background: var(--grain), #f5c04a; --antique: #1d2f6f; }
+.tb .tb-bg-sea { background: var(--grain), #7fd3cb; --antique: #1d2f6f; }
+.tb .orange { background: var(--grain), var(--coral); --antique: #1d2f6f; }
+.tb .tb-hero { background:
+  var(--grain),
+  radial-gradient(ellipse 60% 50% at 90% 10%, rgba(245, 183, 49, .55), transparent 70%),
+  radial-gradient(ellipse 50% 50% at 4% 96%, rgba(31, 181, 168, .35), transparent 70%),
+  radial-gradient(ellipse 50% 45% at 64% 104%, rgba(226, 60, 120, .3), transparent 70%),
+  radial-gradient(ellipse 40% 40% at 30% 0%, rgba(111, 143, 224, .25), transparent 70%),
+  var(--ivory); }
+.tb .pattern-sunrise { color: var(--signal); opacity: .35; }
+
+/* buttons */
+.tb .btn-signal { background: var(--raspberry); color: #fff; }
+.tb .btn-signal:hover { background: #a3164a; }
+.tb .btn-dark { background: var(--navy); color: #fff; }
+.tb .btn-dark:hover { background: #142252; }
+
+/* papel picado back to full color */
+.tb-flag-paper { fill-opacity: .9; }
+.tb-flag { animation-duration: 6s; }
+.tb-hero-palm, .tb-head-palm { stroke: #138a80; opacity: .5; }
+.tb-head-flower { stroke: var(--raspberry); opacity: .55; }
+.tb-stamp-xxx { color: var(--signal); }
+
+/* nav */
+.tb-nav { box-shadow: 0 4px 0 -1px var(--signal); }
+.tb-nav-links a[aria-current="page"] { border-bottom-color: var(--signal); }
+@media (max-width: 720px) {
+  .tb-tabbar { border-top: 1px solid var(--oxblood); box-shadow: 0 -4px 14px rgba(30, 27, 46, .14); }
+  .tb-tabbar a[aria-current="page"] { border-top-color: var(--signal); background-color: var(--blush); }
+}
+
+/* countdown cells each get a color cap */
+.tb-count-cell { background: var(--paper); border-top: 4px solid var(--cap, var(--signal)); }
+.tb-count-cell:nth-child(2) { --cap: var(--mango); }
+.tb-count-cell:nth-child(3) { --cap: var(--lagoon); }
+.tb-count-cell:nth-child(4) { --cap: var(--orchid); }
+
+/* fun, chic: the "riviera" stripe, a slim multicolor rule */
+.tb-marquee.is-single { background: var(--navy); }
+.tb-marquee.is-single::before, .tb-marquee.is-single::after { content: ""; display: block; height: 8px;
+  background: linear-gradient(90deg, var(--signal) 0 20%, var(--mango) 20% 40%, var(--lagoon) 40% 60%, var(--orchid) 60% 80%, var(--coral) 80% 100%); }
+.tb-marquee.is-single .tb-mq-a { border-block-color: color-mix(in srgb, var(--gold) 60%, transparent); }
+.tb-marquee.is-single .tb-mq-item { color: #fff; }
+.tb-marquee.is-single .tb-mq-star { color: var(--gold); }
+.tb-arch-sec::before, .tb-postcard-sec::before, .tb-rules::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px;
+  background: linear-gradient(90deg, var(--signal) 0 20%, var(--mango) 20% 40%, var(--lagoon) 40% 60%, var(--orchid) 60% 80%, var(--coral) 80% 100%); }
+.tb-arch-sec, .tb-postcard-sec { position: relative; }
+
+/* frames keep the hairline double rule; color shows up in the details */
+.tb-ticket:hover { background: var(--navy); color: #fff; }
+.tb-ticket:hover .tb-ticket-k { color: var(--gold); }
+.tb-ballot-grid li:nth-child(4n+1) .tb-ticket { border-top: 5px solid var(--signal) !important; }
+.tb-ballot-grid li:nth-child(4n+2) .tb-ticket { border-top: 5px solid var(--lagoon) !important; }
+.tb-ballot-grid li:nth-child(4n+3) .tb-ticket { border-top: 5px solid var(--orchid) !important; }
+.tb-ballot-grid li:nth-child(4n+4) .tb-ticket { border-top: 5px solid var(--mango) !important; }
+.tb-rank-card[aria-pressed="true"] { background: var(--blush); border-color: var(--raspberry) !important; }
+.tb-rank-n { background: var(--raspberry); }
+.tb-chip[aria-pressed="true"], .tb-cal-day[aria-pressed="true"] { background: var(--navy); color: #fff; }
+.tb-cal-day[aria-pressed="true"] .tb-cal-note { color: var(--gold); }
+.tb-tiles a:hover { background: var(--navy); color: #fff; }
+.tb-tiles a:hover .tb-tile-k { color: var(--gold); }
+
+/* passport stamps: each stamp inks in its own color */
+.tb-visa.is-stamped { background: color-mix(in srgb, var(--ink) 18%, var(--paper)); }
+.tb-visa.is-stamped .tb-visa-ring { border-color: var(--ink); outline-color: var(--ink); color: var(--oxblood); background: color-mix(in srgb, var(--ink) 30%, transparent); }
+.tb-progress-bar span { background: linear-gradient(90deg, var(--signal), var(--mango), var(--lagoon), var(--orchid)); }
+
+/* rules + after hours on navy */
+.tb .tb-rules { position: relative; }
+.tb-rules-grid li.is-money { background: var(--navy); }
+.tb-neon { background: var(--grain), var(--navy); }
+.tb-footer, .tb .tb-footer { background: var(--navy); }
+
+/* postcard: colored italic letters on a turquoise ground */
+.tb-postcard-sec { background: var(--grain), repeating-linear-gradient(-45deg, transparent 0 26px, rgba(255, 255, 255, .18) 26px 28px), #7fd3cb; }
+.tb-card-l0 { color: #c2185b; }
+.tb-card-l1 { color: #d9481f; }
+.tb-card-l2 { color: #138a80; }
+.tb-card-l3 { color: #1d2f6f; }
+.tb-polaroid::before { background: rgba(226, 60, 120, .45); }
+
+/* arch on cornflower */
+.tb-arch-sec { background: var(--grain), var(--sky); }
+
+/* results in full color */
+.tb-tone-signal { --tone: var(--signal); }
+.tb-tone-lagoon { --tone: var(--lagoon); }
+.tb-tone-brass { --tone: var(--mango); }
+.tb-tone-lime { --tone: var(--orchid); }
+.tb-bar-track { height: 10px; }
+
+.tb-voteclock { border-left-color: var(--signal); }
+.tb-note, .tb-watch { border-left-color: var(--signal); }

@@ -302,13 +302,13 @@ export function Talavera() {
       <defs>
         <pattern id="tb-tile" width="72" height="72" patternUnits="userSpaceOnUse">
           <rect width="72" height="72" fill="#fbf8f3" />
-          <rect x="1.5" y="1.5" width="69" height="69" fill="none" stroke="#2a1a22" strokeWidth=".6" />
-          <path d="M0 0 A18 18 0 0 1 18 18 L0 18 Z M72 0 A18 18 0 0 0 54 18 L72 18 Z M0 72 A18 18 0 0 0 18 54 L0 54 Z M72 72 A18 18 0 0 1 54 54 L72 54 Z" fill="#c9dbd3" stroke="#2a1a22" strokeWidth=".6" />
+          <rect x="1.5" y="1.5" width="69" height="69" fill="none" stroke="#1d2f6f" strokeWidth=".8" />
+          <path d="M0 0 A18 18 0 0 1 18 18 L0 18 Z M72 0 A18 18 0 0 0 54 18 L72 18 Z M0 72 A18 18 0 0 0 18 54 L0 54 Z M72 72 A18 18 0 0 1 54 54 L72 54 Z" fill="#c9d6fa" stroke="#1d2f6f" strokeWidth=".7" />
           {Array.from({ length: 8 }, (_, i) => (
-            <ellipse key={i} cx="36" cy="22" rx="5" ry="12" transform={`rotate(${i * 45} 36 36)`} fill={i % 2 ? "#e6cf9c" : "#d9a6a0"} stroke="#2a1a22" strokeWidth=".6" />
+            <ellipse key={i} cx="36" cy="22" rx="5" ry="12" transform={`rotate(${i * 45} 36 36)`} fill={i % 2 ? "#ffffff" : "#3a5bc7"} stroke="#1d2f6f" strokeWidth=".7" />
           ))}
-          <circle cx="36" cy="36" r="6" fill="#9e2a4f" stroke="#2a1a22" strokeWidth=".6" />
-          <path d="M36 2 l4 6 -4 6 -4 -6 z M36 58 l4 6 -4 6 -4 -6 z M2 36 l6 -4 6 4 -6 4 z M58 36 l6 -4 6 4 -6 4 z" fill="#b08a3e" />
+          <circle cx="36" cy="36" r="6" fill="#f5c04a" stroke="#1d2f6f" strokeWidth=".7" />
+          <path d="M36 2 l4 6 -4 6 -4 -6 z M36 58 l4 6 -4 6 -4 -6 z M2 36 l6 -4 6 4 -6 4 z M58 36 l6 -4 6 4 -6 4 z" fill="#1d2f6f" />
         </pattern>
       </defs>
       <rect width="100%" height="72" fill="url(#tb-tile)" />
@@ -331,10 +331,10 @@ export function Arch({ caption, kicker }: { caption: string; kicker?: string }) 
         <svg className="tb-arch" viewBox="0 0 400 480" aria-hidden>
           <defs>
             <linearGradient id="tb-arch-sky" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stopColor="#efc9b8" />
-              <stop offset=".62" stopColor="#f2dcb6" />
-              <stop offset=".63" stopColor="#4f8f88" />
-              <stop offset="1" stopColor="#2f6d68" />
+              <stop offset="0" stopColor="#f7a9c0" />
+              <stop offset=".62" stopColor="#f9cf6a" />
+              <stop offset=".63" stopColor="#1fb5a8" />
+              <stop offset="1" stopColor="#138a80" />
             </linearGradient>
             <clipPath id="tb-arch-clip">
               <path d="M80 470 V200 A120 120 0 0 1 320 200 V470 Z" />
@@ -343,10 +343,10 @@ export function Arch({ caption, kicker }: { caption: string; kicker?: string }) 
               <feGaussianBlur stdDeviation="3" />
             </filter>
           </defs>
-          <rect width="400" height="480" fill="#efe6da" />
+          <rect width="400" height="480" fill="#fbf4ea" />
           <g clipPath="url(#tb-arch-clip)">
             <rect width="400" height="480" fill="url(#tb-arch-sky)" />
-            <circle cx="200" cy="300" r="34" fill="#e7a07f" opacity=".9" />
+            <circle cx="200" cy="300" r="34" fill="#f26b4f" />
             {[318, 336, 358, 384, 414].map((y, i) => (
               <path key={y} d={`M${100 + i * 4} ${y} H${300 - i * 4}`} stroke="#f6efe6" strokeWidth=".9" strokeDasharray={`${26 - i * 3} ${10 + i * 3}`} opacity=".7" />
             ))}
