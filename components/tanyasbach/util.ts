@@ -18,28 +18,29 @@ export function save(key: string, value: unknown) {
 
 export const isDemo = () => !SHEET_URL;
 
-/**
- * Post one form to the Apps Script web app. Sent as text/plain so the browser skips the CORS preflight
- * Apps Script can't answer; the response is opaque, so a resolved fetch counts as sent.
- */
+const API = "/api/tanyasbach";
+
+/** Post one form through the site's own relay, which forwards it to the Google Sheet. Throws if it didn't save. */
 export async function submit(payload: Record<string, unknown>): Promise<void> {
   if (!SHEET_URL) {
     await new Promise((r) => setTimeout(r, 450));
     return;
   }
-  await fetch(SHEET_URL, {
+  const res = await fetch(API, {
     method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
+  const out = (await res.json().catch(() => ({}))) as { ok?: boolean };
+  if (!res.ok || !out.ok) throw new Error("not saved");
 }
 
 /** Aggregated tallies only: the script never returns names, contacts, or individual budgets. */
 export async function fetchResults(): Promise<{ data: Results; demo: boolean }> {
   if (!SHEET_URL) return { data: SAMPLE, demo: true };
   try {
-    const res = await fetch(SHEET_URL, { cache: "no-store" });
+    const res = await fetch(API, { cache: "no-store" });
+    if (!res.ok) throw new Error(String(res.status));
     const data = (await res.json()) as Results;
     return { data, demo: false };
   } catch {
