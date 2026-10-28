@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { BASE, BUDGET_BANDS, DESTS, SAILINGS, WEEKENDS, type Results } from "@/lib/tanyasbach";
-import { StickerSheet } from "./Breaks";
+import { Arch } from "./Breaks";
 import { VoteClock } from "./Deadline";
 import { fetchResults } from "./util";
 
@@ -65,7 +65,7 @@ export default function ResultsView() {
         </div>
       </section>
 
-      <StickerSheet />
+      <Arch kicker="Meanwhile" caption="Somewhere warm, a table for eighteen is waiting. Vote before Thanksgiving." />
 
       <section className="section light tb-results">
         <div className="wrap tb-results-grid">

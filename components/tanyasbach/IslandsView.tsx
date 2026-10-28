@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { BASE, DESTS } from "@/lib/tanyasbach";
 import { Hibiscus } from "./Art";
-import { Marquee, Neon, Postcard } from "./Breaks";
+import { Neon, Postcard } from "./Breaks";
 
 export default function IslandsView() {
   return (
@@ -26,7 +26,6 @@ export default function IslandsView() {
         </div>
       </section>
 
-      <Marquee a={["Virgin Voyages", "Cartagena", "Tulum", "Grace Bay"]} b={["Agua turquesa", "Arena blanca", "Ron", "Ritmo"]} />
 
       <section className="section light tb-compare-sec">
         <div className="wrap">

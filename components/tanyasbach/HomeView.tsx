@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState, type CSSProperties } from "react";
 import { BASE, DESTS, GROUP_SIZE, STAMPS, TRIP_TARGET, TRIP_TARGET_LABEL } from "@/lib/tanyasbach";
 import { Hibiscus, Motif, Palm, PapelPicado } from "./Art";
-import { Awning, Marquee, Neon, Postcard, StickerSheet } from "./Breaks";
+import { Arch, Marquee, Neon, Postcard } from "./Breaks";
 import { Rules, VoteClock } from "./Deadline";
 import { NameField } from "./Forms";
 import { useTb } from "./TbProvider";
@@ -61,10 +61,7 @@ export default function HomeView() {
         </div>
       </section>
 
-      <Marquee
-        a={["¡Salud!", "Vota antes de Thanksgiving", "Sol", "Salsa", "Tanya", "Mojitos", "La novia", "Playa"]}
-        b={["Lo que pasa en la despedida", "se queda en la despedida", "Mayo 2027", "Vamos"]}
-      />
+      <Marquee a={["Tanya ’27", "Mayo", "Vota antes de Thanksgiving", "Sol y salsa", "La novia", "Salud"]} />
 
       <section className="section light tb-passport-sec" id="passport">
         <div className="wrap">
@@ -111,7 +108,7 @@ export default function HomeView() {
 
       <Rules />
 
-      <StickerSheet caption="Packing list: SPF 50, a tiny bikini, questionable decisions, and Tanya." />
+      <Arch kicker="Packing list" caption="SPF 50, a very small swimsuit, one good dress, questionable decisions, and Tanya." />
 
       <section className="section orange tb-ballot">
         <div className="wrap">
@@ -146,7 +143,6 @@ export default function HomeView() {
 
       <Neon kicker="Regla número uno" line="Lo que pasa en la despedida, se queda en la despedida." />
 
-      <Awning tone="signal" />
       <section className="section light tb-tiles-sec tb-bg-sun">
         <div className="wrap">
           <ul className="tb-tiles">

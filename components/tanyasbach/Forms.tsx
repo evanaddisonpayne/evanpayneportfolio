@@ -59,9 +59,9 @@ export function Chips({
   );
 }
 
-/** Sends one form, stamps the planning passport, and throws a little confetti. */
+/** Sends one form and stamps the planning passport. */
 export function useSend(kind: FormKind) {
-  const { name, markDone, flash, confetti } = useTb();
+  const { name, markDone, flash } = useTb();
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   async function send(fields: Record<string, unknown>, check?: () => string | null) {
@@ -85,8 +85,7 @@ export function useSend(kind: FormKind) {
       await submit({ form: kind, name: who, ...fields });
       setState("sent");
       markDone(kind);
-      confetti();
-      flash(isDemo() ? `Demo mode: nothing sent, ${firstName(who)}.` : `¡Gracias, ${firstName(who)}! Stamped. ✿`);
+      flash(isDemo() ? `Demo mode: nothing sent, ${firstName(who)}.` : `Gracias, ${firstName(who)}. Stamped.`);
     } catch {
       setState("error");
       flash("That didn't send. Check your signal and try again.");

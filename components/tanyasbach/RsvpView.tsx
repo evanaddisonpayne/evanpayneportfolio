@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { BUDGET, NO_REFUND, ROOMING, SPLURGE } from "@/lib/tanyasbach";
 import { Hibiscus } from "./Art";
-import { Marquee, Neon } from "./Breaks";
+import { Neon } from "./Breaks";
 import { Chips, NameField, SubmitRow, useSend } from "./Forms";
 
 export default function RsvpView() {
@@ -25,7 +25,6 @@ export default function RsvpView() {
           <NameField compact />
         </div>
       </section>
-      <Marquee a={["¿Estás dentro?", "RSVP", "Pasaporte", "Maleta", "Bikini", "Vamos"]} b={["Tanya ’27", "Mayo", "Sol y salsa", "La novia"]} />
       <RsvpForm />
       <Neon kicker="Presupuesto" line="Sin juicio. No judgment, just vibes." />
       <BudgetForm />
