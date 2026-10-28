@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { DESTS, NIGHTS, VIBES, WEEKENDS } from "@/lib/tanyasbach";
+import { DESTS, NIGHTS, SAILINGS, VIBES, WEEKENDS } from "@/lib/tanyasbach";
 import { Palm } from "./Art";
 import { Awning, Marquee, StickerSheet } from "./Breaks";
 import { Chips, NameField, SubmitRow, useSend } from "./Forms";
@@ -26,7 +26,7 @@ export default function VoteView() {
           <NameField compact />
         </div>
       </section>
-      <Marquee a={["República Dominicana", "Cartagena", "Tulum", "Turks & Caicos"]} b={["Vota", "Elige", "Baila", "Brinda", "Repite"]} />
+      <Marquee a={["Virgin Voyages", "Cartagena", "Tulum", "Turks & Caicos"]} b={["Vota", "Elige", "Baila", "Brinda", "Repite"]} />
       <DestinationVote />
       <Awning tone="mango" />
       <DatesVote />
@@ -92,7 +92,7 @@ function DatesVote() {
   const [nights, setNights] = useState<string[]>(["4 nights"]);
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    send({ weekends: picked, maxNights: nights[0] || "" }, () => (picked.length ? null : "Tap at least one weekend you could make."));
+    send({ weekends: picked, maxNights: nights[0] || "" }, () => (picked.length ? null : "Tap at least one date you could make."));
   };
   return (
     <section className="section light tb-form-sec tb-bg-sun" id="dates">
@@ -100,29 +100,21 @@ function DatesVote() {
         <div className="section-head">
           <p className="eyebrow">Las fechas · May 2027</p>
           <h2 className="h2">
-            Every Thursday-to-Sunday <span className="italic">you could make work.</span>
+            Tap every date <span className="italic">you could make work.</span>
           </h2>
         </div>
         <form className="tb-form" onSubmit={onSubmit}>
+          <p className="tb-label">If we fly somewhere: Thursday to Sunday</p>
           <div className="tb-cal" role="group" aria-label="Weekends you can make">
-            {WEEKENDS.map((w) => {
-              const on = picked.includes(w.label);
-              return (
-                <button
-                  key={w.id}
-                  type="button"
-                  className="tb-cal-day"
-                  aria-pressed={on}
-                  onClick={() => setPicked((p) => (on ? p.filter((x) => x !== w.label) : [...p, w.label]))}
-                >
-                  <span className="tb-cal-dates">{w.label}</span>
-                  <span className="tb-cal-note">{w.note ?? "Thu – Sun"}</span>
-                  <span className="tb-cal-check" aria-hidden>
-                    {on ? "✓" : "+"}
-                  </span>
-                </button>
-              );
-            })}
+            {WEEKENDS.map((w) => (
+              <DateChip key={w.id} label={w.label} note={w.note ?? "Thu – Sun"} picked={picked} setPicked={setPicked} />
+            ))}
+          </div>
+          <p className="tb-label">If we cruise: Virgin Voyages from Miami, 5 nights</p>
+          <div className="tb-cal" role="group" aria-label="Cruise sailings you can make">
+            {SAILINGS.map((w) => (
+              <DateChip key={w.id} label={w.label} note={w.note} picked={picked} setPicked={setPicked} />
+            ))}
           </div>
           <div className="tb-field">
             <p className="tb-label">Most nights you can do</p>
@@ -132,6 +124,29 @@ function DatesVote() {
         </form>
       </div>
     </section>
+  );
+}
+
+function DateChip({
+  label,
+  note,
+  picked,
+  setPicked,
+}: {
+  label: string;
+  note: string;
+  picked: string[];
+  setPicked: (f: (p: string[]) => string[]) => void;
+}) {
+  const on = picked.includes(label);
+  return (
+    <button type="button" className="tb-cal-day" aria-pressed={on} onClick={() => setPicked((p) => (on ? p.filter((x) => x !== label) : [...p, label]))}>
+      <span className="tb-cal-dates">{label}</span>
+      <span className="tb-cal-note">{note}</span>
+      <span className="tb-cal-check" aria-hidden>
+        {on ? "✓" : "+"}
+      </span>
+    </button>
   );
 }
 

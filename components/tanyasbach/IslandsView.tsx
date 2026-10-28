@@ -26,7 +26,7 @@ export default function IslandsView() {
         </div>
       </section>
 
-      <Marquee a={["Punta Cana", "Cartagena", "Tulum", "Grace Bay"]} b={["Agua turquesa", "Arena blanca", "Ron", "Ritmo"]} />
+      <Marquee a={["Virgin Voyages", "Cartagena", "Tulum", "Grace Bay"]} b={["Agua turquesa", "Arena blanca", "Ron", "Ritmo"]} />
 
       <section className="section light tb-compare-sec">
         <div className="wrap">

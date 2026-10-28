@@ -48,27 +48,6 @@ export type Dest = {
 
 export const DESTS: Dest[] = [
   {
-    id: "dr",
-    name: "Dominican Republic",
-    place: "Punta Cana or Santo Domingo",
-    coords: "18.58° N · 68.40° W",
-    tagline: "Merengue, rum, and the most bed for the buck.",
-    pitch:
-      "Big resorts and villas built for groups, a catamaran day out to Isla Saona, and a Colonial Zone in Santo Domingo for a night of bachata and rooftop bars.",
-    lang: "Spanish",
-    money: "Dominican peso; dollars widely taken at resorts",
-    may: "Highs in the low to mid 80s °F. May starts the wetter months, usually as short passing showers.",
-    entry: [
-      "Passport, no visa",
-      "Free e-Ticket form online, any time after you have flights and before check-in",
-      "The $20 tourist/departure tax is already in your airfare",
-    ],
-    watch: "A US-passport exception (valid only for your stay) runs through Dec 31, 2026. For May 2027, plan on 6 months of validity.",
-    cost: "$",
-    costNote: "All-inclusive group deals keep this the cheapest.",
-    bestFor: ["Boat party", "All-inclusive ease", "Dancing"],
-  },
-  {
     id: "ctg",
     name: "Cartagena, Colombia",
     place: "Old City + Rosario Islands",
@@ -108,6 +87,29 @@ export const DESTS: Dest[] = [
     bestFor: ["Beach club", "Cenotes", "Spa & wellness"],
   },
   {
+    id: "cruise",
+    name: "Virgin Voyages cruise",
+    place: "Miami round trip · Valiant Lady",
+    coords: "25.77° N · 80.17° W",
+    tagline: "Adults only, five nights, and the islands come to us.",
+    pitch:
+      "Every Virgin Voyages sailing is 18 and over. Five nights round trip from Miami: two sea days of pool decks and parties (including Scarlet Night, the ship-wide party in red), a Caribbean port, and a beach day at Virgin's private Bimini Beach Club. One booking covers the room, every restaurant, and the nightlife.",
+    lang: "English onboard",
+    money: "US dollars, charged to your cabin",
+    may: "Five-night sailings leave Miami May 1, 10, 15, 24 and 29. Each stops at Bimini plus Grand Turk or Grand Cayman, depending on the date.",
+    entry: [
+      "Round trip from a US port: a passport is strongly recommended, though US citizens can sail with a birth certificate and photo ID",
+      "Fly into Miami (MIA) or Fort Lauderdale (FLL), ideally the day before",
+      "18+ only on every sailing",
+    ],
+    watch:
+      "Sailings run Saturday to Thursday or Monday to Saturday, not Thursday to Sunday, so a cruise means picking one of its dates. Cabins are compact, so plan on two to a room.",
+    cost: "$$",
+    costNote:
+      "Listed May fares start around $730–$1,350 depending on date and cabin. Restaurants and basic Wi-Fi are included; drinks, gratuities and excursions are extra.",
+    bestFor: ["Party at sea", "Pool decks", "One easy booking"],
+  },
+  {
     id: "tci",
     name: "Turks and Caicos",
     place: "Grace Bay, Providenciales",
@@ -134,6 +136,15 @@ export const WEEKENDS: { id: string; label: string; note?: string }[] = [
   { id: "may13", label: "May 13 – 16" },
   { id: "may20", label: "May 20 – 23" },
   { id: "may27", label: "May 27 – 31", note: "Memorial Day Mon" },
+];
+
+/** Virgin Voyages Valiant Lady, 5 nights round trip from Miami (fixed dates; listed Oct 2026). */
+export const SAILINGS: { id: string; label: string; note: string }[] = [
+  { id: "vv0501", label: "Cruise May 1 – 6", note: "Sat–Thu · Grand Turk" },
+  { id: "vv0510", label: "Cruise May 10 – 15", note: "Mon–Sat · Grand Cayman" },
+  { id: "vv0515", label: "Cruise May 15 – 20", note: "Sat–Thu · Grand Turk" },
+  { id: "vv0524", label: "Cruise May 24 – 29", note: "Mon–Sat · Grand Cayman" },
+  { id: "vv0529", label: "Cruise May 29 – Jun 3", note: "Sat–Thu · Grand Turk" },
 ];
 
 export const NIGHTS = ["3 nights", "4 nights", "5 nights", "6+ nights"];
@@ -170,14 +181,17 @@ export type Results = {
 /** Shown until the Sheet is connected, clearly labeled as sample data. */
 export const SAMPLE: Results = {
   rsvps: 11,
-  destination: { "Cartagena, Colombia": 31, "Tulum / Riviera Maya": 27, "Dominican Republic": 22, "Turks and Caicos": 18 },
+  destination: { "Cartagena, Colombia": 31, "Tulum / Riviera Maya": 27, "Virgin Voyages cruise": 22, "Turks and Caicos": 18 },
   dates: { "May 13 – 16": 9, "May 20 – 23": 8, "May 27 – 31": 6, "Apr 29 – May 2": 4, "May 6 – 9": 3 },
   vibes: { "Catamaran / boat party": 10, "Beach club day": 9, "Salsa or bachata lesson": 7, "Big night out": 7, "Spa & pool day": 5, "Street food tour": 4 },
   budgetBands: { "Under $1k": 2, "$1k–1.5k": 5, "$1.5k–2k": 3, "$2k+": 1 },
 };
 
 export const sources: { label: string; href: string }[] = [
-  { label: "Go Dominican Republic · entry", href: "https://www.godominicanrepublic.com/travel/entry-requirements" },
+  { label: "Virgin Voyages May 2027 sailings", href: "https://www.taoticket.com/en_US/co/virgin-voyages/de/caribbean/may" },
+  { label: "Family Vacationist · Virgin, adults only", href: "https://familyvacationist.com/virgin-voyages-cruises-adults-only-review/" },
+  { label: "Cruise Mummy · Virgin, what's included", href: "https://www.cruisemummy.co.uk/?p=27699" },
+  { label: "AAA · closed-loop cruises", href: "https://cluballiance.aaa.com/the-extra-mile/advice/travel/closed-loop-cruise" },
   { label: "Migración Colombia (Check-MIG)", href: "https://www.migracioncolombia.gov.co/" },
   { label: "TCI Border Force · entry", href: "https://borderforce.gov.tc/entry-requirements" },
   { label: "Mexico News Daily · sargassum", href: "https://mexiconewsdaily.com/news/sargassum-riviera-maya-increase-seaweed-beaches" },

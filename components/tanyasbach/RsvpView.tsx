@@ -56,7 +56,7 @@ function RsvpForm() {
             <Field id="r-pass" label="Passport expires" name="passport" type="month" />
           </div>
           <p className="tb-note">
-            Every option on the ballot needs a passport, and we&apos;re planning on six months of validity past the trip. So if yours runs out
+            Three of the four options need a passport, and the cruise strongly recommends one. We&apos;re planning on six months of validity past the trip. So if yours runs out
             before <strong>December 2027</strong>, renew it this winter.
           </p>
           <div className="tb-field">
