@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = { themeColor: "#0b2b30" };
+export const viewport: Viewport = { themeColor: "#fff8f0" };
 
 export default function TanyasBachLayout({ children }: { children: ReactNode }) {
   return <TbProvider>{children}</TbProvider>;

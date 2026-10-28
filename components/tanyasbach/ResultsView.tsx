@@ -33,7 +33,7 @@ export default function ResultsView() {
 
   return (
     <>
-      <section className="section dark tb-pagehead">
+      <section className="section light tb-pagehead tb-bg-blush">
         <div className="pattern pattern-passport" aria-hidden />
         <div className="wrap">
           <p className="eyebrow">En vivo{demo ? " · sample data" : ""}</p>

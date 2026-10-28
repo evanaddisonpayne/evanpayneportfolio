@@ -4,7 +4,7 @@
  */
 import type { CSSProperties } from "react";
 
-const WASH = ["var(--signal)", "var(--brass)", "var(--lagoon)", "var(--lime)", "var(--ivory)"];
+const WASH = ["var(--signal)", "var(--mango)", "var(--lagoon)", "var(--lime)", "var(--coral)", "var(--orchid)"];
 
 /** Papel picado: a sagging string of cut-paper flags, each with a hairline cut-out. */
 export function PapelPicado({ count = 14, className = "" }: { count?: number; className?: string }) {
@@ -28,7 +28,7 @@ export function PapelPicado({ count = 14, className = "" }: { count?: number; cl
         <path d={`M${x} ${y} H${x + w} V${y + h}${zig} Z`} fill={WASH[i % WASH.length]} className="tb-flag-paper" />
         <path d={`M${x + 5} ${y + 6} H${x + w - 5}`} className="tb-hair-thin" />
         {motif === 0 && (
-          <g>
+          <g className="tb-cut">
             <circle cx={cx} cy={cy} r={8} />
             {Array.from({ length: 12 }, (_, r) => {
               const a = (r / 12) * Math.PI * 2;
@@ -37,7 +37,7 @@ export function PapelPicado({ count = 14, className = "" }: { count?: number; cl
           </g>
         )}
         {motif === 1 && (
-          <g>
+          <g className="tb-cut">
             {Array.from({ length: 6 }, (_, p) => (
               <ellipse key={p} cx={cx} cy={cy - 9} rx={4.5} ry={9} transform={`rotate(${p * 60} ${cx} ${cy})`} />
             ))}
@@ -45,7 +45,7 @@ export function PapelPicado({ count = 14, className = "" }: { count?: number; cl
           </g>
         )}
         {motif === 2 && (
-          <g>
+          <g className="tb-cut">
             <path d={`M${cx} ${cy - 16} L${cx + 12} ${cy} L${cx} ${cy + 16} L${cx - 12} ${cy} Z`} />
             <path d={`M${cx} ${cy - 9} L${cx + 6} ${cy} L${cx} ${cy + 9} L${cx - 6} ${cy} Z`} className="tb-hair-thin" />
             <path d={`M${x + 8} ${cy} H${cx - 16} M${cx + 16} ${cy} H${x + w - 8}`} className="tb-hair-dot" />
@@ -128,7 +128,7 @@ export function Hibiscus({ className = "", wash = true }: { className?: string; 
     <svg className={`tb-art tb-hibiscus ${className}`} viewBox="-60 -60 120 120" aria-hidden>
       {petals.map((r) => (
         <g key={r} transform={`rotate(${r})`}>
-          <path d="M0 0 C-22 -10 -30 -38 -14 -50 C-6 -56 6 -56 14 -50 C30 -38 22 -10 0 0Z" className="tb-hair" fill={wash ? "color-mix(in srgb, var(--signal) 26%, transparent)" : "none"} />
+          <path d="M0 0 C-22 -10 -30 -38 -14 -50 C-6 -56 6 -56 14 -50 C30 -38 22 -10 0 0Z" className="tb-hair" fill={wash ? "color-mix(in srgb, var(--signal) 55%, transparent)" : "none"} />
           <path d="M0 -4 L0 -44 M0 -16 L-9 -32 M0 -16 L9 -32 M0 -28 L-6 -42 M0 -28 L6 -42" className="tb-hair-thin" />
         </g>
       ))}

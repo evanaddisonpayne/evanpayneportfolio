@@ -14,8 +14,8 @@ export default function HomeView() {
 
   return (
     <>
-      <section className="section dark tb-hero">
-        <div className="pattern pattern-passport" aria-hidden />
+      <section className="section light tb-hero">
+        <div className="pattern pattern-sunrise" aria-hidden />
         <PapelPicado />
         <Palm className="tb-hero-palm" />
         <div className="tb-tape" aria-hidden>
@@ -130,7 +130,7 @@ export default function HomeView() {
         </div>
       </section>
 
-      <section className="section light tb-tiles-sec">
+      <section className="section light tb-tiles-sec tb-bg-sun">
         <div className="wrap">
           <ul className="tb-tiles">
             <li>
