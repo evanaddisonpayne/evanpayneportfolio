@@ -130,8 +130,7 @@ export default function TbProvider({ children }: { children: ReactNode }) {
             <nav className="tb-nav-links" aria-label="Trip sections">
               {TABS.map((t) => (
                 <Link key={t.href} href={t.href} aria-current={isActive(t.href) ? "page" : undefined}>
-                  <span className="tb-nav-icon" aria-hidden>{t.icon}</span>
-                  <span>{t.label}</span>
+                  {t.label}
                 </Link>
               ))}
             </nav>
@@ -161,6 +160,18 @@ export default function TbProvider({ children }: { children: ReactNode }) {
             </p>
           </div>
         </footer>
+
+        {/* Phone tab bar: a direct child of .tb so no section's stacking context can paint over it. */}
+        <nav className="tb-tabbar" aria-label="Trip sections">
+          {TABS.map((t) => (
+            <Link key={t.href} href={t.href} aria-current={isActive(t.href) ? "page" : undefined}>
+              <span className="tb-tabbar-icon" aria-hidden>
+                {t.icon}
+              </span>
+              <span>{t.label}</span>
+            </Link>
+          ))}
+        </nav>
 
         <Confetti trigger={confettiTick} fiesta={fiesta} />
       </div>
