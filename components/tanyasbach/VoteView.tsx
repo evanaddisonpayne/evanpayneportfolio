@@ -8,7 +8,7 @@ import { Chips, NameField, SubmitRow, useSend } from "./Forms";
 export default function VoteView() {
   return (
     <>
-      <section className="section dark tb-pagehead">
+      <section className="section light tb-pagehead tb-bg-sky">
         <div className="pattern pattern-passport" aria-hidden />
         <Palm className="tb-head-palm" />
         <div className="wrap">
@@ -91,7 +91,7 @@ function DatesVote() {
     send({ weekends: picked, maxNights: nights[0] || "" }, () => (picked.length ? null : "Tap at least one weekend you could make."));
   };
   return (
-    <section className="section dark tb-form-sec" id="dates">
+    <section className="section light tb-form-sec tb-bg-sun" id="dates">
       <div className="wrap">
         <div className="section-head">
           <p className="eyebrow">Las fechas · May 2027</p>

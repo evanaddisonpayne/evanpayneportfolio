@@ -169,7 +169,7 @@ export default function TbProvider({ children }: { children: ReactNode }) {
 }
 
 const BITS = ["✿", "❀", "✦", "◆", "☀", "♥"];
-const COLORS = ["var(--signal)", "var(--brass)", "var(--lagoon)", "var(--lime)", "var(--ivory)"];
+const COLORS = ["var(--signal)", "var(--mango)", "var(--lagoon)", "var(--lime)", "var(--coral)", "var(--orchid)"];
 
 /** Hibiscus-and-paper confetti, fired on a form submit or by Modo Fiesta. */
 function Confetti({ trigger, fiesta }: { trigger: number; fiesta: boolean }) {

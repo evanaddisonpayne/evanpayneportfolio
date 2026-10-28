@@ -7,7 +7,7 @@ import { Hibiscus } from "./Art";
 export default function IslandsView() {
   return (
     <>
-      <section className="section dark tb-pagehead">
+      <section className="section light tb-pagehead tb-bg-sky">
         <div className="pattern pattern-sunrise" aria-hidden />
         <div className="wrap">
           <p className="eyebrow">Los destinos</p>
@@ -58,8 +58,8 @@ export default function IslandsView() {
       </section>
 
       {DESTS.map((d, i) => (
-        <section key={d.id} id={d.id} className={`section ${i % 2 ? "light" : "dark"} tb-dossier`}>
-          {i % 2 === 0 && <div className="pattern pattern-passport" aria-hidden />}
+        <section key={d.id} id={d.id} className={`section light tb-dossier tb-bg-${["blush", "sun", "sea", "sky"][i % 4]}`}>
+          <div className="pattern pattern-passport" aria-hidden />
           <div className="wrap tb-dossier-grid">
             <div className="tb-dossier-main">
               <p className="tb-dossier-n">

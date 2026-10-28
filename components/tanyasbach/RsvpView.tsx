@@ -8,7 +8,7 @@ import { Chips, NameField, SubmitRow, useSend } from "./Forms";
 export default function RsvpView() {
   return (
     <>
-      <section className="section dark tb-pagehead">
+      <section className="section light tb-pagehead tb-bg-blush">
         <div className="pattern pattern-passport" aria-hidden />
         <Hibiscus className="tb-head-flower" />
         <div className="wrap">
@@ -87,7 +87,7 @@ function BudgetForm() {
   };
   const label = `$${amt.toLocaleString()}${amt >= BUDGET.max ? "+" : ""}`;
   return (
-    <section className="section dark tb-form-sec" id="budget">
+    <section className="section light tb-form-sec tb-bg-sea" id="budget">
       <div className="wrap tb-budget-wrap">
         <div className="section-head">
           <p className="eyebrow">Presupuesto · just between us</p>
