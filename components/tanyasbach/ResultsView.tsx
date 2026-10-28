@@ -38,7 +38,7 @@ export default function ResultsView() {
       <section className="section light tb-pagehead tb-bg-blush">
         <div className="pattern pattern-passport" aria-hidden />
         <div className="wrap">
-          <p className="eyebrow">En vivo{demo ? " · sample data" : ""}</p>
+          <p className="eyebrow">Live results{demo ? " · sample data" : ""}</p>
           <h1 className="h1">
             {leader ? (
               <>
@@ -69,7 +69,7 @@ export default function ResultsView() {
 
       <section className="section light tb-results">
         <div className="wrap tb-results-grid">
-          <Board title="Destination" sub="Ranked-choice points: 4 for a #1 down to 1 for a #4" items={destRows} tone="signal" />
+          <Board title="Destination" sub="Points: a 1st choice counts 4, a 4th choice counts 1" items={destRows} tone="signal" />
           <Board title="Dates that work" sub="How many people can make each one" items={dateRows} tone="lagoon" />
           <Board title="Top vibes" sub="What people want to do" items={vibeRows} tone="brass" />
           <Board title="Budget comfort" sub="People per range, excluding flights" items={budgetRows} tone="lime" />

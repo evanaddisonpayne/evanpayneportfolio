@@ -109,3 +109,132 @@ export function SubmitRow({ label, sending, status }: { label: string; sending: 
     </div>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* One-button pages: validate everything, list what's missing inline,  */
+/* send each part to its sheet tab, then show a clear "done" panel.    */
+/* ------------------------------------------------------------------ */
+
+export type Part = { kind: FormKind; fields: Record<string, unknown> };
+export type Problem = { msg: string; focus?: string };
+type SubmitState = "idle" | "sending" | "done" | "error";
+
+export function useSubmitAll() {
+  const { name, markDone } = useTb();
+  const [state, setState] = useState<SubmitState>("idle");
+  const [problems, setProblems] = useState<Problem[]>([]);
+
+  async function run(parts: Part[], issues: Problem[]) {
+    const who = name.trim();
+    const all = [...(who ? [] : [{ msg: "Add your name", focus: "tb-name" }]), ...issues];
+    if (all.length) {
+      setProblems(all);
+      setState("idle");
+      const el = all[0].focus ? document.getElementById(all[0].focus) : null;
+      el?.scrollIntoView({ block: "center", behavior: "smooth" });
+      el?.focus({ preventScroll: true });
+      return;
+    }
+    setProblems([]);
+    setState("sending");
+    try {
+      for (const p of parts) {
+        await submit({ form: p.kind, name: who, ...p.fields });
+        markDone(p.kind);
+      }
+      setState("done");
+    } catch {
+      setState("error");
+    }
+  }
+
+  return { run, state, problems, edit: () => setState("idle") };
+}
+
+/** "Your name": the first field of every form. Remembered on this phone. */
+export function YourName() {
+  const { name, setName } = useTb();
+  return (
+    <div className="tb-field">
+      <label className="tb-label" htmlFor="tb-name">
+        Your name
+      </label>
+      <input
+        id="tb-name"
+        className="tb-input"
+        type="text"
+        autoComplete="name"
+        placeholder="First and last name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+    </div>
+  );
+}
+
+/** A numbered question inside a form. */
+export function Question({ n, title, hint, id, children }: { n: number; title: string; hint?: string; id?: string; children: ReactNode }) {
+  return (
+    <div className="tb-q" id={id} tabIndex={id ? -1 : undefined}>
+      <p className="tb-q-title">
+        <span className="tb-q-n">{n}</span>
+        {title}
+      </p>
+      {hint && <p className="tb-q-hint">{hint}</p>}
+      {children}
+    </div>
+  );
+}
+
+export function SubmitBlock({ label, state, problems }: { label: string; state: SubmitState; problems: Problem[] }) {
+  return (
+    <div className="tb-submit-block">
+      {problems.length > 0 && (
+        <div className="tb-errors" role="alert">
+          <p>
+            <strong>Almost there.</strong> Please fill in:
+          </p>
+          <ul>
+            {problems.map((p) => (
+              <li key={p.msg}>{p.focus ? <a href={`#${p.focus}`}>{p.msg}</a> : p.msg}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {state === "error" && (
+        <div className="tb-errors" role="alert">
+          <p>
+            <strong>That didn&apos;t send.</strong> Check your connection and tap the button again. Nothing you entered is lost.
+          </p>
+        </div>
+      )}
+      <button className="btn btn-signal tb-big-btn" disabled={state === "sending"}>
+        {state === "sending" ? "Sending…" : label}
+      </button>
+    </div>
+  );
+}
+
+/** Full-width confirmation that replaces the form after a successful send. */
+export function Success({ title, body, next, onEdit }: { title: string; body: string; next?: { href: string; label: string }; onEdit: () => void }) {
+  return (
+    <div className="tb-success" role="status" ref={(el) => el?.scrollIntoView({ block: "center", behavior: "smooth" })}>
+      <p className="tb-success-mark" aria-hidden>
+        ✓
+      </p>
+      <h2 className="h2">{title}</h2>
+      <p className="lede">{body}</p>
+      {isDemo() && <p className="tb-hint">Demo mode: nothing was actually sent.</p>}
+      <div className="tb-success-btns">
+        {next && (
+          <a className="btn btn-signal tb-big-btn" href={next.href}>
+            {next.label}
+          </a>
+        )}
+        <button type="button" className="tb-linkbtn" onClick={onEdit}>
+          Change my answers
+        </button>
+      </div>
+    </div>
+  );
+}
