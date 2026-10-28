@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { BASE, sources, type FormKind } from "@/lib/tanyasbach";
 import { Swell } from "./Art";
+import { Talavera } from "./Breaks";
 import { load, save } from "./util";
 
 const NAME_KEY = "tb27-name";
@@ -139,6 +140,7 @@ export default function TbProvider({ children }: { children: ReactNode }) {
 
         {children}
 
+        <Talavera />
         <footer className="footer tb-footer">
           <Swell />
           <div className="wrap tb-foot">
