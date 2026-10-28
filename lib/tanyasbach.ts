@@ -14,6 +14,9 @@ export const SHEET_URL = SHEET_ENV === "demo" ? "" : SHEET_ENV || SHEET_DEFAULT;
 
 /** Firm guest list until RSVPs are in: Tanya plus 15 friends (16 travelers). */
 export const INVITED = 15;
+
+/** Destinations renamed after votes came in: old name → current name, merged in results. */
+export const DEST_ALIASES: Record<string, string> = { "Tulum / Riviera Maya": "Cancún / Tulum" };
 export const TRAVELERS = INVITED + 1;
 export const GROUP_SIZE = String(INVITED);
 /** Countdown target. May 1, 2027 until the group locks a weekend; then set this to the departure time. */
@@ -81,21 +84,21 @@ export const DESTS: Dest[] = [
   },
   {
     id: "tulum",
-    name: "Tulum / Riviera Maya",
-    place: "Tulum, Mexico",
-    coords: "20.21° N · 87.47° W",
-    tagline: "Cenotes by day, jungle beach clubs by night.",
+    name: "Cancún / Tulum",
+    place: "Cancún & Tulum, Mexico",
+    coords: "21.16° N · 86.85° W",
+    tagline: "Big nights in Cancún, cenotes and beach clubs in Tulum.",
     pitch:
-      "Swim in cenotes, see Maya ruins over the sea, then golden-hour dinners and beach clubs. Tulum now has its own international airport, so there's no 2-hour drive from Cancún.",
+      "The best of both: Cancún's hotel zone for pool days and nightlife, and Tulum about two hours south for cenote swims, Maya ruins over the sea, and golden-hour beach clubs. Cancún has the most direct flights of anywhere on the list, and Tulum now has its own airport too.",
     lang: "Spanish",
-    money: "Mexican peso; many beach clubs price in dollars",
-    may: "Hot, highs around 90 °F, with warm, clear cenote water.",
+    money: "Mexican peso; many hotels and beach clubs price in dollars",
+    may: "Hot, highs around 90 °F, with warm, clear water in the cenotes.",
     entry: ["Passport, no visa", "No paper form when you land at Cancún; immigration stamps your passport"],
     watch:
-      "Local officials put sargassum (seaweed) season at May–November, and Tulum's beaches get some of the heaviest. Cenotes and pools are unaffected.",
+      "Local officials put sargassum (seaweed) season at May–November, and it can reach both Cancún and Tulum beaches. Cenotes and pools are unaffected.",
     cost: "$$$",
-    costNote: "Boutique hotels and beach-club minimums run high for a big group.",
-    bestFor: ["Beach club", "Cenotes", "Spa & wellness"],
+    costNote: "Cancún resorts can be good value for a group; Tulum's boutique hotels and beach-club minimums run higher.",
+    bestFor: ["Beach club", "Cenotes", "Big night out"],
   },
   {
     id: "cruise",
@@ -204,7 +207,7 @@ export type Results = {
 /** Shown until the Sheet is connected, clearly labeled as sample data. */
 export const SAMPLE: Results = {
   rsvps: 11,
-  destination: { "Cartagena, Colombia": 31, "Tulum / Riviera Maya": 27, "Virgin Voyages cruise": 22, "Turks and Caicos": 18 },
+  destination: { "Cartagena, Colombia": 31, "Cancún / Tulum": 27, "Virgin Voyages cruise": 22, "Turks and Caicos": 18 },
   dates: { "May 13 – 16": 9, "May 20 – 23": 8, "May 27 – 31": 6, "Apr 29 – May 2": 4, "May 6 – 9": 3 },
   vibes: { "Catamaran / boat party": 10, "Beach club day": 9, "Salsa or bachata lesson": 7, "Big night out": 7, "Spa & pool day": 5, "Street food tour": 4 },
   budgetBands: { "Under $1k": 2, "$1k–1.5k": 5, "$1.5k–2k": 3, "$2k+": 1 },

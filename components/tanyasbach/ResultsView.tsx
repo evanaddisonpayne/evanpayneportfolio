@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { BASE, BUDGET_BANDS, DESTS, INVITED, SAILINGS, WEEKENDS, type Results } from "@/lib/tanyasbach";
+import { BASE, BUDGET_BANDS, DEST_ALIASES, DESTS, INVITED, SAILINGS, WEEKENDS, type Results } from "@/lib/tanyasbach";
 import { Arch } from "./Breaks";
 import { VoteClock } from "./Deadline";
 import { fetchResults } from "./util";
@@ -27,7 +27,7 @@ export default function ResultsView() {
   }, [refresh]);
 
   // Fixed order for categories with a natural order; the rest sort by votes.
-  const destRows = rows(data?.destination, DESTS.map((d) => d.name), true);
+  const destRows = rows(mergeAliases(data?.destination), DESTS.map((d) => d.name), true);
   const dateRows = rows(data?.dates, [...WEEKENDS, ...SAILINGS].map((w) => w.label), false);
   const vibeRows = rows(data?.vibes, [], true).slice(0, 8);
   const budgetRows = rows(data?.budgetBands, BUDGET_BANDS, false);
@@ -82,6 +82,15 @@ export default function ResultsView() {
       </section>
     </>
   );
+}
+
+function mergeAliases(obj: Record<string, number> | undefined) {
+  const out: Record<string, number> = {};
+  for (const [k, v] of Object.entries(obj ?? {})) {
+    const key = DEST_ALIASES[k] ?? k;
+    out[key] = (out[key] ?? 0) + v;
+  }
+  return out;
 }
 
 function rows(obj: Record<string, number> | undefined, order: string[], sortByVotes: boolean): [string, number][] {
