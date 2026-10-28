@@ -12,8 +12,9 @@ const SHEET_DEFAULT = "https://script.google.com/macros/s/AKfycbwz9C6DwRDjcAw8o3
 const SHEET_ENV = process.env.NEXT_PUBLIC_TANYASBACH_SHEET_URL;
 export const SHEET_URL = SHEET_ENV === "demo" ? "" : SHEET_ENV || SHEET_DEFAULT;
 
-/** Firm guest list until RSVPs are in. */
+/** Firm guest list until RSVPs are in: Tanya plus 15 friends (16 travelers). */
 export const INVITED = 15;
+export const TRAVELERS = INVITED + 1;
 export const GROUP_SIZE = String(INVITED);
 /** Countdown target. May 1, 2027 until the group locks a weekend; then set this to the departure time. */
 export const TRIP_TARGET = "2027-05-01T00:00:00-04:00";
@@ -75,7 +76,7 @@ export const DESTS: Dest[] = [
     ],
     watch: "Fill in Check-MIG only on the official government site. Look-alike sites charge for it.",
     cost: "$$",
-    costNote: "Big colonial houses for 15 are good value; boats and nightlife add up.",
+    costNote: "Big colonial houses for 16 are good value; boats and nightlife add up.",
     bestFor: ["Old town wander", "Photoshoot", "Big night out"],
   },
   {
