@@ -13,7 +13,7 @@ export default function IslandsView() {
         <div className="wrap">
           <p className="eyebrow">Los destinos</p>
           <h1 className="h1">
-            Four dossiers. <span className="italic">Read before you vote.</span>
+            The four options. <span className="italic">Read before you vote.</span>
           </h1>
           <p className="lede">May weather, getting in, money, and the one thing to know about each. Costs are our rough read, not quotes.</p>
           <div className="tb-jump">

@@ -851,3 +851,85 @@ html:has(.tb), body:has(.tb) { background: #fbf4ea; }
 
 .tb-voteclock { border-left-color: var(--signal); }
 .tb-note, .tb-watch { border-left-color: var(--signal); }
+
+/* ==========================================================================
+   Ease-of-use pass (Oct 28)
+   ========================================================================== */
+
+/* papel picado: full height always. On wide screens the strip scales to fit exactly
+   (height = width × 124/1440); on phones it holds 88px tall and trims only the sides. */
+.tb { --picado-h: max(88px, 8.62vw); }
+.tb-picado { height: var(--picado-h); }
+.tb .tb-hero { padding-top: calc(var(--picado-h) + 56px); }
+.tb-tape { top: calc(var(--picado-h) + 10px); }
+
+/* postcard word: sized to its column so ¿ADÓNDE? never wraps */
+.tb-card-left { container-type: inline-size; min-width: 0; }
+.tb-card-big { flex-wrap: nowrap; white-space: nowrap; font-size: clamp(36px, 5vw, 64px); font-size: min(17cqi, 72px); }
+
+/* readable labels: sentence case, 16px, no letter-spacing */
+.tb-label, .tb-sublabel { font-family: var(--body); font-weight: 600; font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--oxblood); }
+.tb-bg-sun .tb-label, .tb-bg-sea .tb-label, .orange .tb-label { color: var(--oxblood); }
+.tb-sublabel { margin-top: 6px; }
+.tb-optional { font-weight: 400; color: var(--smoke); }
+.tb-input { font-size: 17px; min-height: 52px; }
+.tb-chip { min-height: 48px; font-size: 16px; }
+.tb-cal-dates { font-size: 22px; }
+.tb-cal-note { font-family: var(--body); font-size: 14px; letter-spacing: 0; text-transform: none; font-weight: 500; }
+.tb .tb-hint { font-size: 15px; }
+
+/* big primary buttons */
+.tb-big-btn { min-height: 56px; padding: 14px 30px !important; font-size: 18px !important; font-weight: 600 !important; }
+.tb-hero-btns { margin-top: 26px; }
+@media (max-width: 720px) { .tb-big-btn { width: 100%; justify-content: center; } }
+.tb-linkbtn { font: inherit; font-size: 16px; color: var(--antique); text-decoration: underline; text-underline-offset: 3px; padding: 10px 4px; min-height: 44px; }
+
+/* long single-page forms */
+.tb-form-long { gap: 28px; max-width: 820px; }
+.tb-q { display: grid; gap: 14px; padding-top: 26px; border-top: 1px solid color-mix(in srgb, var(--oxblood) 20%, transparent); scroll-margin-top: 90px; }
+.tb-q:focus { outline: none; }
+.tb-q:focus-visible { outline: 3px solid var(--signal); outline-offset: 6px; }
+.tb-q-title { display: flex; align-items: center; gap: 12px; font-family: var(--display); font-weight: 400; font-size: clamp(24px, 1vw + 20px, 30px); line-height: 1.2; }
+.tb-q-n { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--navy); color: #fff; font-family: var(--body); font-size: 16px; font-weight: 700; }
+.tb-q-hint { font-size: 16px; line-height: 1.5; color: var(--smoke); margin-top: -4px; }
+.tb-q-more { font-size: 16px; }
+.tb-q-more a { color: var(--antique); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ranking: plain-language badge + summary */
+.tb-rank-badge { justify-self: start; font-family: var(--body); font-size: 14px; font-weight: 600; padding: 4px 10px; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--oxblood) 40%, transparent); color: var(--smoke); }
+.tb-rank-card[aria-pressed="true"] .tb-rank-badge { background: var(--raspberry); border-color: var(--raspberry); color: #fff; }
+.tb-rank-n { display: none; }
+.tb-rank-summary { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 16px; padding: 12px 16px; background: var(--ivory);
+  border: 1px dashed color-mix(in srgb, var(--oxblood) 35%, transparent); font-size: 16px; font-weight: 500; }
+
+/* inline errors and the done panel */
+.tb-submit-block { display: grid; gap: 16px; padding-top: 8px; }
+.tb-errors { padding: 16px 18px; background: #fff; border: 2px solid var(--raspberry); border-left-width: 6px; font-size: 16px; line-height: 1.5; }
+.tb-errors ul { margin-top: 6px; display: grid; gap: 4px; padding-left: 20px; list-style: disc; }
+.tb-errors a { color: var(--antique); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+.tb-success { max-width: 760px; display: grid; gap: 16px; justify-items: start; padding: 36px 28px; background: var(--paper);
+  border: 1px solid var(--oxblood); outline: .6px solid color-mix(in srgb, var(--brass) 75%, transparent); outline-offset: -8px; scroll-margin-top: 90px; }
+.tb-success-mark { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--lagoon); color: var(--oxblood); font-size: 28px; font-weight: 700; }
+.tb-success-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; width: 100%; }
+
+/* home: the to-do list */
+.tb-steps-sec { background: var(--paper) !important; }
+.tb-steps { display: grid; gap: 12px; max-width: 820px; }
+.tb-step { display: grid; grid-template-columns: 52px 1fr auto; gap: 16px; align-items: center; padding: 18px 20px; background: #fff; color: var(--oxblood);
+  border: 1px solid var(--oxblood); transition: background-color .15s; }
+.tb-step:hover { background: var(--ivory); }
+.tb-step.is-next { border-width: 2px; border-color: var(--raspberry); box-shadow: inset 6px 0 0 var(--raspberry); }
+.tb-step-n { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid var(--oxblood); font-size: 18px; font-weight: 700; }
+.tb-step.is-done .tb-step-n { background: var(--lagoon); border-color: var(--lagoon); }
+.tb-step-body { display: grid; gap: 2px; }
+.tb-step-body strong { font-family: var(--display); font-weight: 400; font-size: 24px; line-height: 1.2; }
+.tb-step-body span { font-size: 16px; line-height: 1.45; }
+.tb-step-body small { font-size: 14px; color: var(--smoke); }
+.tb-step-go { font-weight: 600; font-size: 16px; padding: 10px 16px; border: 1px solid var(--oxblood); white-space: nowrap; }
+.tb-step.is-next .tb-step-go { background: var(--raspberry); border-color: var(--raspberry); color: #fff; }
+.tb-step.is-done .tb-step-go { border-style: dashed; }
+@media (max-width: 560px) {
+  .tb-step { grid-template-columns: 44px 1fr; padding: 16px; }
+  .tb-step-go { grid-column: 2; justify-self: start; margin-top: 4px; }
+}

@@ -55,7 +55,7 @@ export function PapelPicado({ count = 14, className = "" }: { count?: number; cl
     );
   });
   return (
-    <svg className={`tb-picado ${className}`} viewBox="0 0 1440 112" preserveAspectRatio="xMidYMin slice" aria-hidden>
+    <svg className={`tb-picado ${className}`} viewBox="0 0 1440 124" preserveAspectRatio="xMidYMin slice" aria-hidden>
       <path d="M-10 8 Q720 52 1450 8" className="tb-hair" />
       {flags}
     </svg>

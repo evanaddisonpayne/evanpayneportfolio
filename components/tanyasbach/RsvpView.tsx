@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { BUDGET, NO_REFUND, ROOMING, SPLURGE } from "@/lib/tanyasbach";
+import { BASE, BUDGET_CHOICES, NO_REFUND, PASSPORT_CHOICES, ROOMING, SPLURGE } from "@/lib/tanyasbach";
 import { Hibiscus } from "./Art";
-import { Neon } from "./Breaks";
-import { Chips, NameField, SubmitRow, useSend } from "./Forms";
+import { Chips, Question, SubmitBlock, Success, YourName, useSubmitAll, type Part, type Problem } from "./Forms";
+import { useTb } from "./TbProvider";
+import { firstName } from "./util";
 
 export default function RsvpView() {
   return (
@@ -13,128 +14,115 @@ export default function RsvpView() {
         <div className="pattern pattern-passport" aria-hidden />
         <Hibiscus className="tb-head-flower" />
         <div className="wrap">
-          <p className="eyebrow">Paso uno</p>
+          <p className="eyebrow">Step 1 of 2 · RSVP</p>
           <h1 className="h1">
             ¿Estás dentro? <span className="italic">Are you in?</span>
           </h1>
-          <p className="lede">The basics we need to price flights, split rooms, and book dinners for the whole group. Two minutes, tops.</p>
-          <div className="tb-jump">
-            <a href="#rsvp">RSVP</a>
-            <a href="#budget">Budget, privately</a>
-          </div>
-          <NameField compact />
+          <p className="lede">A few details so we can plan rooms, flights and dinners. One page, one button. About 2 minutes.</p>
         </div>
       </section>
       <RsvpForm />
-      <Neon kicker="Presupuesto" line="Sin juicio. No judgment, just vibes." />
-      <BudgetForm />
     </>
   );
 }
 
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 function RsvpForm() {
-  const { send, sending, status } = useSend("rsvp");
+  const { name } = useTb();
+  const { run, state, problems, edit } = useSubmitAll();
+  const [passport, setPassport] = useState<string[]>([]);
   const [room, setRoom] = useState<string[]>([]);
+  const [budget, setBudget] = useState<string[]>([]);
+  const [splurge, setSplurge] = useState<string[]>([]);
   const [agreed, setAgreed] = useState(false);
+
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = Object.fromEntries(new FormData(e.currentTarget));
+    const fd = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
+    const issues: Problem[] = [];
+    if (!EMAIL.test(String(fd.email || "").trim())) issues.push({ msg: "Your email", focus: "r-email" });
+    if (!passport.length) issues.push({ msg: "Your passport", focus: "q-passport" });
+    if (!budget.length) issues.push({ msg: "Your budget (“Rather not say” is fine)", focus: "q-budget" });
+    if (!agreed) issues.push({ msg: "Tick the box to agree to the money rule", focus: "r-agree" });
+
     const notes = String(fd.notes || "").trim();
-    send(
-      { ...fd, room: room[0] || "", notes: `[Agreed: no refunds after paying or committing]${notes ? " " + notes : ""}` },
-      () => (agreed ? null : "Please tick the no-refund box to RSVP."),
-    );
+    const parts: Part[] = [
+      {
+        kind: "rsvp",
+        fields: { ...fd, passport: passport[0] || "", room: room[0] || "", notes: `[Agreed: no refunds after paying or committing]${notes ? " " + notes : ""}` },
+      },
+    ];
+    const b = BUDGET_CHOICES.find((c) => c.label === budget[0]);
+    if (b && b.value > 0) parts.push({ kind: "budget", fields: { budget: b.value, splurge } });
+    run(parts, issues);
   };
-  return (
-    <section className="section light tb-form-sec" id="rsvp">
-      <div className="wrap">
-        <div className="section-head">
-          <p className="eyebrow">RSVP · travel details</p>
-          <h2 className="h2">The boring bits that make the fun bits happen.</h2>
+
+  if (state === "done")
+    return (
+      <section className="section light tb-form-sec">
+        <div className="wrap">
+          <Success
+            title={`You're in, ${firstName(name)}.`}
+            body="One more step: vote on where we go, which dates, and what we do. It takes about 3 minutes."
+            next={{ href: `${BASE}/vote`, label: "Next: vote" }}
+            onEdit={edit}
+          />
         </div>
-        <form className="tb-form card" onSubmit={onSubmit}>
+      </section>
+    );
+
+  return (
+    <section className="section light tb-form-sec">
+      <div className="wrap">
+        <form className="tb-form tb-form-long card" onSubmit={onSubmit} noValidate>
+          <YourName />
           <div className="tb-grid2">
-            <Field id="r-email" label="Email" name="email" type="email" required />
-            <Field id="r-phone" label="Phone, for the group chat" name="phone" type="tel" />
-            <Field id="r-air" label="Home airport" name="airport" placeholder="e.g. ORD, JFK, ATL" />
-            <Field id="r-pass" label="Passport expires" name="passport" type="month" />
+            <Field id="r-email" label="Email" name="email" type="email" autoComplete="email" inputMode="email" />
+            <Field id="r-phone" label="Phone, for the group chat" name="phone" type="tel" autoComplete="tel" optional />
           </div>
-          <p className="tb-note">
-            Three of the four options need a passport, and the cruise strongly recommends one. We&apos;re planning on six months of validity past the trip. So if yours runs out
-            before <strong>December 2027</strong>, renew it this winter.
-          </p>
-          <div className="tb-field">
-            <p className="tb-label">Rooming</p>
+          <Field id="r-air" label="Closest airport (the city is fine)" name="airport" placeholder="e.g. Chicago, or ORD" optional />
+
+          <Question n={1} id="q-passport" title="Your passport" hint="Most of our options need one that's valid through December 2027.">
+            <Chips label="Your passport" options={PASSPORT_CHOICES} value={passport} onChange={setPassport} multi={false} />
+          </Question>
+
+          <Question n={2} title="Rooming" hint="Optional. We'll do our best.">
             <Chips label="Rooming" options={ROOMING} value={room} onChange={setRoom} multi={false} />
-          </div>
-          <div className="tb-grid2">
-            <Field id="r-mate" label="Roommate wish" name="roommate" />
-            <Field id="r-diet" label="Dietary needs or allergies" name="dietary" />
-          </div>
+            <div className="tb-grid2">
+              <Field id="r-mate" label="Who you'd like to room with" name="roommate" optional />
+              <Field id="r-diet" label="Food allergies or diet" name="dietary" optional />
+            </div>
+          </Question>
+
+          <Question
+            n={3}
+            id="q-budget"
+            title="What's a comfortable budget?"
+            hint="For the house, food and activities, not flights. Only the planners see your answer. Everyone else sees totals."
+          >
+            <Chips label="Comfortable budget" options={BUDGET_CHOICES.map((c) => c.label)} value={budget} onChange={setBudget} multi={false} />
+            <p className="tb-sublabel">
+              Worth spending more on <span className="tb-optional">(optional)</span>
+            </p>
+            <Chips label="Worth spending more on" options={SPLURGE} value={splurge} onChange={setSplurge} />
+          </Question>
+
           <div className="tb-field">
             <label className="tb-label" htmlFor="r-notes">
-              Anything else?
+              Anything else we should know? <span className="tb-optional">(optional)</span>
             </label>
             <textarea className="tb-input" id="r-notes" name="notes" rows={3} />
           </div>
-          <label className="tb-agree">
-            <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} required />
+
+          <label className="tb-agree" htmlFor="r-agree">
+            <input id="r-agree" type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
             <span>
               <strong>I understand the money rule.</strong> {NO_REFUND}
             </span>
           </label>
-          <SubmitRow label="¡Estoy dentro! I'm in" sending={sending} status={status} />
-        </form>
-      </div>
-    </section>
-  );
-}
 
-function BudgetForm() {
-  const { send, sending, status } = useSend("budget");
-  const [amt, setAmt] = useState(BUDGET.start);
-  const [splurge, setSplurge] = useState<string[]>([]);
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    send({ budget: amt, splurge });
-  };
-  const label = `$${amt.toLocaleString()}${amt >= BUDGET.max ? "+" : ""}`;
-  return (
-    <section className="section light tb-form-sec tb-bg-sea" id="budget">
-      <div className="wrap tb-budget-wrap">
-        <div className="section-head">
-          <p className="eyebrow">Presupuesto · just between us</p>
-          <h2 className="h2">
-            What feels comfortable? <span className="italic">No judgment.</span>
-          </h2>
-          <p className="lede">
-            For the house, food, and activities, <strong>not flights</strong>. Only the planners see individual answers. Everyone else just
-            sees how many people fall in each range.
-          </p>
-        </div>
-        <form className="tb-form tb-budget" onSubmit={onSubmit}>
-          <p className="tb-budget-num" aria-live="polite">
-            {label}
-          </p>
-          <input
-            type="range"
-            className="tb-range"
-            min={BUDGET.min}
-            max={BUDGET.max}
-            step={BUDGET.step}
-            value={amt}
-            onChange={(e) => setAmt(Number(e.target.value))}
-            aria-label="Budget comfort in US dollars, excluding flights"
-          />
-          <div className="tb-range-ends">
-            <span>${BUDGET.min.toLocaleString()}</span>
-            <span>${BUDGET.max.toLocaleString()}+</span>
-          </div>
-          <div className="tb-field">
-            <p className="tb-label">Worth splurging on</p>
-            <Chips label="Worth splurging on" options={SPLURGE} value={splurge} onChange={setSplurge} />
-          </div>
-          <SubmitRow label="Save privately" sending={sending} status={status} />
+          <SubmitBlock label="Send my RSVP" state={state} problems={problems} />
         </form>
       </div>
     </section>
@@ -147,21 +135,25 @@ function Field({
   name,
   type = "text",
   placeholder,
-  required,
+  optional,
+  autoComplete,
+  inputMode,
 }: {
   id: string;
   label: string;
   name: string;
   type?: string;
   placeholder?: string;
-  required?: boolean;
+  optional?: boolean;
+  autoComplete?: string;
+  inputMode?: "email" | "tel" | "text";
 }) {
   return (
     <div className="tb-field">
       <label className="tb-label" htmlFor={id}>
-        {label}
+        {label} {optional && <span className="tb-optional">(optional)</span>}
       </label>
-      <input className="tb-input" id={id} name={name} type={type} placeholder={placeholder} required={required} />
+      <input className="tb-input" id={id} name={name} type={type} placeholder={placeholder} autoComplete={autoComplete} inputMode={inputMode} />
     </div>
   );
 }

@@ -176,6 +176,18 @@ export const SPLURGE = ["Gorgeous villa", "Private boat", "Big group dinner", "S
 export const ROOMING = ["Happy to share a bed", "Share a room, own bed", "Need my own room"];
 
 export const BUDGET = { min: 500, max: 3500, step: 100, start: 1500 };
+
+/** Budget as simple choices. Values land in the Budget tab as "up to" amounts and fall into the right result bands. */
+export const BUDGET_CHOICES: { label: string; value: number }[] = [
+  { label: "Under $1,000", value: 999 },
+  { label: "$1,000 to $1,500", value: 1499 },
+  { label: "$1,500 to $2,000", value: 1999 },
+  { label: "$2,000 to $3,000", value: 2999 },
+  { label: "$3,000 or more", value: 3500 },
+  { label: "Rather not say", value: 0 },
+];
+
+export const PASSPORT_CHOICES = ["Good through Dec 2027 or later", "Expires before Dec 2027", "I don't have one yet", "Not sure"];
 export const BUDGET_BANDS = ["Under $1k", "$1k–1.5k", "$1.5k–2k", "$2k+"];
 
 export type Results = {
