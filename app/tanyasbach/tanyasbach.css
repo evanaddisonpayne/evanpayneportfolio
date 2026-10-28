@@ -1127,3 +1127,71 @@ html:has(.tb), body:has(.tb) { background: #fbf4ea; }
 @media (prefers-reduced-motion: reduce) {
   .tb-pack-box svg, .tb-pack-item::after, .tb-pack-kiss { transition: none; }
 }
+
+/* ==========================================================================
+   Noche Loca easter egg
+   ========================================================================== */
+
+/* the trigger: the lipstick kiss on the packing list, with a little heartbeat hint */
+.tb-pack-kissbtn { position: absolute; right: 14px; bottom: 14px; padding: 6px; background: none; border: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; z-index: 2; }
+.tb-pack-kissbtn .tb-pack-kiss { position: static; display: block; }
+.tb-pack.is-in .tb-pack-kissbtn .tb-pack-kiss { animation: tb-kiss-beat 4.5s ease-in-out 3.4s infinite; }
+.tb-pack-kissbtn:hover .tb-pack-kiss, .tb-pack-kissbtn:focus-visible .tb-pack-kiss { transform: rotate(-4deg) scale(1.15) !important; }
+.tb-pack-kissbtn:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; border-radius: 8px; }
+@keyframes tb-kiss-beat { 0%, 86%, 100% { transform: rotate(-14deg) scale(1); } 90% { transform: rotate(-10deg) scale(1.14); } 94% { transform: rotate(-14deg) scale(1); } 97% { transform: rotate(-11deg) scale(1.1); } }
+@media (max-width: 560px) { .tb-pack-kissbtn { right: 6px; bottom: 6px; } }
+
+/* the overlay */
+.tb-noche { position: fixed; inset: 0; z-index: 2000; display: grid; place-items: center; padding: 20px; overflow: hidden;
+  background: radial-gradient(ellipse 80% 70% at 50% 30%, rgba(120, 30, 120, .78), rgba(18, 8, 30, .93) 70%);
+  animation: tb-noche-in .5s ease-out both; }
+@keyframes tb-noche-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* light specks sweeping the room */
+.tb-noche-lights { position: absolute; left: 50%; top: 22%; width: 0; height: 0; animation: tb-noche-spin 9s linear infinite; }
+.tb-noche-lights span { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: var(--c); box-shadow: 0 0 18px 4px var(--c);
+  transform: rotate(var(--a)) translateX(var(--r)); opacity: .85; animation: tb-noche-twinkle 1.6s ease-in-out infinite; animation-delay: calc(var(--r) * -0.02s); }
+@keyframes tb-noche-spin { to { transform: rotate(360deg); } }
+@keyframes tb-noche-twinkle { 0%, 100% { opacity: .9; } 50% { opacity: .25; } }
+
+/* the ball drops in on its string, tiles shimmer as it spins */
+.tb-noche-ball { position: absolute; top: 0; left: 50%; width: clamp(130px, 18vw, 200px); transform: translateX(-50%); animation: tb-noche-drop 1.1s cubic-bezier(.3, 1.5, .5, 1) both .15s; }
+.tb-noche-string { display: block; width: 2px; height: clamp(40px, 8vh, 90px); margin: 0 auto; background: #e8e3f0; }
+.tb-noche-svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 0 30px rgba(255, 92, 147, .55)); }
+.tb-noche-tiles { animation: tb-noche-tiles 1.4s linear infinite; }
+@keyframes tb-noche-tiles { to { transform: translateX(24px); } }
+@keyframes tb-noche-drop { from { transform: translate(-50%, -110%); } to { transform: translate(-50%, 0); } }
+
+/* the dare card */
+.tb-noche-card { position: relative; z-index: 2; width: min(520px, 100%); margin-top: clamp(150px, 26vh, 260px); padding: 28px 26px 24px; text-align: center;
+  background: #fffdf9; color: var(--oxblood); border: 2px solid #ff5c93; box-shadow: 0 0 0 6px rgba(255, 92, 147, .25), 0 30px 60px rgba(0, 0, 0, .45);
+  animation: tb-noche-pop .6s cubic-bezier(.2, 1.5, .4, 1) both .6s; }
+@keyframes tb-noche-pop { from { opacity: 0; transform: scale(.6) rotate(-6deg); } to { opacity: 1; transform: scale(1) rotate(-1.5deg); } }
+.tb-noche-k { font-family: var(--caps); font-weight: 700; font-size: 13px; letter-spacing: .24em; text-transform: uppercase; color: #c2185b; }
+.tb-noche-dare { margin-top: 12px; font-family: var(--display); font-style: italic; font-weight: 400; font-size: clamp(24px, 1.6vw + 18px, 34px); line-height: 1.2; min-height: 2.4em; }
+.tb-noche-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
+.tb-noche-btns button { min-height: 48px; padding: 10px 18px; font-family: var(--body); font-weight: 600; font-size: 16px; border: 1.5px solid var(--oxblood); cursor: pointer; }
+.tb-noche-next { background: #c2185b; border-color: #c2185b !important; color: #fff; }
+.tb-noche-mute { background: #fff; color: var(--oxblood); }
+.tb-noche-close { background: var(--navy); border-color: var(--navy) !important; color: #fff; }
+.tb-noche-btns button:focus-visible { outline: 3px solid #ffc94a; outline-offset: 2px; }
+
+/* the conga line */
+.tb-noche-conga { position: absolute; left: 0; right: 0; bottom: max(14px, env(safe-area-inset-bottom)); height: 96px; overflow: hidden; pointer-events: none; }
+.tb-noche-line { position: absolute; left: 0; bottom: 0; display: flex; gap: 18px; white-space: nowrap; animation: tb-noche-conga 14s linear infinite; }
+.tb-noche-dancer { display: inline-block; width: 72px; height: 72px; animation: tb-noche-hop .5s ease-in-out infinite alternate; animation-delay: calc(var(--i) * -.12s); }
+.tb-noche-dancer .tb-sticker { width: 100%; height: 100%; filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff); }
+@keyframes tb-noche-conga { from { transform: translateX(-110%); } to { transform: translateX(100vw); } }
+@keyframes tb-noche-hop { from { transform: translateY(0) rotate(-10deg); } to { transform: translateY(-16px) rotate(10deg); } }
+
+/* the page behind it shimmies */
+.tb.is-noche .section > .wrap, .tb.is-noche .tb-pack-grid { animation: tb-noche-shimmy .46s ease-in-out infinite alternate; }
+.tb.is-noche .section:nth-of-type(even) > .wrap { animation-direction: alternate-reverse; }
+@keyframes tb-noche-shimmy { from { transform: rotate(-1.2deg) translateX(-6px); } to { transform: rotate(1.2deg) translateX(6px); } }
+html:has(.tb.is-noche) { overflow: hidden; }
+
+/* reduced motion: same party, no movement */
+.tb-noche.is-calm, .tb-noche.is-calm * { animation: none !important; }
+.tb-noche.is-calm .tb-noche-card { transform: rotate(-1.5deg); }
+.tb-noche.is-calm .tb-noche-line { left: 50%; transform: translateX(-50%); }
+@media (prefers-reduced-motion: reduce) { .tb.is-noche .section > .wrap, .tb.is-noche .tb-pack-grid { animation: none; } }
