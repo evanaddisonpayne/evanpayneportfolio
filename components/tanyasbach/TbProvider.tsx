@@ -6,6 +6,8 @@ import { createContext, useCallback, useContext, useEffect, useState, type CSSPr
 import { BASE, sources, type FormKind } from "@/lib/tanyasbach";
 import { Swell } from "./Art";
 import { Talavera } from "./Breaks";
+import Envelope from "./Envelope";
+import { REPLAY_EVENT } from "./envelope-gate";
 import { load, save } from "./util";
 
 const NAME_KEY = "tb27-name";
@@ -109,6 +111,7 @@ export default function TbProvider({ children }: { children: ReactNode }) {
   return (
     <TbContext.Provider value={value}>
       <div className={`tb${fiesta ? " is-fiesta" : ""}`}>
+        <Envelope />
         {fiesta && (
           <button className="tb-fiesta-bar" onClick={() => setFiestaMode(false)}>
             <span aria-hidden>💃</span> Modo Fiesta is on. Tap here to calm down.
@@ -160,6 +163,9 @@ export default function TbProvider({ children }: { children: ReactNode }) {
               Destination facts checked October 27, 2026. Nothing is booked yet, and entry rules change, so we&apos;ll reconfirm before anyone buys a
               flight. This site isn&apos;t indexed; share the link with the group only. Planned by Evan and Tanya. Questions? Text either of us.
             </p>
+            <button type="button" className="tb-replay" onClick={() => window.dispatchEvent(new Event(REPLAY_EVENT))}>
+              ✉ Open the invitation again
+            </button>
           </div>
         </footer>
 

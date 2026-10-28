@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
+import { ENVELOPE_GATE } from "@/components/tanyasbach/envelope-gate";
 import TbProvider from "@/components/tanyasbach/TbProvider";
 import "./tanyasbach.css";
 
@@ -23,5 +24,11 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: "#fff8f0" };
 
 export default function TanyasBachLayout({ children }: { children: ReactNode }) {
-  return <TbProvider>{children}</TbProvider>;
+  return (
+    <>
+      {/* First-visit envelope: hide it before paint for anyone who has already opened it. */}
+      <script dangerouslySetInnerHTML={{ __html: ENVELOPE_GATE }} />
+      <TbProvider>{children}</TbProvider>
+    </>
+  );
 }

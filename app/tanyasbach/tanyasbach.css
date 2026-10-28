@@ -933,3 +933,139 @@ html:has(.tb), body:has(.tb) { background: #fbf4ea; }
   .tb-step { grid-template-columns: 44px 1fr; padding: 16px; }
   .tb-step-go { grid-column: 2; justify-self: start; margin-top: 4px; }
 }
+
+/* ==========================================================================
+   First-visit envelope: tap the seal (or swipe up), the flap opens, the invite
+   rises out, then grows to fill the screen and the site shows through.
+   Envelope.tsx drives the stages: .is-closed → .is-open → .is-reveal.
+   ========================================================================== */
+.tb-env { --ew: min(84vw, 460px); --eh: calc(var(--ew) / 1.5); --paper: #fff3d6; --paper-dk: #f7ddaa;
+  position: fixed; inset: 0; z-index: 300; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+  padding: 96px 16px 32px; overflow: hidden; background: var(--signal); color: var(--oxblood); touch-action: none;
+  transition: opacity .5s ease .45s; }
+.tb-env-sky { position: absolute; inset: -50%; z-index: 0; opacity: .5;
+  background: repeating-conic-gradient(from 0deg at 50% 50%, var(--mango) 0deg 9deg, transparent 9deg 18deg);
+  animation: tb-env-spin 60s linear infinite; }
+.tb-env::after { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse 60% 50% at 50% 55%, color-mix(in srgb, var(--blush) 70%, transparent), transparent 75%); }
+@keyframes tb-env-spin { to { transform: rotate(360deg); } }
+.tb-env-picado { z-index: 1; }
+.tb-env > *:not(.tb-env-sky) { position: relative; z-index: 2; }
+.tb-env > .tb-env-picado { position: absolute; }
+
+.tb-env-kicker { font-family: var(--caps); font-weight: 700; font-size: 14px; letter-spacing: .22em; text-transform: uppercase;
+  padding: 6px 14px; background: #fff; border: 1.5px solid var(--oxblood); transform: rotate(-3deg); animation: tb-env-in .7s cubic-bezier(.2, 1.3, .4, 1) both .1s; }
+.tb-env-kicker span { color: var(--antique); margin-inline: .4em; }
+
+/* stage = the tap/swipe target; float = the gentle bob + entrance */
+.tb-env-stage { width: var(--ew); height: var(--eh); margin-top: calc(var(--eh) * .5); perspective: 1400px; cursor: pointer; user-select: none;
+  -webkit-tap-highlight-color: transparent; transform: translateY(calc(var(--pull, 0) * -26px)) rotate(calc(var(--pull, 0) * -2deg));
+  transition: transform .35s cubic-bezier(.2, 1.4, .4, 1); }
+.tb-env-stage.is-dragging { transition: none; }
+.tb-env-float { position: relative; width: 100%; height: 100%; transform-style: preserve-3d;
+  animation: tb-env-drop .9s cubic-bezier(.2, 1.25, .4, 1) both .2s, tb-env-bob 3.6s ease-in-out 1.2s infinite; }
+@keyframes tb-env-drop { from { opacity: 0; transform: translateY(-70vh) rotate(-14deg); } to { opacity: 1; transform: none; } }
+@keyframes tb-env-bob { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-8px) rotate(-1deg); } }
+@keyframes tb-env-in { from { opacity: 0; transform: translateY(14px) rotate(-3deg); } to { opacity: 1; transform: rotate(-3deg); } }
+
+.tb-env-back, .tb-env-front, .tb-env-flap { position: absolute; inset: 0; }
+.tb-env-back { z-index: 0; border-radius: 6px; background: var(--lagoon);
+  background-image: radial-gradient(circle at 10px 10px, color-mix(in srgb, #fff 55%, transparent) 2px, transparent 3px); background-size: 20px 20px;
+  box-shadow: 0 24px 40px -12px rgba(43, 15, 46, .45); }
+
+/* airmail stripes round the pocket, V-notch at the top */
+.tb-env-front { z-index: 3; border-radius: 6px; background: var(--paper);
+  border: 9px solid transparent; border-image: repeating-linear-gradient(-45deg, var(--signal) 0 12px, #fff 12px 18px, var(--lagoon) 18px 30px, #fff 30px 36px) 9;
+  clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%); }
+.tb-env-front::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top right, transparent calc(50% - 1px), color-mix(in srgb, var(--oxblood) 18%, transparent) 50%, transparent calc(50% + 1px)) left bottom / 50% 100% no-repeat,
+              linear-gradient(to top left, transparent calc(50% - 1px), color-mix(in srgb, var(--oxblood) 18%, transparent) 50%, transparent calc(50% + 1px)) right bottom / 50% 100% no-repeat; }
+.tb-env-to { position: absolute; left: 7%; bottom: 12%; font-family: var(--display); font-style: italic; font-size: clamp(22px, 5.4vw, 30px); line-height: 1.05; }
+.tb-env-to > span:first-child { font-family: var(--caps); font-style: normal; font-weight: 700; font-size: .5em; letter-spacing: .16em; text-transform: uppercase; color: var(--antique); }
+.tb-env-to-x { color: var(--signal); font-style: normal; }
+.tb-env-to small { display: block; margin-top: 4px; font-family: var(--body); font-style: normal; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--smoke);
+  padding-top: 4px; border-top: 1px dashed color-mix(in srgb, var(--oxblood) 40%, transparent); }
+.tb-env-post { position: absolute; right: 7%; bottom: 11%; width: clamp(64px, 17vw, 84px); aspect-ratio: 1; border-radius: 50%; border: 2px solid var(--antique);
+  outline: 1px solid var(--antique); outline-offset: 3px; display: grid; place-items: center; align-content: center; gap: 1px; transform: rotate(12deg);
+  color: var(--antique); font-family: var(--caps); font-weight: 700; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
+.tb-env-post b { font-family: var(--display); font-weight: 400; font-size: 20px; letter-spacing: 0; color: var(--oxblood); line-height: 1; }
+
+/* the flap: folds back on open, then drops behind the card */
+.tb-env-flap { z-index: 4; height: 60%; border-radius: 6px 6px 0 0; transform-origin: 50% 0; background: var(--paper-dk);
+  background-image: linear-gradient(to bottom, color-mix(in srgb, #fff 45%, transparent), transparent 70%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%); filter: drop-shadow(0 2px 0 rgba(43, 15, 46, .15));
+  transition: transform .65s cubic-bezier(.5, 0, .3, 1) .2s, z-index 0s linear .5s, filter .65s ease .2s; }
+
+/* wax seal on the flap's tip */
+.tb-env-seal { position: absolute; z-index: 5; left: 50%; top: 60%; width: clamp(76px, 20vw, 96px); aspect-ratio: 1; translate: -50% -50%; padding: 0; border: 0; cursor: pointer;
+  border-radius: 46% 54% 50% 50% / 52% 48% 52% 48%; color: var(--oxblood);
+  background: radial-gradient(circle at 35% 30%, #ff9cbd, var(--signal) 45%, #d72f6c 100%);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--signal) 70%, #b0124f), 0 6px 14px rgba(43, 15, 46, .35), inset 0 -4px 8px rgba(43, 15, 46, .25);
+  transition: transform .35s cubic-bezier(.4, 0, .6, 1), opacity .3s ease; animation: tb-env-seal-in .6s cubic-bezier(.2, 1.6, .4, 1) both 1s; }
+.tb-env-seal:hover { transform: scale(1.06) rotate(-6deg); }
+.tb-env-seal:focus-visible { outline: 3px solid #fff; outline-offset: 8px; }
+.tb-env-seal-flower { position: absolute; inset: 14%; width: 72%; height: 72%; stroke: var(--oxblood); }
+.tb-env-seal-ring { position: absolute; inset: -10px; border-radius: 50%; border: 2px solid #fff; animation: tb-env-ping 1.8s ease-out infinite 1.8s; opacity: 0; }
+@keyframes tb-env-seal-in { from { transform: scale(0) rotate(-90deg); } to { transform: scale(1) rotate(0); } }
+@keyframes tb-env-ping { 0% { opacity: .9; transform: scale(.85); } 100% { opacity: 0; transform: scale(1.5); } }
+
+/* the invitation inside */
+.tb-env-card { position: absolute; z-index: 2; left: 5%; right: 5%; bottom: 4%; height: 92%; background: var(--ivory); border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(43, 15, 46, .2); transform-origin: 50% 50%;
+  transition: transform .75s cubic-bezier(.3, 1.3, .5, 1) .85s, border-radius .6s ease, box-shadow .6s ease; }
+.tb-env-card-in { position: absolute; inset: 8px; border: 1.5px solid var(--signal); outline: 1px solid var(--signal); outline-offset: -6px;
+  display: flex; flex-direction: column; align-items: center; padding: 6% 6% 0; text-align: center; overflow: hidden; transition: opacity .3s ease; }
+.tb-env-card-k { font-family: var(--caps); font-weight: 700; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: var(--antique); }
+.tb-env-card-h { font-family: var(--display); font-weight: 300; font-size: clamp(30px, 8vw, 44px); line-height: 1; margin-top: 6px; }
+.tb-env-card-h em { color: var(--antique); }
+.tb-env-card-d { margin-top: 8px; font-family: var(--body); font-size: 12px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
+.tb-env-card-flower { width: 34%; max-width: 110px; height: auto; margin-top: 8px; }
+
+.tb-env-hint { display: flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: 999px; background: var(--oxblood); color: #fff;
+  font-family: var(--body); font-size: 15px; font-weight: 500; animation: tb-env-rise .6s ease both 1.4s; transition: opacity .3s ease; }
+@keyframes tb-env-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.tb-env-hint-arrow { display: inline-block; font-size: 18px; animation: tb-env-nudge 1.4s ease-in-out infinite; }
+@keyframes tb-env-nudge { 0%, 100% { transform: translateY(2px); } 50% { transform: translateY(-4px); } }
+.tb-env-skip { position: absolute !important; top: calc(clamp(76px, 7vw, 116px) + 12px); right: 16px; min-height: 44px; padding: 8px 16px;
+  background: #fff; border: 1.5px solid var(--oxblood); border-radius: 999px; font-family: var(--body); font-size: 14px; font-weight: 500; color: var(--oxblood); cursor: pointer; }
+.tb-env-skip:hover { background: var(--blush); }
+
+/* --- open: seal pops, flap folds back, card rises --- */
+.tb-env.is-open .tb-env-float, .tb-env.is-reveal .tb-env-float { animation: none; }
+.tb-env.is-open .tb-env-seal, .tb-env.is-reveal .tb-env-seal { animation: tb-env-pop .45s cubic-bezier(.4, 0, .6, 1) forwards; pointer-events: none; }
+@keyframes tb-env-pop { 0% { transform: scale(1); } 35% { transform: scale(1.25) rotate(-8deg); opacity: 1; } 100% { transform: translateY(60px) scale(.6) rotate(40deg); opacity: 0; } }
+.tb-env.is-open .tb-env-flap, .tb-env.is-reveal .tb-env-flap { transform: rotateX(180deg); z-index: 1; filter: brightness(.9) drop-shadow(0 -2px 0 rgba(43, 15, 46, .12)); }
+.tb-env.is-open .tb-env-card { transform: translateY(-64%); }
+/* (animation: none so the entrance animation's fill doesn't hold them at full opacity) */
+.tb-env.is-open .tb-env-hint, .tb-env.is-reveal .tb-env-hint, .tb-env.is-open .tb-env-kicker, .tb-env.is-reveal .tb-env-kicker,
+.tb-env.is-open .tb-env-skip, .tb-env.is-reveal .tb-env-skip { animation: none; opacity: 0; pointer-events: none; }
+
+/* --- reveal: envelope falls away, card grows to fill the screen, everything fades onto the site --- */
+.tb-env.is-reveal { opacity: 0; pointer-events: none; }
+.tb-env.is-reveal .tb-env-sky, .tb-env.is-reveal .tb-env-picado { opacity: 0; transition: opacity .35s ease; }
+.tb-env.is-reveal::after { opacity: 0; }
+.tb-env.is-reveal { background: transparent; transition: opacity .45s ease .55s, background-color .45s ease .2s; }
+.tb-env.is-reveal .tb-env-back, .tb-env.is-reveal .tb-env-front, .tb-env.is-reveal .tb-env-flap {
+  transform: translateY(70vh) rotate(8deg); opacity: 0; transition: transform .7s cubic-bezier(.5, 0, .8, .4), opacity .5s ease .2s; }
+.tb-env.is-reveal .tb-env-flap { transform: translateY(70vh) rotate(8deg) rotateX(180deg); }
+.tb-env.is-reveal .tb-env-card { transform: translateY(-64%) var(--fly, scale(3)); border-radius: 0; box-shadow: none; z-index: 6;
+  transition: transform .8s cubic-bezier(.6, 0, .3, 1), border-radius .5s ease, box-shadow .5s ease; }
+.tb-env.is-reveal .tb-env-card-in { opacity: 0; }
+
+/* while sealed, hold the hero stamp's entrance so it lands after the reveal */
+.tb[data-sealed] .tb-stamp { animation: none; opacity: 0; }
+
+.tb-replay { margin-top: 14px; min-height: 44px; padding: 8px 0; background: none; border: 0; font: inherit; font-size: 14px; font-weight: 500;
+  color: var(--oxblood); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+@media (max-height: 640px) {
+  .tb-env { --ew: min(78vw, 360px); gap: 14px; padding-top: 80px; }
+  .tb-env-kicker { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tb-env-sky, .tb-env-float, .tb-env-seal, .tb-env-seal-ring, .tb-env-hint-arrow, .tb-env-kicker, .tb-env-hint { animation: none !important; }
+  .tb-env-kicker { transform: rotate(-3deg); }
+  .tb-env-seal-ring { display: none; }
+  .tb-env.is-reveal { transition: opacity .4s ease; }
+  .tb-env.is-reveal * { transition: none !important; }
+}
