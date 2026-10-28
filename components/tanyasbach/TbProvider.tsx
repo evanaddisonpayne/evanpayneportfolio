@@ -7,6 +7,7 @@ import { BASE, sources, type FormKind } from "@/lib/tanyasbach";
 import { Swell } from "./Art";
 import { Talavera } from "./Breaks";
 import Envelope from "./Envelope";
+import NocheLoca from "./NocheLoca";
 import { REPLAY_EVENT } from "./envelope-gate";
 import { load, save } from "./util";
 
@@ -182,6 +183,7 @@ export default function TbProvider({ children }: { children: ReactNode }) {
         </nav>
 
         <Confetti trigger={confettiTick} fiesta={fiesta} />
+        <NocheLoca />
       </div>
     </TbContext.Provider>
   );

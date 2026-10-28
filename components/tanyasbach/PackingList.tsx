@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { NOCHE_EVENT } from "./NocheLoca";
 
 const ITEMS = [
   { t: "SPF 50", note: "reapply, ladies" },
@@ -66,11 +67,13 @@ export default function PackingList() {
             ))}
           </ul>
           <p className="tb-pack-ps">P.S. Leave room in the suitcase. Duty free is calling.</p>
+          <button type="button" className="tb-pack-kissbtn" aria-label="A lipstick kiss. Go on, tap it." onClick={() => window.dispatchEvent(new Event(NOCHE_EVENT))}>
           <svg className="tb-pack-kiss" viewBox="0 0 100 70" aria-hidden>
             <path d="M6 34 C18 14 36 14 50 26 C64 14 82 14 94 34 C78 39 64 40 50 40 C36 40 22 39 6 34 Z" />
             <path d="M6 36 C22 66 78 66 94 36 C78 44 22 44 6 36 Z" />
             <path className="tb-pack-kiss-line" d="M24 50 Q38 56 52 53 M58 22 Q66 18 74 22 M30 22 Q36 19 42 22" />
           </svg>
+          </button>
         </div>
       </div>
     </section>
