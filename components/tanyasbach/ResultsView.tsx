@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { BASE, BUDGET_BANDS, DESTS, SAILINGS, WEEKENDS, type Results } from "@/lib/tanyasbach";
+import { BASE, BUDGET_BANDS, DESTS, INVITED, SAILINGS, WEEKENDS, type Results } from "@/lib/tanyasbach";
 import { Arch } from "./Breaks";
 import { VoteClock } from "./Deadline";
 import { fetchResults } from "./util";
@@ -51,7 +51,7 @@ export default function ResultsView() {
             )}
           </h1>
           <p className="lede">
-            {data ? `${data.rsvps} ${data.rsvps === 1 ? "person has" : "people have"} RSVP'd. ` : ""}
+            {data ? `${data.rsvps} of ${INVITED} invited ${data.rsvps === 1 ? "has" : "have"} RSVP'd. ` : ""}
             Totals only. Names, contact info and individual budgets stay with Evan and Tanya.
           </p>
           <VoteClock />
@@ -65,7 +65,7 @@ export default function ResultsView() {
         </div>
       </section>
 
-      <Arch kicker="Meanwhile" caption="Somewhere warm, a table for eighteen is waiting. Vote before Thanksgiving." />
+      <Arch kicker="Meanwhile" caption="Somewhere warm, a table for fifteen is waiting. Vote before Thanksgiving." />
 
       <section className="section light tb-results">
         <div className="wrap tb-results-grid">
