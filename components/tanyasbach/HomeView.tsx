@@ -5,6 +5,7 @@ import { useEffect, useState, type CSSProperties } from "react";
 import { BASE, DESTS, GROUP_SIZE, STAMPS, TRIP_TARGET, TRIP_TARGET_LABEL } from "@/lib/tanyasbach";
 import { Hibiscus, Motif, Palm, PapelPicado } from "./Art";
 import { Awning, Marquee, Neon, Postcard, StickerSheet } from "./Breaks";
+import { Rules, VoteClock } from "./Deadline";
 import { NameField } from "./Forms";
 import { useTb } from "./TbProvider";
 import { firstName } from "./util";
@@ -35,6 +36,7 @@ export default function HomeView() {
               one yet. That&apos;s where you come in.
             </p>
             <Countdown />
+            <VoteClock />
           </div>
           <div className="tb-stamp-wrap">
             <div
@@ -60,7 +62,7 @@ export default function HomeView() {
       </section>
 
       <Marquee
-        a={["¡Salud!", "Sol", "Salsa", "Tanya", "Mojitos", "La novia", "Bachata", "Playa"]}
+        a={["¡Salud!", "Vota antes de Thanksgiving", "Sol", "Salsa", "Tanya", "Mojitos", "La novia", "Playa"]}
         b={["Lo que pasa en la despedida", "se queda en la despedida", "Mayo 2027", "Vamos"]}
       />
 
@@ -106,6 +108,8 @@ export default function HomeView() {
           </ol>
         </div>
       </section>
+
+      <Rules />
 
       <StickerSheet caption="Packing list: SPF 50, a tiny bikini, questionable decisions, and Tanya." />
 

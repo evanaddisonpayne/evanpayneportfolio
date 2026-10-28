@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import type { FormKind } from "@/lib/tanyasbach";
+import { VOTE_FORMS, votingOpen, type FormKind } from "@/lib/tanyasbach";
 import { useTb } from "./TbProvider";
 import { firstName, isDemo, submit } from "./util";
 
@@ -69,6 +69,10 @@ export function useSend(kind: FormKind) {
     if (!who) {
       flash("Add your name first: ¿quién eres?");
       document.getElementById("tb-name")?.focus();
+      return;
+    }
+    if (VOTE_FORMS.includes(kind) && !votingOpen()) {
+      flash("Voting closed on Thanksgiving Eve. Results are final.");
       return;
     }
     const problem = check?.();
