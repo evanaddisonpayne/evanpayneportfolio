@@ -51,7 +51,7 @@ export default function ResultsView() {
             )}
           </h1>
           <p className="lede">
-            {data ? `${data.rsvps} of ${INVITED} invited ${data.rsvps === 1 ? "has" : "have"} RSVP'd. ` : ""}
+            {data ? `${data.rsvps} of ${INVITED} friends ${data.rsvps === 1 ? "has" : "have"} RSVP'd. ` : ""}
             Totals only. Names, contact info and individual budgets stay with Evan and Tanya.
           </p>
           <VoteClock />
@@ -65,7 +65,7 @@ export default function ResultsView() {
         </div>
       </section>
 
-      <Arch kicker="Meanwhile" caption="Somewhere warm, a table for fifteen is waiting. Vote before Thanksgiving." />
+      <Arch kicker="Meanwhile" caption="Somewhere warm, a table for sixteen is waiting. Vote before Thanksgiving." />
 
       <section className="section light tb-results">
         <div className="wrap tb-results-grid">

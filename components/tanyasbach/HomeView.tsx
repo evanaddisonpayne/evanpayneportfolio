@@ -30,7 +30,7 @@ export default function HomeView() {
               ¡Vamos, <span className="italic">Tanya!</span>
             </h1>
             <p className="lede">
-              One bride, {GROUP_SIZE} of her favorite people, a long weekend in May, and four places with warm water. We haven&apos;t picked
+              One bride, {GROUP_SIZE} of her closest friends, a long weekend in May, and four places with warm water. We haven&apos;t picked
               one yet. That&apos;s where you come in.
             </p>
             <div className="btns tb-hero-btns">
