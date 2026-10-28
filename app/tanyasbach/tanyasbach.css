@@ -525,3 +525,20 @@ textarea.tb-input { resize: vertical; min-height: 88px; }
   .tb-mq-run, .tb-sticker-peel, .tb-neon-line { animation: none; }
 }
 .tb-form > .tb-label { margin-bottom: -10px; }
+
+/* ---------- deadline + rules ---------- */
+.tb-voteclock { display: inline-grid; gap: 2px; margin-top: 18px; padding: 10px 16px 10px 14px; background: #fff; border: 1.5px solid var(--oxblood); border-left: 6px solid var(--signal); }
+.tb-voteclock strong { font-family: var(--display); font-weight: 400; font-size: 20px; line-height: 1.2; }
+.tb-voteclock span { font-size: 14px; color: var(--smoke); }
+.tb-voteclock.is-urgent { border-left-color: var(--antique); background: var(--blush); }
+.tb-voteclock.is-closed { border-left-color: var(--oxblood); }
+.tb-rules-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); counter-reset: none; }
+.tb-rules-grid li { display: grid; gap: 8px; align-content: start; padding: 22px; background: #fff; border: 1.5px solid var(--oxblood); box-shadow: 6px 6px 0 var(--oxblood); }
+.tb-rules-grid li.is-money { background: var(--oxblood); color: #fff; box-shadow: 6px 6px 0 var(--signal); }
+.tb-rule-n { font-family: var(--display); font-weight: 300; font-size: 34px; line-height: 1; color: var(--antique); }
+.tb-rules-grid li.is-money .tb-rule-n { color: var(--mango); }
+.tb-rules-grid strong { font-family: var(--display); font-weight: 400; font-size: 23px; line-height: 1.2; }
+.tb-rules-grid span:last-child { font-size: 15px; line-height: 1.5; }
+.tb-agree { display: grid; grid-template-columns: 26px 1fr; gap: 12px; align-items: start; padding: 14px 16px; background: var(--blush); border: 1.5px solid var(--oxblood); font-size: 15px; line-height: 1.5; cursor: pointer; }
+.tb-agree input { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--oxblood); cursor: pointer; }
+.tb-agree strong { font-weight: 700; }

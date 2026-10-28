@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { BASE, BUDGET_BANDS, DESTS, SAILINGS, WEEKENDS, type Results } from "@/lib/tanyasbach";
 import { StickerSheet } from "./Breaks";
+import { VoteClock } from "./Deadline";
 import { fetchResults } from "./util";
 
 export default function ResultsView() {
@@ -53,6 +54,7 @@ export default function ResultsView() {
             {data ? `${data.rsvps} ${data.rsvps === 1 ? "person has" : "people have"} RSVP'd. ` : ""}
             Tallies only: names, contacts, and individual budgets stay with the planners.
           </p>
+          <VoteClock />
           {demo && <p className="tb-demo">Sample numbers for now. They switch to real votes once the Sheet is connected.</p>}
           <div className="tb-results-bar">
             <button className="btn btn-ghost" onClick={refresh} disabled={loading}>

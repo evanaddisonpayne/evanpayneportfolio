@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { DESTS, NIGHTS, SAILINGS, VIBES, WEEKENDS } from "@/lib/tanyasbach";
 import { Palm } from "./Art";
 import { Awning, Marquee, StickerSheet } from "./Breaks";
+import { VoteClock } from "./Deadline";
 import { Chips, NameField, SubmitRow, useSend } from "./Forms";
 
 export default function VoteView() {
@@ -18,6 +19,7 @@ export default function VoteView() {
             ¿Adónde, cuándo, <span className="italic">y qué?</span>
           </h1>
           <p className="lede">Where we go, which weekend, and what we do when we get there. Three quick votes.</p>
+          <VoteClock />
           <div className="tb-jump">
             <a href="#destination">Destination</a>
             <a href="#dates">Dates</a>

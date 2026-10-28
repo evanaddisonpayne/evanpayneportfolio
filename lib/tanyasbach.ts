@@ -17,6 +17,14 @@ export const GROUP_SIZE = "15–20";
 export const TRIP_TARGET = "2027-05-01T00:00:00-04:00";
 export const TRIP_TARGET_LABEL = "until May 2027";
 
+/** Voting (destination, dates, vibes) closes the night before Thanksgiving. Eastern time is EST (−05:00) by late November. */
+export const VOTE_DEADLINE = "2026-11-25T23:59:59-05:00";
+export const VOTE_DEADLINE_LABEL = "Wed, Nov 25 at 11:59 pm ET";
+export const VOTE_FORMS: FormKind[] = ["destination", "dates", "vibes"];
+export const votingOpen = (now = Date.now()) => now < new Date(VOTE_DEADLINE).getTime();
+
+export const NO_REFUND = "Once you pay or commit, you're in. If you cancel after that, there are no refunds.";
+
 export type FormKind = "rsvp" | "destination" | "dates" | "budget" | "vibes";
 
 /** The planning passport: one stamp per form. */

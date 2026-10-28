@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { BUDGET, ROOMING, SPLURGE } from "@/lib/tanyasbach";
+import { BUDGET, NO_REFUND, ROOMING, SPLURGE } from "@/lib/tanyasbach";
 import { Hibiscus } from "./Art";
 import { Marquee, Neon } from "./Breaks";
 import { Chips, NameField, SubmitRow, useSend } from "./Forms";
@@ -36,10 +36,15 @@ export default function RsvpView() {
 function RsvpForm() {
   const { send, sending, status } = useSend("rsvp");
   const [room, setRoom] = useState<string[]>([]);
+  const [agreed, setAgreed] = useState(false);
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fd = Object.fromEntries(new FormData(e.currentTarget));
-    send({ ...fd, room: room[0] || "" });
+    const notes = String(fd.notes || "").trim();
+    send(
+      { ...fd, room: room[0] || "", notes: `[Agreed: no refunds after paying or committing]${notes ? " " + notes : ""}` },
+      () => (agreed ? null : "Please tick the no-refund box to RSVP."),
+    );
   };
   return (
     <section className="section light tb-form-sec" id="rsvp">
@@ -73,6 +78,12 @@ function RsvpForm() {
             </label>
             <textarea className="tb-input" id="r-notes" name="notes" rows={3} />
           </div>
+          <label className="tb-agree">
+            <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} required />
+            <span>
+              <strong>I understand the money rule.</strong> {NO_REFUND}
+            </span>
+          </label>
           <SubmitRow label="¡Estoy dentro! I'm in" sending={sending} status={status} />
         </form>
       </div>
