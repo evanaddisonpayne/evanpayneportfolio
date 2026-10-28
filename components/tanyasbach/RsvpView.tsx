@@ -99,7 +99,7 @@ function RsvpForm() {
             n={3}
             id="q-budget"
             title="What's a comfortable budget?"
-            hint="For the house, food and activities, not flights. Only the planners see your answer. Everyone else sees totals."
+            hint="For the house, food and activities, not flights. Only Evan and Tanya see your answer. Everyone else sees totals."
           >
             <Chips label="Comfortable budget" options={BUDGET_CHOICES.map((c) => c.label)} value={budget} onChange={setBudget} multi={false} />
             <p className="tb-sublabel">

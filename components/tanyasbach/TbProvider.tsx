@@ -158,7 +158,7 @@ export default function TbProvider({ children }: { children: ReactNode }) {
             </div>
             <p className="tb-hint">
               Destination facts checked October 27, 2026. Nothing is booked yet, and entry rules change, so we&apos;ll reconfirm before anyone buys a
-              flight. This site isn&apos;t indexed; share the link with the group only.
+              flight. This site isn&apos;t indexed; share the link with the group only. Planned by Evan and Tanya. Questions? Text either of us.
             </p>
           </div>
         </footer>

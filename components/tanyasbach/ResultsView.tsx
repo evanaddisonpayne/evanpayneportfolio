@@ -52,7 +52,7 @@ export default function ResultsView() {
           </h1>
           <p className="lede">
             {data ? `${data.rsvps} ${data.rsvps === 1 ? "person has" : "people have"} RSVP'd. ` : ""}
-            Tallies only: names, contacts, and individual budgets stay with the planners.
+            Totals only. Names, contact info and individual budgets stay with Evan and Tanya.
           </p>
           <VoteClock />
           {demo && <p className="tb-demo">Sample numbers for now. They switch to real votes once the Sheet is connected.</p>}
