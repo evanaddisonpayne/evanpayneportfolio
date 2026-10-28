@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { BASE, BUDGET_BANDS, DESTS, WEEKENDS, type Results } from "@/lib/tanyasbach";
+import { BASE, BUDGET_BANDS, DESTS, SAILINGS, WEEKENDS, type Results } from "@/lib/tanyasbach";
 import { StickerSheet } from "./Breaks";
 import { fetchResults } from "./util";
 
@@ -27,7 +27,7 @@ export default function ResultsView() {
 
   // Fixed order for categories with a natural order; the rest sort by votes.
   const destRows = rows(data?.destination, DESTS.map((d) => d.name), true);
-  const dateRows = rows(data?.dates, WEEKENDS.map((w) => w.label), false);
+  const dateRows = rows(data?.dates, [...WEEKENDS, ...SAILINGS].map((w) => w.label), false);
   const vibeRows = rows(data?.vibes, [], true).slice(0, 8);
   const budgetRows = rows(data?.budgetBands, BUDGET_BANDS, false);
   const leader = destRows[0]?.[1] ? destRows[0][0] : null;
@@ -68,7 +68,7 @@ export default function ResultsView() {
       <section className="section light tb-results">
         <div className="wrap tb-results-grid">
           <Board title="Destination" sub="Ranked-choice points: 4 for a #1 down to 1 for a #4" items={destRows} tone="signal" />
-          <Board title="Weekends that work" sub="How many people can make each one" items={dateRows} tone="lagoon" />
+          <Board title="Dates that work" sub="How many people can make each one" items={dateRows} tone="lagoon" />
           <Board title="Top vibes" sub="What people want to do" items={vibeRows} tone="brass" />
           <Board title="Budget comfort" sub="People per range, excluding flights" items={budgetRows} tone="lime" />
         </div>

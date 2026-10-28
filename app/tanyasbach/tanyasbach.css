@@ -524,3 +524,4 @@ textarea.tb-input { resize: vertical; min-height: 88px; }
 @media (prefers-reduced-motion: reduce) {
   .tb-mq-run, .tb-sticker-peel, .tb-neon-line { animation: none; }
 }
+.tb-form > .tb-label { margin-bottom: -10px; }
