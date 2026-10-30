@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  // The /amsterdam, /christmas2026 and /tanyasbach trip pages are private: tell crawlers not to index them.
+  // The /amsterdam, /christmas2026, /tanyasbach and /virgincruise trip pages are private: tell crawlers not to index them.
   async headers() {
     const noindex = [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }];
     return [
@@ -12,6 +12,8 @@ const nextConfig = {
       { source: "/christmas2026/:path*", headers: noindex },
       { source: "/tanyasbach", headers: noindex },
       { source: "/tanyasbach/:path*", headers: noindex },
+      { source: "/virgincruise", headers: noindex },
+      { source: "/virgincruise/:path*", headers: noindex },
     ];
   },
 };
