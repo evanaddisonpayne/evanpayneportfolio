@@ -178,6 +178,17 @@ export const GIFTS: Gift[] = [
     note: "200 single-use packets, about $0.15 each. Way more than 16 bags need (12 each); look for a smaller pack.",
     checked: "Oct 30, 2026",
   },
+  {
+    id: "misc-mifoci-water-bottles-20pk",
+    category: "Misc",
+    name: "Mifoci reusable water bottles, 17 oz, assorted colors (20 pack)",
+    price: "$34.99",
+    url: "https://www.amazon.com/dp/B0DCBPJCFD?th=1",
+    image: "https://m.media-amazon.com/images/I/71huHvtIfFL._AC_SL1500_.jpg",
+    shop: "Amazon",
+    note: "20 flip-top bottles, about $1.75 each, in pink, rose, yellow, green and sky blue. One pack covers all 16 with 4 spare.",
+    checked: "Oct 30, 2026",
+  },
 ];
 
 /** Bags to fill: Tanya + 15 friends. */
