@@ -59,3 +59,36 @@
 .tbp-reply-box::placeholder { color: var(--smoke); }
 .tbp-reply-status { margin: 0; font-size: 13px; color: var(--smoke); }
 .tbp-reply.is-error .tbp-reply-status { color: var(--antique); font-weight: 500; }
+
+/* gift bags (components/tanyasbach-private/GiftBags.tsx) */
+.tbp-gifts { display: grid; gap: 36px; }
+.tbp-gift-tally { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+.tbp-gift-tally span { padding: 6px 12px; background: #fff; border: 1.5px solid var(--oxblood); border-radius: 999px; font-size: 14px; font-variant-numeric: tabular-nums; }
+.tbp-gift-cat-title { font-family: var(--display); font-weight: 400; font-size: 26px; margin-bottom: 14px; }
+.tbp-gift-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); }
+.tbp-gift { display: flex; flex-direction: column; background: #fff; border: 2px solid var(--oxblood); border-radius: 18px; overflow: hidden;
+  box-shadow: 4px 4px 0 var(--oxblood); }
+.tbp-gift.is-love { box-shadow: 4px 4px 0 var(--signal); }
+.tbp-gift.is-maybe { box-shadow: 4px 4px 0 var(--mango); }
+.tbp-gift.is-pass { opacity: .6; }
+.tbp-gift-img { position: relative; display: grid; place-items: center; aspect-ratio: 1; background: #fff; border-bottom: 1.5px solid var(--hair); }
+.tbp-gift-img img { width: 100%; height: 100%; object-fit: contain; padding: 12px; }
+.tbp-gift-ph { font-size: 56px; }
+.tbp-gift-badge { position: absolute; top: 10px; right: 10px; display: grid; place-items: center; width: 44px; height: 44px; font-size: 24px;
+  background: #fff; border: 2px solid var(--oxblood); border-radius: 50%; }
+.tbp-gift-info { padding: 14px 16px 6px; display: grid; gap: 4px; flex: 1; }
+.tbp-gift-name { font-family: var(--body); font-weight: 500; font-size: 16px; line-height: 1.35; }
+.tbp-gift-name a { color: var(--oxblood); text-decoration: underline; text-decoration-color: var(--hair); text-underline-offset: 3px; }
+.tbp-gift-name a:hover { text-decoration-color: var(--signal); }
+.tbp-gift-meta, .tbp-gift-note { margin: 0; font-size: 14px; color: var(--smoke); }
+.tbp-gift-meta strong { color: var(--oxblood); font-size: 17px; }
+.tbp-react { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 10px 12px 14px; }
+.tbp-react-btn { display: grid; justify-items: center; gap: 2px; min-height: 56px; padding: 6px 2px; border: 1.5px solid var(--hair); border-radius: 12px;
+  background: var(--ivory); color: var(--oxblood); cursor: pointer; font: 400 22px/1 var(--body); transition: transform .12s; }
+.tbp-react-btn:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--oxblood); }
+.tbp-react-btn[aria-pressed="true"] { background: var(--blush); border: 2px solid var(--oxblood); }
+.tbp-react-btn:disabled { opacity: .5; cursor: default; }
+.tbp-react-label { font-size: 11px; font-weight: 500; letter-spacing: .02em; }
+.tbp-react-btn[aria-pressed="true"] .tbp-react-label { font-weight: 700; }
+.tbp-gift-err { margin: 0 14px 12px; font-size: 13px; color: var(--antique); font-weight: 500; }
+.tbp-gift-empty { margin: 0; font-size: 17px; }

@@ -23,6 +23,7 @@
 
 import type { ReactNode } from "react";
 import { Reply } from "@/components/tanyasbach-private/Replies";
+import GiftBags from "@/components/tanyasbach-private/GiftBags";
 
 export type Tone = "paper" | "blush" | "sky" | "sun" | "sea" | "pink";
 
@@ -152,6 +153,20 @@ export const SECTIONS: PrivateSection[] = [
         <Reply id="wish-hard-nos" prompt="Hard no's: anything you definitely don't want (activities, themes, surprises)?" />
         <Reply id="wish-anything-else" prompt="Anything else on your mind?" />
       </div>
+    ),
+  },
+  {
+    id: "gift-bags",
+    eyebrow: "Tanya decides",
+    title: "Bach gift bags",
+    intro: "Ideas for the 16 bags, by category. Tanya, tap 😍 love it, 🤔 maybe or 🙅‍♀️ pass on each one. Tap again to undo.",
+    tone: "blush",
+    updated: "Oct 30, 2026",
+    body: (
+      <>
+        <GiftBags />
+        <Reply id="gift-bags-notes" prompt="Anything you'd add, or a vibe for the bags?" />
+      </>
     ),
   },
 ];
