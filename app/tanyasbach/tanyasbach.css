@@ -1274,3 +1274,20 @@ html:has(.tb.is-noche) { overflow: hidden; }
 .tb-round1 { margin-top: 56px; }
 .tb-round1 .tb-results-grid { opacity: .92; }
 .tb-tally .tb-bar-track { display: block; }
+
+/* final vote: flights */
+.tb-final-allin { margin-top: 6px; font-size: 15px; }
+.tb-final-allin strong { font-weight: 700; }
+.tb-flights { display: grid; gap: 6px; padding: 16px 16px 14px; border: 1px solid var(--oxblood); background: #fff; }
+.tb-flights .tb-final-lh { margin-bottom: 0; }
+.tb-flights-sum { font-size: 15px; }
+.tb-flights-sum strong { font-weight: 700; }
+.tb-flights-dates, .tb-flights-note { font-size: 13px; color: var(--smoke); line-height: 1.45; }
+.tb-flights-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.tb-flights-table th, .tb-flights-table td { padding: 8px 0; border-bottom: 1px solid var(--hair); text-align: left; vertical-align: top; }
+.tb-flights-table thead th { font-family: var(--caps); font-weight: 700; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--smoke); padding-top: 0; }
+.tb-flights-table td { text-align: right; white-space: nowrap; padding-left: 10px; }
+.tb-flights-table thead th:not(:first-child) { text-align: right; }
+.tb-flights-table tbody th { font-weight: 500; }
+.tb-flights-table tbody th small { display: block; font-weight: 400; font-size: 12px; color: var(--smoke); }
+.tb-flights-code { font-size: 12px; color: var(--antique); font-weight: 700; letter-spacing: .06em; }

@@ -116,7 +116,8 @@ function FinalForm() {
             </table>
           </div>
           <p className="tb-hint">
-            Estimates per person for a moderately boozy weekend. The villa is split {VILLA_GUESTS} ways. The cruise assumes two to a cabin.
+            Estimates per person for a moderately boozy weekend. The villa is split {VILLA_GUESTS} ways. The cruise assumes two to a cabin. Flights are
+            typical round-trip economy fares from our home airports. Memorial Day weekend usually runs higher, so book early.
           </p>
         </div>
       </section>
@@ -185,6 +186,9 @@ function OptionCard({ o, pick, onPick }: { o: FinalOption; pick?: string; onPick
           {usd(o.low)}–{usd(o.high)}
         </span>
         <span className="tb-final-per">per person, estimated, before flights</span>
+        <span className="tb-final-allin">
+          With a typical flight: about <strong>{usd(Math.round((total + o.flights.avg) / 50) * 50)}</strong>
+        </span>
       </div>
 
       <table className="tb-final-lines">
@@ -210,6 +214,41 @@ function OptionCard({ o, pick, onPick }: { o: FinalOption; pick?: string; onPick
           )}
         </tbody>
       </table>
+
+      <div className="tb-flights">
+        <p className="tb-final-lh">
+          ✈️ Flights to {o.flights.to}
+        </p>
+        <p className="tb-flights-sum">
+          <strong>
+            {usd(o.flights.low)}–{usd(o.flights.high)}
+          </strong>{" "}
+          round trip · group average about <strong>{usd(o.flights.avg)}</strong>
+        </p>
+        <p className="tb-flights-dates">{o.flights.dates}</p>
+        <table className="tb-flights-table">
+          <thead>
+            <tr>
+              <th scope="col">From</th>
+              <th scope="col">Typical</th>
+              <th scope="col">Avg.</th>
+            </tr>
+          </thead>
+          <tbody>
+            {o.flights.rows.map((r) => (
+              <tr key={r.code}>
+                <th scope="row">
+                  {r.from} <span className="tb-flights-code">{r.code}</span>
+                  <small>{r.nonstop}</small>
+                </th>
+                <td>{r.range}</td>
+                <td>{usd(r.avg)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p className="tb-flights-note">{o.flights.note}</p>
+      </div>
 
       <div className="tb-final-lists">
         <div>
