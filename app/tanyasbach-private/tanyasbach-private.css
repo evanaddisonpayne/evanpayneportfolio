@@ -1,0 +1,61 @@
+/* /tanyasbach-private — planners-only page. Builds on tanyasbach.css (.tb tokens); everything here is scoped under .tbp. */
+
+.tbp { min-height: 100vh; }
+.tbp .tb-nav { position: sticky; }
+.tbp-lock { min-height: 44px; padding: 8px 16px; border: 2px solid var(--oxblood); border-radius: 999px; background: #fff;
+  font: 500 14px/1 var(--body); color: var(--oxblood); cursor: pointer; }
+.tbp-lock:hover { background: var(--blush); }
+
+.tbp-head { background:
+  radial-gradient(ellipse 60% 70% at 90% 10%, color-mix(in srgb, var(--signal) 30%, transparent), transparent 70%),
+  radial-gradient(ellipse 50% 60% at 0% 100%, color-mix(in srgb, var(--mango) 40%, transparent), transparent 70%),
+  var(--ivory); }
+.tbp-toc { display: flex; flex-wrap: wrap; gap: 8px; }
+.tbp-toc a { padding: 8px 14px; border-radius: 999px; background: #fff; border: 1.5px solid var(--oxblood); font-size: 14px; color: var(--oxblood); }
+.tbp-toc a:hover { background: var(--blush); }
+.tbp-links a, .tbp-unlock a { color: var(--antique); text-decoration: underline; text-underline-offset: 3px; }
+
+.tbp .tbp-section { --section-y: clamp(56px, 6vw, 96px); }
+.tbp-updated { font-variant-numeric: tabular-nums; }
+
+/* building blocks for section bodies */
+.tbp-body { max-width: 980px; font-size: 17px; line-height: 1.6; }
+.tbp-body > * + * { margin-top: 18px; }
+.tbp-body p { max-width: 68ch; }
+.tbp-list { list-style: none; padding: 0; display: grid; gap: 10px; }
+.tbp-list li { position: relative; padding: 14px 18px 14px 44px; background: color-mix(in srgb, #fff 70%, transparent); border: 1.5px solid var(--hair); border-radius: 14px; }
+.tbp-list li::before { content: "✿"; position: absolute; left: 16px; top: 13px; color: var(--antique); }
+.tbp-facts { display: grid; gap: 1px; background: var(--hair); border: 1.5px solid var(--oxblood); border-radius: 14px; overflow: hidden; }
+.tbp-facts > div { display: grid; grid-template-columns: minmax(120px, 34%) 1fr; gap: 16px; padding: 12px 18px; background: #fff; }
+.tbp-facts dt { font-weight: 500; }
+.tbp-facts dd { margin: 0; }
+.tbp-cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
+.tbp-card { padding: 20px; background: #fff; border: 1.5px solid var(--oxblood); border-radius: 16px; box-shadow: 4px 4px 0 var(--oxblood); }
+.tbp-card > * + * { margin-top: 8px; }
+.tbp-card h3 { font-family: var(--display); font-weight: 400; font-size: 22px; line-height: 1.2; }
+.tbp-table { width: 100%; border-collapse: collapse; background: #fff; border: 1.5px solid var(--oxblood); border-radius: 14px; overflow: hidden; font-size: 15px; }
+.tbp-table th, .tbp-table td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--hair); vertical-align: top; }
+.tbp-table th { font-weight: 500; background: var(--sunsoft); }
+.tbp-body:has(> .tbp-table) { overflow-x: auto; }
+
+.tbp-foot { padding-block: 32px 48px; background: var(--lagoon); }
+.tbp-foot .tb-hint { color: var(--oxblood); margin: 0; }
+
+/* unlock screen */
+.tbp-unlock { min-height: 100vh; display: grid; place-items: center; background:
+  radial-gradient(ellipse 70% 60% at 85% 15%, color-mix(in srgb, var(--mango) 50%, transparent), transparent 70%),
+  radial-gradient(ellipse 60% 55% at 10% 90%, color-mix(in srgb, var(--lagoon) 35%, transparent), transparent 70%),
+  var(--ivory); }
+.tbp-unlock-card { max-width: 440px; margin-inline: auto; padding: clamp(24px, 4vw, 40px); background: #fff; border: 2px solid var(--oxblood);
+  border-radius: 22px; box-shadow: 6px 6px 0 var(--signal); }
+.tbp-unlock-card > * + * { margin-top: 16px; }
+.tbp-unlock-card .italic { color: var(--antique); font-style: italic; }
+.tbp-unlock-form { display: grid; gap: 10px; }
+.tbp-unlock-form label { font-weight: 500; font-size: 14px; }
+.tbp-unlock-form input[type="password"] { min-height: 48px; padding: 10px 14px; border: 2px solid var(--oxblood); border-radius: 12px; font: 400 17px var(--body); background: #fff; color: var(--oxblood); }
+.tbp-unlock-form .btn { justify-self: start; margin-top: 6px; }
+.tbp-error { color: var(--antique); font-weight: 500; margin: 0; }
+
+@media (max-width: 560px) {
+  .tbp-facts > div { grid-template-columns: 1fr; gap: 2px; }
+}
