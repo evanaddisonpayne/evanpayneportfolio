@@ -12,8 +12,8 @@ const nextConfig = {
       { source: "/christmas2026/:path*", headers: noindex },
       { source: "/tanyasbach", headers: noindex },
       { source: "/tanyasbach/:path*", headers: noindex },
-      { source: "/tanyasbach-private", headers: [...noindex, { key: "Cache-Control", value: "private, no-store" }] },
-      { source: "/tanyasbach-private/:path*", headers: [...noindex, { key: "Cache-Control", value: "private, no-store" }] },
+      { source: "/tanyasbach-private", headers: noindex },
+      { source: "/tanyasbach-private/:path*", headers: noindex },
     ];
   },
 };

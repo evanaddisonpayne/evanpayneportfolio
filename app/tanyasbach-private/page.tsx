@@ -1,12 +1,5 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { COOKIE_NAME, UNLOCK_PATH, isValidSession } from "@/lib/tanyasbach-private-auth";
 import { SECTIONS, type Tone } from "@/lib/tanyasbach-private";
-
-// Always rendered per request, after the password check. Never prerendered or cached.
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 const TONE_CLASS: Record<Tone, string> = {
   paper: "light",
@@ -17,11 +10,7 @@ const TONE_CLASS: Record<Tone, string> = {
   pink: "orange",
 };
 
-export default async function TanyasBachPrivate() {
-  // Second check on the server (middleware already redirects); keeps the content safe even if the matcher ever changes.
-  const jar = await cookies();
-  if (!(await isValidSession(jar.get(COOKIE_NAME)?.value))) redirect(UNLOCK_PATH);
-
+export default function TanyasBachPrivate() {
   return (
     <>
       <header className="tb-nav">
@@ -32,26 +21,20 @@ export default async function TanyasBachPrivate() {
             </span>
             Tanya <em>’27</em>
           </Link>
-          <form method="post" action="/api/tanyasbach-private">
-            <input type="hidden" name="intent" value="lock" />
-            <button type="submit" className="tbp-lock">
-              🔒 Lock
-            </button>
-          </form>
         </div>
       </header>
 
       <section className="section light tb-pagehead tbp-head">
         <div className="wrap">
           <p className="eyebrow">
-            Planners only<span className="dot" aria-hidden>·</span>Evan + Tanya
+            Planners<span className="dot" aria-hidden>·</span>Evan + Tanya
           </p>
           <h1 className="h1">
             Just the <span className="italic">two of us.</span>
           </h1>
           <p className="lede">
-            The behind-the-scenes page for the bachelorette. Nobody else can open it, so this is where the money, the pairings and the
-            surprises live.
+            The behind-the-scenes page for the bachelorette: the money, the pairings and the surprises. It isn&apos;t linked from the group
+            pages, so only people with the link will find it.
           </p>
           {SECTIONS.length > 1 && (
             <nav className="tbp-toc" aria-label="On this page">
@@ -101,7 +84,7 @@ export default async function TanyasBachPrivate() {
 
       <footer className="tbp-foot">
         <div className="wrap">
-          <p className="tb-hint">Private to Evan and Tanya. Please don&apos;t forward the link or the password.</p>
+          <p className="tb-hint">For Evan and Tanya. Anyone with this link can open it, so please don&apos;t forward it.</p>
         </div>
       </footer>
     </>

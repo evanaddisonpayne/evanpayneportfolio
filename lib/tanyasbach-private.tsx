@@ -1,4 +1,4 @@
-// /tanyasbach-private — planners-only page for Evan and Tanya (password gate: lib/tanyasbach-private-auth.ts).
+// /tanyasbach-private — planners page for Evan and Tanya. Open link (no password), unlisted and noindex.
 //
 // HOW TO ADD A SECTION (this is the only file to touch):
 //   1. Add an object to SECTIONS below. Order in the array = order on the page.
@@ -14,8 +14,8 @@
 //      For anything bigger (interactive, stateful), make a component in components/tanyasbach-private/ and put it in `body`.
 //   5. `updated` (optional) shows a small "Updated Oct 30" stamp.
 //
-// This page is rendered on the server only after the password check, so anything here stays off the public site.
-// Still: no full card numbers, passport numbers or passwords on this page.
+// Anyone with the link can read this page, so keep it to things that are fine if it gets forwarded:
+// no contact details, card or passport numbers, or passwords.
 
 import type { ReactNode } from "react";
 

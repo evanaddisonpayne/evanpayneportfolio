@@ -3,9 +3,9 @@ import type { ReactNode } from "react";
 import "../tanyasbach/tanyasbach.css";
 import "./tanyasbach-private.css";
 
-// Planners-only page (Evan + Tanya). Password gate in middleware.ts; never indexed.
+// Planners page (Evan + Tanya). Open link, not password-protected; kept out of search engines.
 export const metadata: Metadata = {
-  title: { default: "Planners only · Tanya ’27", template: "%s · Tanya ’27" },
+  title: { default: "Planners · Tanya ’27", template: "%s · Tanya ’27" },
   robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false, noimageindex: true } },
   referrer: "no-referrer",
 };
