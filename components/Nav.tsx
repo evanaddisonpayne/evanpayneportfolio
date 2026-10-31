@@ -20,7 +20,7 @@ export default function Nav() {
 
   // The private trip pages have their own chrome and aren't part of the portfolio.
   const isTrip = (base: string) => pathname === base || pathname.startsWith(base + "/");
-  if (isTrip("/amsterdam") || isTrip("/christmas2026") || isTrip("/tanyasbach")) return null;
+  if (isTrip("/amsterdam") || isTrip("/christmas2026") || isTrip("/tanyasbach") || isTrip("/tanyasbach-private")) return null;
 
   const brand = (
     <Link href="/" className="brand" aria-label={`${site.name}, home`}>
