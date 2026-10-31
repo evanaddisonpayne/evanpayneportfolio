@@ -265,7 +265,12 @@ export type FinalOption = {
   extra?: { item: string; amount: string };
   perks: string[];
   heads: string[];
+  flights: Flights;
 };
+
+/** Round-trip economy fares from the group's home airports (KAYAK 12-month averages, checked Oct 31, 2026). */
+export type FlightRow = { from: string; code: string; avg: number; range: string; nonstop: string };
+export type Flights = { to: string; dates: string; low: number; high: number; avg: number; rows: FlightRow[]; note: string };
 
 const perHead = Math.round(VILLA_TOTAL / VILLA_GUESTS);
 
@@ -295,6 +300,22 @@ export const FINAL_OPTIONS: FinalOption[] = [
       "Rated 5.0 on Airbnb (12 reviews), Guest Favorite",
       "Grace Bay's turquoise water: Turks and Caicos won Round 1",
     ],
+    flights: {
+      to: "Providenciales (PLS)",
+      dates: "Out Thu May 27, home Mon May 31",
+      low: 525,
+      high: 850,
+      avg: 680,
+      rows: [
+        { from: "Denver", code: "DEN", avg: 731, range: "$625–$838", nonstop: "1 stop in May" },
+        { from: "Northwest Arkansas", code: "XNA", avg: 685, range: "$614–$848", nonstop: "1 stop" },
+        { from: "Boston", code: "BOS", avg: 523, range: "$431–$739", nonstop: "Nonstop" },
+        { from: "Chicago", code: "ORD", avg: 698, range: "about $410–$830", nonstop: "Nonstop" },
+        { from: "Dallas", code: "DFW", avg: 801, range: "$693–$1,060", nonstop: "Nonstop, about weekly" },
+        { from: "El Paso", code: "ELP", avg: 659, range: "about $630–$700", nonstop: "1 stop" },
+      ],
+      note: "International flight, so passports required. United's Denver nonstop is winter-only (ends Apr 24).",
+    },
     heads: [
       "Passport needed (international flight into Providenciales, PLS)",
       "7 bedrooms and 8 beds for 13 of us, so some of us share beds",
@@ -328,6 +349,22 @@ export const FINAL_OPTIONS: FinalOption[] = [
       "Every meal is included, with no cooking or cleanup",
       "One booking covers the room, food and nightlife",
     ],
+    flights: {
+      to: "Miami (MIA)",
+      dates: "Out Fri May 28, home Thu Jun 3 after noon",
+      low: 235,
+      high: 585,
+      avg: 405,
+      rows: [
+        { from: "Denver", code: "DEN", avg: 355, range: "$260–$464", nonstop: "Nonstop, many daily" },
+        { from: "Northwest Arkansas", code: "XNA", avg: 584, range: "$464–$701", nonstop: "Nonstop, about daily" },
+        { from: "Boston", code: "BOS", avg: 334, range: "$234–$445", nonstop: "Nonstop, many daily" },
+        { from: "Chicago", code: "ORD", avg: 286, range: "$178–$396", nonstop: "Nonstop, many daily" },
+        { from: "Dallas", code: "DFW", avg: 235, range: "$147–$349", nonstop: "Nonstop, many daily" },
+        { from: "El Paso", code: "ELP", avg: 450, range: "$335–$546", nonstop: "1 stop" },
+      ],
+      note: "Domestic, so lots of flights and budget airlines. Fort Lauderdale (FLL) is often cheaper still.",
+    },
     heads: [
       "Passport recommended (a birth certificate and photo ID also work)",
       "Longer: 5 nights plus a travel day, home Thursday afternoon",
@@ -342,6 +379,8 @@ export const FINAL_FACTS: { k: string; villa: string; cruise: string }[] = [
   { k: "Dates", villa: "Thu May 27 – Mon May 31", cruise: "Sat May 29 – Thu Jun 3" },
   { k: "Time away", villa: "4 nights", cruise: "5 nights + 1 in Miami" },
   { k: "Est. per person", villa: "$1,450 – $1,850", cruise: "$1,900 – $2,400" },
+  { k: "Round-trip flight (group avg.)", villa: "~$680 to PLS", cruise: "~$405 to MIA" },
+  { k: "All in, with flights", villa: "~$2,300", cruise: "~$2,500" },
   { k: "Dinners & groceries", villa: "We pay", cruise: "Included" },
   { k: "Passport", villa: "Required", cruise: "Recommended" },
   { k: "Could make these dates (Round 1)", villa: "10 of 11", cruise: "8 of 11" },
