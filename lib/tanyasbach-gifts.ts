@@ -47,6 +47,17 @@ export const GIFTS: Gift[] = [
     checked: "Oct 30, 2026",
   },
   {
+    id: "bag-hangover-kit-drawstring-25pk",
+    category: "Bags",
+    name: "Hangover recovery kit drawstring bags, hand-printed cotton (25 pack)",
+    price: "$39.07",
+    url: "https://www.amazon.com/dp/B0DWXLWK82?psc=1",
+    image: "https://m.media-amazon.com/images/I/71KPgcx1PFL._AC_SL1500_.jpg",
+    shop: "Amazon",
+    note: "25 small pouches (5 × 7 in), about $1.56 each. Sized for the Morning after items, inside the bigger tote. One pack covers all 16.",
+    checked: "Oct 30, 2026",
+  },
+  {
     id: "towel-turkish-red-4pk",
     category: "Towel",
     name: "9Threads cotton Turkish beach towels, tomato red (4 pack)",
