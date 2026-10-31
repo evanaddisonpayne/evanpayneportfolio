@@ -46,7 +46,7 @@ export default function TanyasBachPrivate() {
             </nav>
           )}
           <div className="tb-hint tbp-links">
-            Group pages: <Link href="/tanyasbach">/tanyasbach</Link> · <Link href="/virgincruise">/virgincruise</Link>
+            Group site: <Link href="/tanyasbach">/tanyasbach</Link>
           </div>
         </div>
       </section>
