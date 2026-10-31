@@ -13,11 +13,16 @@
 //        <p className="tb-hint">…</p>       small muted note
 //      For anything bigger (interactive, stateful), make a component in components/tanyasbach-private/ and put it in `body`.
 //   5. `updated` (optional) shows a small "Updated Oct 30" stamp.
+//   6. For a box Tanya can answer in, add <Reply id="unique-id" prompt="The question" /> anywhere in `body`.
+//      Answers save on their own and show up live on every open copy of the page. Never reuse or rename an id
+//      (the saved answer is keyed by it); to retire a box, just delete the <Reply>. Several in a row: wrap them in
+//      <div className="tbp-questions">…</div>.
 //
 // Anyone with the link can read this page, so keep it to things that are fine if it gets forwarded:
 // no contact details, card or passport numbers, or passwords.
 
 import type { ReactNode } from "react";
+import { Reply } from "@/components/tanyasbach-private/Replies";
 
 export type Tone = "paper" | "blush" | "sky" | "sun" | "sea" | "pink";
 
@@ -108,6 +113,8 @@ export const SECTIONS: PrivateSection[] = [
           <li>Check for a shorter Virgin sailing (3–4 nights) near Memorial Day.</li>
           <li>Get the last 4 votes in; 6–5 is close enough to flip.</li>
         </ul>
+
+        <Reply id="gut-reaction" prompt="Tanya: your gut reaction to all of this?" />
       </>
     ),
   },
@@ -115,18 +122,36 @@ export const SECTIONS: PrivateSection[] = [
     id: "open-questions",
     eyebrow: "Decide together",
     title: "Open questions",
-    intro: "Things only the two of us can call. Delete a line once it's settled.",
+    intro: "Things only the two of us can call. Tanya, answer right in the boxes; they save on their own and Evan sees them live.",
     tone: "blush",
     updated: "Oct 30, 2026",
     body: (
-      <ul className="tbp-list">
-        <li>Where: Turks and Caicos (villa or budget version), the cruise, or something else?</li>
-        <li>When and how long: a 4-night land trip May 27–31, or the 5-night cruise May 29–Jun 3?</li>
-        <li>How do we handle the gap between the ~$2,000 and ~$3,500 budgets (payment plans, a cheaper version, optional splurges)?</li>
-        <li>Does the group cover Tanya&apos;s share?</li>
-        <li>When do deposits go out, and how much?</li>
-        <li>Keep the Vote page open until everyone has voted, then close it or reframe it.</li>
-      </ul>
+      <div className="tbp-questions">
+        <Reply id="q-where" prompt="Where: Turks and Caicos (villa or budget version), the cruise, or something else?" />
+        <Reply id="q-when" prompt="When and how long: a 4-night land trip May 27–31, or the 5-night cruise May 29–Jun 3?" />
+        <Reply
+          id="q-budget-gap"
+          prompt="How do we handle the gap between the ~$2,000 and ~$3,500 budgets? Payment plans, a cheaper version, optional splurges?"
+        />
+        <Reply id="q-tanyas-share" prompt="Should the group cover your share? (Totally fine to say what you'd prefer.)" />
+        <Reply id="q-deposits" prompt="When should deposits go out, and how much?" />
+        <Reply id="q-vote-page" prompt="Keep the Vote page open until everyone's voted, then close it or reframe it. Agree?" />
+      </div>
+    ),
+  },
+  {
+    id: "wish-list",
+    eyebrow: "Tanya's corner",
+    title: "Your wish list",
+    intro: "Wherever we end up. Dream big here; we'll figure out what fits.",
+    tone: "sun",
+    updated: "Oct 30, 2026",
+    body: (
+      <div className="tbp-questions">
+        <Reply id="wish-must-haves" prompt="Must-haves: what would make this trip perfect for you?" />
+        <Reply id="wish-hard-nos" prompt="Hard no's: anything you definitely don't want (activities, themes, surprises)?" />
+        <Reply id="wish-anything-else" prompt="Anything else on your mind?" />
+      </div>
     ),
   },
 ];

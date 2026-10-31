@@ -42,3 +42,20 @@
 @media (max-width: 560px) {
   .tbp-facts > div { grid-template-columns: 1fr; gap: 2px; }
 }
+
+/* live reply boxes (components/tanyasbach-private/Replies.tsx) */
+.tbp-questions { display: grid; gap: 18px; }
+@media (min-width: 900px) { .tbp-questions { grid-template-columns: 1fr 1fr; } }
+.tbp-reply { display: grid; gap: 8px; align-content: start; padding: 18px; background: #fff; border: 2px solid var(--oxblood); border-radius: 18px;
+  box-shadow: 4px 4px 0 var(--signal); }
+.tbp-reply.has-answer { box-shadow: 4px 4px 0 var(--lagoon); }
+.tbp-reply.is-error { box-shadow: 4px 4px 0 var(--antique); }
+.tbp-reply-prompt { margin: 0; font-family: var(--display); font-size: 20px; line-height: 1.3; }
+.tbp-reply-label { font-size: 12px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--antique); }
+.tbp-reply-box { width: 100%; min-height: 96px; resize: vertical; padding: 12px 14px; border: 1.5px dashed var(--oxblood); border-radius: 12px;
+  background: var(--sunsoft); color: var(--oxblood); font: 400 17px/1.5 var(--body); overflow: hidden; }
+.tbp-reply-box:focus { border-style: solid; background: #fff; outline: 3px solid var(--signal); outline-offset: 1px; }
+.tbp-reply-box:disabled { opacity: .6; }
+.tbp-reply-box::placeholder { color: var(--smoke); }
+.tbp-reply-status { margin: 0; font-size: 13px; color: var(--smoke); }
+.tbp-reply.is-error .tbp-reply-status { color: var(--antique); font-weight: 500; }

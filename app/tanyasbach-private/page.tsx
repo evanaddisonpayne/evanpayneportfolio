@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SECTIONS, type Tone } from "@/lib/tanyasbach-private";
+import { ReplyProvider } from "@/components/tanyasbach-private/Replies";
 
 const TONE_CLASS: Record<Tone, string> = {
   paper: "light",
@@ -12,7 +13,7 @@ const TONE_CLASS: Record<Tone, string> = {
 
 export default function TanyasBachPrivate() {
   return (
-    <>
+    <ReplyProvider>
       <header className="tb-nav">
         <div className="wrap tb-nav-inner">
           <Link href="/tanyasbach-private" className="tb-nav-brand">
@@ -87,6 +88,6 @@ export default function TanyasBachPrivate() {
           <p className="tb-hint">For Evan and Tanya. Anyone with this link can open it, so please don&apos;t forward it.</p>
         </div>
       </footer>
-    </>
+    </ReplyProvider>
   );
 }
