@@ -11,6 +11,7 @@ const TABS = {
   dates:       ['Timestamp', 'Name', 'Available weekends', 'Max nights'],
   budget:      ['Timestamp', 'Name', 'Comfort max (USD, excl. flights)', 'Splurge on'],
   vibes:       ['Timestamp', 'Name', 'Picks', 'Must-do idea'],
+  final:       ['Timestamp', 'Name', 'Villa (Turks and Caicos)', 'Cruise (Virgin)', 'Note'],
 };
 
 function sheetFor_(form) {
@@ -39,6 +40,7 @@ function doPost(e) {
       dates:       [now, d.name, (d.weekends || []).join(', '), d.maxNights],
       budget:      [now, d.name, d.budget, (d.splurge || []).join(', ')],
       vibes:       [now, d.name, (d.picks || []).join(', '), d.idea],
+      final:       [now, d.name, d.villa, d.cruise, d.note],
     };
     const row = rows[d.form];
     if (d.form === 'destination') while (row.length < 7) row.splice(row.length - 1, 0, '');
@@ -59,7 +61,12 @@ function doGet() {
     const m = {}; data.forEach(r => { m[String(r[nameCol]).trim().toLowerCase()] = r; }); return Object.values(m);
   };
 
-  const out = { rsvps: latest(rows('Rsvp'), 1).length, destination: {}, dates: {}, vibes: {}, budgetBands: {} };
+  const out = { rsvps: latest(rows('Rsvp'), 1).length, destination: {}, dates: {}, vibes: {}, budgetBands: {}, final: { villa: {}, cruise: {} } };
+
+  latest(rows('Final'), 1).forEach(r => {      // emoji reactions, one per option per person
+    if (r[2]) out.final.villa[r[2]] = (out.final.villa[r[2]] || 0) + 1;
+    if (r[3]) out.final.cruise[r[3]] = (out.final.cruise[r[3]] || 0) + 1;
+  });
 
   latest(rows('Destination'), 1).forEach(r => {
     [2, 3, 4, 5].forEach((c, i) => { if (r[c]) out.destination[r[c]] = (out.destination[r[c]] || 0) + (4 - i); });

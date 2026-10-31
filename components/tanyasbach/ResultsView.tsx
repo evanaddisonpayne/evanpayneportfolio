@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { BASE, BUDGET_BANDS, DEST_ALIASES, DESTS, INVITED, SAILINGS, WEEKENDS, type Results } from "@/lib/tanyasbach";
+import { BASE, CANT, DEST_ALIASES, DESTS, FINAL_OPTIONS, INVITED, REACTIONS, SAILINGS, WEEKENDS, type Results } from "@/lib/tanyasbach";
 import { Arch } from "./Breaks";
 import { VoteClock } from "./Deadline";
 import { fetchResults } from "./util";
@@ -29,9 +29,9 @@ export default function ResultsView() {
   // Fixed order for categories with a natural order; the rest sort by votes.
   const destRows = rows(mergeAliases(data?.destination), DESTS.map((d) => d.name), true);
   const dateRows = rows(data?.dates, [...WEEKENDS, ...SAILINGS].map((w) => w.label), false);
-  const vibeRows = rows(data?.vibes, [], true).slice(0, 8);
-  const budgetRows = rows(data?.budgetBands, BUDGET_BANDS, false);
-  const leader = destRows[0]?.[1] ? destRows[0][0] : null;
+  const finals = FINAL_OPTIONS.map((o) => tally(data?.final?.[o.id]));
+  const voters = Math.max(0, ...finals.map((f) => f.voters));
+  const lead = finals[0].score === finals[1].score ? -1 : finals[0].score > finals[1].score ? 0 : 1;
 
   return (
     <>
@@ -40,9 +40,13 @@ export default function ResultsView() {
         <div className="wrap">
           <p className="eyebrow">Live results{demo ? " · sample data" : ""}</p>
           <h1 className="h1">
-            {leader ? (
+            {voters && lead >= 0 ? (
               <>
-                Leaning <span className="italic">{leader.split(",")[0]}.</span>
+                Leaning <span className="italic">{FINAL_OPTIONS[lead].short.toLowerCase()}.</span>
+              </>
+            ) : voters ? (
+              <>
+                Dead even. <span className="italic">Your vote decides.</span>
               </>
             ) : (
               <>
@@ -51,7 +55,7 @@ export default function ResultsView() {
             )}
           </h1>
           <p className="lede">
-            {data ? `${data.rsvps} of ${INVITED} friends ${data.rsvps === 1 ? "has" : "have"} RSVP'd. ` : ""}
+            {data ? `${data.rsvps} of ${INVITED} friends ${data.rsvps === 1 ? "has" : "have"} RSVP'd, and ${voters} ${voters === 1 ? "has" : "have"} voted in the final round. ` : ""}
             Totals only. Names, contact info and individual budgets stay with Evan and Tanya.
           </p>
           <VoteClock />
@@ -68,19 +72,85 @@ export default function ResultsView() {
       <Arch kicker="Meanwhile" caption="Somewhere warm, a table for sixteen is waiting. Vote before Thanksgiving." />
 
       <section className="section light tb-results">
-        <div className="wrap tb-results-grid">
-          <Board title="Destination" sub="Points: a 1st choice counts 4, a 4th choice counts 1" items={destRows} tone="signal" />
-          <Board title="Dates that work" sub="How many people can make each one" items={dateRows} tone="lagoon" />
-          <Board title="Top vibes" sub="What people want to do" items={vibeRows} tone="brass" />
-          <Board title="Budget comfort" sub="People per range, excluding flights" items={budgetRows} tone="lime" />
+        <div className="wrap">
+          <div className="section-head">
+            <p className="eyebrow">The final vote</p>
+            <h2 className="h2">Villa vs. cruise</h2>
+          </div>
+          <div className="tb-final-results">
+            {FINAL_OPTIONS.map((o, i) => (
+              <Reactions key={o.id} title={o.name} sub={`${o.when} · ${o.nights}`} t={finals[i]} leading={i === lead && voters > 0} tone={o.id === "villa" ? "lagoon" : "signal"} />
+            ))}
+          </div>
+          <p className="tb-hint">Points: 🔥 counts 3, 🙌 counts 2, 🤷‍♀️ counts 1. Highest total wins. 🙅‍♀️ tells us who couldn&apos;t come.</p>
+        </div>
+        <div className="wrap tb-round1">
+          <div className="section-head">
+            <p className="eyebrow">Round 1 · closed</p>
+            <h2 className="h3">How we got to two</h2>
+          </div>
+          <div className="tb-results-grid">
+            <Board title="Destination" sub="Points: a 1st choice counts 4, a 4th choice counts 1" items={destRows} tone="brass" />
+            <Board title="Dates that work" sub="How many people can make each one" items={dateRows} tone="lime" />
+          </div>
         </div>
         <div className="wrap btns tb-results-btns">
           <Link className="btn btn-dark" href={`${BASE}/vote`}>
-            Add your votes
+            Cast your vote
           </Link>
         </div>
       </section>
     </>
+  );
+}
+
+type Tally = { counts: [string, number][]; score: number; voters: number; cant: number };
+
+function tally(obj: Record<string, number> | undefined): Tally {
+  const o = obj ?? {};
+  const counts = REACTIONS.map((r) => [r.label, o[r.label] ?? 0] as [string, number]);
+  const score = REACTIONS.reduce((s, r) => s + r.pts * (o[r.label] ?? 0), 0);
+  const voters = counts.reduce((s, [, v]) => s + v, 0);
+  return { counts, score, voters, cant: o[CANT] ?? 0 };
+}
+
+function Reactions({ title, sub, t, leading, tone }: { title: string; sub: string; t: Tally; leading: boolean; tone: string }) {
+  const max = Math.max(1, ...t.counts.map((c) => c[1]));
+  return (
+    <div className={`card tb-board tb-tone-${tone}${leading ? " is-leading" : ""}`}>
+      <div>
+        <h3 className="h3">
+          {title}
+          {leading ? " 👑" : ""}
+        </h3>
+        <p className="tb-board-sub">{sub}</p>
+      </div>
+      <ul className="tb-tally">
+        {t.counts.map(([label, v]) => {
+          const r = REACTIONS.find((x) => x.label === label)!;
+          return (
+            <li key={label}>
+              <span className="tb-tally-emoji" aria-hidden>
+                {r.emoji}
+              </span>
+              <span>
+                <span className="tb-tally-k">{r.word}</span>
+                <span className="tb-bar-track">
+                  <span className="tb-bar-fill" style={{ width: `${(v / max) * 100}%` }} />
+                </span>
+              </span>
+              <span className="tb-tally-v">{v}</span>
+            </li>
+          );
+        })}
+      </ul>
+      <p className="tb-score">
+        <strong>{t.score}</strong> points
+        <span>
+          {t.cant} {t.cant === 1 ? "person" : "people"} can&apos;t make it
+        </span>
+      </p>
+    </div>
   );
 }
 
