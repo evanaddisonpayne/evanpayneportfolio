@@ -46,6 +46,17 @@ export const GIFTS: Gift[] = [
     note: "Per bag, customized with your design (style 6 shown). About $207 for 16.",
     checked: "Oct 30, 2026",
   },
+  {
+    id: "towel-turkish-red-4pk",
+    category: "Towel",
+    name: "9Threads cotton Turkish beach towels, tomato red (4 pack)",
+    price: "$22.95",
+    url: "https://www.amazon.com/dp/B0D8H448Y8?th=1",
+    image: "https://m.media-amazon.com/images/I/71R8U5UFl1L._AC_SL1500_.jpg",
+    shop: "Amazon",
+    note: "4 per pack, about $5.74 a towel. 4 packs cover all 16 ($91.80). Oversized 36 × 72 in, quick dry.",
+    checked: "Oct 30, 2026",
+  },
 ];
 
 /** Bags to fill: Tanya + 15 friends. */
