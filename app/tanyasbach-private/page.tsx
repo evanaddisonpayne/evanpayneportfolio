@@ -47,6 +47,8 @@ export default function TanyasBachPrivate() {
             </nav>
           )}
           <div className="tb-hint tbp-links">
+            <Link href="/tanyasbach-private/group">The group: everyone&apos;s budget, vibes and rooming →</Link>
+            <br />
             Group site: <Link href="/tanyasbach">/tanyasbach</Link>
           </div>
         </div>

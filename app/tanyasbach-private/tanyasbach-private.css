@@ -92,3 +92,29 @@
 .tbp-react-btn[aria-pressed="true"] .tbp-react-label { font-weight: 700; }
 .tbp-gift-err { margin: 0 14px 12px; font-size: 13px; color: var(--antique); font-weight: 500; }
 .tbp-gift-empty { margin: 0; font-size: 17px; }
+
+/* /tanyasbach-private/group */
+.tbg-back { min-height: 44px; display: inline-flex; align-items: center; padding: 8px 16px; border: 2px solid var(--oxblood); border-radius: 999px;
+  background: #fff; font: 500 14px/1 var(--body); color: var(--oxblood); }
+.tbg-back:hover { background: var(--blush); }
+.tbg-scroll { overflow-x: auto; }
+.tbg-scroll .tbp-table { min-width: 620px; }
+.tbg-num { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 500; }
+.tbg-h3 { font-family: var(--display); font-weight: 400; font-size: 24px; margin-top: 32px; }
+.tbg-bars { list-style: none; padding: 0; display: grid; gap: 8px; max-width: 760px; }
+.tbg-bars li { display: grid; grid-template-columns: minmax(130px, 220px) 1fr 44px; align-items: center; gap: 12px; font-size: 15px; }
+.tbg-bar-track { height: 14px; background: #fff; border: 1.5px solid var(--oxblood); border-radius: 999px; overflow: hidden; }
+.tbg-bar-fill { display: block; height: 100%; background: var(--signal); }
+.tbg-bar-n { font-variant-numeric: tabular-nums; text-align: right; color: var(--smoke); }
+.tbg-count { margin: 0; font-size: 14px; color: var(--smoke); }
+.tbg-roomlist { list-style: none; padding: 0; display: grid; gap: 6px; font-size: 15px; }
+.tbg-muted { color: var(--smoke); }
+.tbg-people { max-width: none; display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.tbg-people > * + * { margin-top: 0; }
+.tbg-person dl { display: grid; gap: 6px; margin: 0; font-size: 15px; }
+.tbg-person dl > div { display: grid; grid-template-columns: 76px 1fr; gap: 8px; }
+.tbg-person dt { font-weight: 500; color: var(--antique); }
+.tbg-person dd { margin: 0; }
+.tbg-chips { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.tbg-chips li { padding: 4px 10px; border-radius: 999px; background: var(--sunsoft); border: 1px solid var(--hair); font-size: 13px; }
+@media (max-width: 560px) { .tbg-bars li { grid-template-columns: 1fr 44px; } .tbg-bar-track { grid-column: 1 / -1; grid-row: 2; } }
