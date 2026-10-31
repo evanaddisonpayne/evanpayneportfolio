@@ -11,6 +11,13 @@ const API = "/api/tanyasbach-private/replies";
 const POLL_MS = 4000;
 const ReplyContext = createContext<Ctx | null>(null);
 
+/** Read and write saved answers directly (used by gift reactions and other custom widgets). */
+export function useReplies() {
+  const c = useContext(ReplyContext);
+  if (!c) throw new Error("useReplies must be inside ReplyProvider");
+  return c;
+}
+
 export function ReplyProvider({ children }: { children: ReactNode }) {
   const [enabled, setEnabled] = useState<boolean | null>(null);
   const [replies, setReplies] = useState<Record<string, Reply>>({});
