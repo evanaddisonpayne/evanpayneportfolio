@@ -45,7 +45,7 @@ export function Rules() {
           <li>
             <span className="tb-rule-n">01</span>
             <strong>Vote by Thanksgiving.</strong>
-            <span>Destination, dates and vibes close {VOTE_DEADLINE_LABEL}. Silence counts as &ldquo;I&apos;m easy.&rdquo;</span>
+            <span>The final vote, villa or cruise, closes {VOTE_DEADLINE_LABEL}. Silence counts as &ldquo;I&apos;m easy.&rdquo;</span>
           </li>
           <li className="is-money">
             <span className="tb-rule-n">02</span>

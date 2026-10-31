@@ -7,7 +7,7 @@ import "./tanyasbach.css";
 // Private group site: kept out of search engines (meta robots here, X-Robots-Tag in next.config.mjs).
 export const metadata: Metadata = {
   title: { default: "¡Vamos, Tanya! · Bachelorette 2027", template: "%s · Tanya ’27" },
-  description: "Private planning site for Tanya's bachelorette, May 2027. RSVP, rank the destinations, pick the weekend.",
+  description: "Private planning site for Tanya's bachelorette, May 2027. RSVP and cast the final vote: villa or cruise.",
   robots: {
     index: false,
     follow: false,
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     title: "¡Vamos, Tanya! · Bachelorette 2027",
-    description: "Four destinations, one bride, a long weekend in May. Come vote.",
+    description: "Villa or cruise? One bride, one final vote. Come vote.",
   },
 };
 

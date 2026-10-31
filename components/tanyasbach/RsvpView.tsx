@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { BASE, BUDGET_CHOICES, NO_REFUND, PASSPORT_CHOICES, ROOMING, SPLURGE } from "@/lib/tanyasbach";
+import { BASE, NO_REFUND, PASSPORT_CHOICES, ROOMING } from "@/lib/tanyasbach";
 import { Hibiscus } from "./Art";
 import { Chips, Question, SubmitBlock, Success, YourName, useSubmitAll, type Part, type Problem } from "./Forms";
 import { useTb } from "./TbProvider";
@@ -33,8 +33,6 @@ function RsvpForm() {
   const { run, state, problems, edit } = useSubmitAll();
   const [passport, setPassport] = useState<string[]>([]);
   const [room, setRoom] = useState<string[]>([]);
-  const [budget, setBudget] = useState<string[]>([]);
-  const [splurge, setSplurge] = useState<string[]>([]);
   const [agreed, setAgreed] = useState(false);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -43,7 +41,6 @@ function RsvpForm() {
     const issues: Problem[] = [];
     if (!EMAIL.test(String(fd.email || "").trim())) issues.push({ msg: "Your email", focus: "r-email" });
     if (!passport.length) issues.push({ msg: "Your passport", focus: "q-passport" });
-    if (!budget.length) issues.push({ msg: "Your budget (“Rather not say” is fine)", focus: "q-budget" });
     if (!agreed) issues.push({ msg: "Tick the box to agree to the money rule", focus: "r-agree" });
 
     const notes = String(fd.notes || "").trim();
@@ -53,8 +50,6 @@ function RsvpForm() {
         fields: { ...fd, passport: passport[0] || "", room: room[0] || "", notes: `[Agreed: no refunds after paying or committing]${notes ? " " + notes : ""}` },
       },
     ];
-    const b = BUDGET_CHOICES.find((c) => c.label === budget[0]);
-    if (b && b.value > 0) parts.push({ kind: "budget", fields: { budget: b.value, splurge } });
     run(parts, issues);
   };
 
@@ -64,8 +59,8 @@ function RsvpForm() {
         <div className="wrap">
           <Success
             title={`You're in, ${firstName(name)}.`}
-            body="One more step: vote on where we go, which dates, and what we do. It takes about 3 minutes."
-            next={{ href: `${BASE}/vote`, label: "Next: vote" }}
+            body="One more step: the final vote. It's villa or cruise, and it takes about a minute."
+            next={{ href: `${BASE}/vote`, label: "Next: the final vote" }}
             onEdit={edit}
           />
         </div>
@@ -83,7 +78,7 @@ function RsvpForm() {
           </div>
           <Field id="r-air" label="Closest airport (the city is fine)" name="airport" placeholder="e.g. Chicago, or ORD" optional />
 
-          <Question n={1} id="q-passport" title="Your passport" hint="Most of our options need one that's valid through December 2027.">
+          <Question n={1} id="q-passport" title="Your passport" hint="The villa needs one. The cruise doesn't, but it's strongly recommended.">
             <Chips label="Your passport" options={PASSPORT_CHOICES} value={passport} onChange={setPassport} multi={false} />
           </Question>
 
@@ -93,19 +88,6 @@ function RsvpForm() {
               <Field id="r-mate" label="Who you'd like to room with" name="roommate" optional />
               <Field id="r-diet" label="Food allergies or diet" name="dietary" optional />
             </div>
-          </Question>
-
-          <Question
-            n={3}
-            id="q-budget"
-            title="What's a comfortable budget?"
-            hint="For the house, food and activities, not flights. Only Evan and Tanya see your answer. Everyone else sees totals."
-          >
-            <Chips label="Comfortable budget" options={BUDGET_CHOICES.map((c) => c.label)} value={budget} onChange={setBudget} multi={false} />
-            <p className="tb-sublabel">
-              Worth spending more on <span className="tb-optional">(optional)</span>
-            </p>
-            <Chips label="Worth spending more on" options={SPLURGE} value={splurge} onChange={setSplurge} />
           </Question>
 
           <div className="tb-field">

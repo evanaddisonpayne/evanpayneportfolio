@@ -5,7 +5,7 @@ import { SHEET_URL } from "@/lib/tanyasbach";
 
 export const dynamic = "force-dynamic";
 
-const FORMS = new Set(["rsvp", "destination", "dates", "budget", "vibes"]);
+const FORMS = new Set(["rsvp", "destination", "dates", "budget", "vibes", "final"]);
 const MAX_BYTES = 10_000;
 
 export async function POST(req: Request) {

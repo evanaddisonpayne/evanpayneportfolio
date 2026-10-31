@@ -26,12 +26,12 @@ export const TRIP_TARGET_LABEL = "until May 2027";
 /** Voting (destination, dates, vibes) closes the night before Thanksgiving. Eastern time is EST (−05:00) by late November. */
 export const VOTE_DEADLINE = "2026-11-25T23:59:59-05:00";
 export const VOTE_DEADLINE_LABEL = "Wed, Nov 25 at 11:59 pm ET";
-export const VOTE_FORMS: FormKind[] = ["destination", "dates", "vibes"];
+export const VOTE_FORMS: FormKind[] = ["final"];
 export const votingOpen = (now = Date.now()) => now < new Date(VOTE_DEADLINE).getTime();
 
 export const NO_REFUND = "Once you pay or commit, you're in. If you cancel after that, there are no refunds.";
 
-export type FormKind = "rsvp" | "destination" | "dates" | "budget" | "vibes";
+export type FormKind = "rsvp" | "destination" | "dates" | "budget" | "vibes" | "final";
 
 /** The planning passport: one stamp per form. */
 export const STAMPS: { id: FormKind; label: string; short: string; href: string; motif: "hibiscus" | "palm" | "sun" | "shell" | "maraca" }[] = [
@@ -202,6 +202,8 @@ export type Results = {
   dates: Record<string, number>;
   vibes: Record<string, number>;
   budgetBands: Record<string, number>;
+  /** Final vote: option id → reaction label → count (latest answer per person). */
+  final?: Record<string, Record<string, number>>;
 };
 
 /** Shown until the Sheet is connected, clearly labeled as sample data. */
@@ -211,6 +213,10 @@ export const SAMPLE: Results = {
   dates: { "May 13 – 16": 9, "May 20 – 23": 8, "May 27 – 31": 6, "Apr 29 – May 2": 4, "May 6 – 9": 3 },
   vibes: { "Catamaran / boat party": 10, "Beach club day": 9, "Salsa or bachata lesson": 7, "Big night out": 7, "Spa & pool day": 5, "Street food tour": 4 },
   budgetBands: { "Under $1k": 2, "$1k–1.5k": 5, "$1.5k–2k": 3, "$2k+": 1 },
+  final: {
+    villa: { "🔥 Obsessed": 4, "🙌 I'm in": 3, "🤷‍♀️ Could work": 1, "🙅‍♀️ Can't make it": 0 },
+    cruise: { "🔥 Obsessed": 3, "🙌 I'm in": 2, "🤷‍♀️ Could work": 2, "🙅‍♀️ Can't make it": 1 },
+  },
 };
 
 export const sources: { label: string; href: string }[] = [
@@ -224,3 +230,121 @@ export const sources: { label: string; href: string }[] = [
   { label: "TravelPulse · Cancún arrivals", href: "https://www.travelpulse.com/news/destinations/cancun-eliminates-mandatory-customs-forms-for-arriving-tourists" },
   { label: "TC Villas · T&C by month", href: "https://tcvillas.com/en/the-best-time-to-visit-turks-caicos-a-month-by-month-weather-price-crowd-guide-2026" },
 ];
+
+/* ------------------------------------------------------------------ */
+/* Final vote (Oct 31, 2026): two options, voted with emoji reactions. */
+/* Estimates are per person for a moderately boozy bach. Flights extra. */
+/* ------------------------------------------------------------------ */
+
+/** One reaction per option. Points decide the winner; "Can't make it" also tells us who'd miss out. */
+export const REACTIONS: { emoji: string; word: string; label: string; pts: number }[] = [
+  { emoji: "🔥", word: "Obsessed", label: "🔥 Obsessed", pts: 3 },
+  { emoji: "🙌", word: "I'm in", label: "🙌 I'm in", pts: 2 },
+  { emoji: "🤷‍♀️", word: "Could work", label: "🤷‍♀️ Could work", pts: 1 },
+  { emoji: "🙅‍♀️", word: "Can't make it", label: "🙅‍♀️ Can't make it", pts: 0 },
+];
+export const CANT = REACTIONS[3].label;
+
+/** Headcount the villa math is split by (the listing sleeps 14 at most). */
+export const VILLA_GUESTS = 13;
+export const VILLA_TOTAL = 9400;
+
+export type CostLine = { item: string; note: string; amount: number };
+export type FinalOption = {
+  id: "villa" | "cruise";
+  name: string;
+  short: string;
+  kicker: string;
+  when: string;
+  nights: string;
+  where: string;
+  url?: string;
+  low: number;
+  high: number;
+  lines: CostLine[];
+  extra?: { item: string; amount: string };
+  perks: string[];
+  heads: string[];
+};
+
+const perHead = Math.round(VILLA_TOTAL / VILLA_GUESTS);
+
+export const FINAL_OPTIONS: FinalOption[] = [
+  {
+    id: "villa",
+    name: "The Turks and Caicos villa",
+    short: "Villa",
+    kicker: "Option A · Providenciales",
+    when: "Thu May 27 – Mon May 31",
+    nights: "4 nights, Memorial Day weekend",
+    where: "Leeward Jewel Villa, a canal-front villa in Leeward, Providenciales",
+    url: "https://www.airbnb.com/rooms/1228191996070103290",
+    low: 1450,
+    high: 1850,
+    lines: [
+      { item: "The villa", note: `$${VILLA_TOTAL.toLocaleString("en-US")} total ÷ ${VILLA_GUESTS} of us, 4 nights`, amount: perHead },
+      { item: "Groceries", note: "Breakfasts, lunches and snacks at the house. Island prices run high.", amount: 175 },
+      { item: "Drinks", note: "A stocked bar at the house plus rounds when we go out", amount: 300 },
+      { item: "Dinners out", note: "3 nights, service charge included", amount: 300 },
+      { item: "Getting around", note: "Rental vans or taxis, plus airport rides", amount: 100 },
+    ],
+    extra: { item: "Optional private boat day (half day)", amount: "+ about $300" },
+    perks: [
+      "The whole house is ours: pool, hot tub, full bar, fire pits, a big kitchen",
+      "Kayaks and paddle boards on the canal",
+      "Rated 5.0 on Airbnb (12 reviews), Guest Favorite",
+      "Grace Bay's turquoise water: Turks and Caicos won Round 1",
+    ],
+    heads: [
+      "Passport needed (international flight into Providenciales, PLS)",
+      "7 bedrooms and 8 beds for 13 of us, so some of us share beds",
+      "Sleeps 14 at most",
+      "We cook, clean up and plan the days ourselves",
+    ],
+  },
+  {
+    id: "cruise",
+    name: "The Virgin Voyages cruise",
+    short: "Cruise",
+    kicker: "Option B · Miami round trip",
+    when: "Sat May 29 – Thu Jun 3",
+    nights: "5 nights at sea, plus a night in Miami before",
+    where: "Valiant Lady from Miami: Grand Turk (Mon) and The Beach Club at Bimini (Wed)",
+    low: 1900,
+    high: 2400,
+    lines: [
+      { item: "Cruise fare", note: "Cheapest cabin, two to a room. The price changes daily.", amount: 1145 },
+      { item: "Taxes and port fees", note: "Estimate", amount: 175 },
+      { item: "Crew tips", note: "$20 a day, prepaid", amount: 100 },
+      { item: "Drinks", note: "Around 5 a day at onboard bar prices", amount: 375 },
+      { item: "Dinners", note: "Included: 20+ restaurants", amount: 0 },
+      { item: "Groceries", note: "Included: all meals on board", amount: 0 },
+      { item: "Grand Turk excursion", note: "A beach or snorkel trip in port", amount: 100 },
+      { item: "Night in Miami before", note: "Shared hotel room, dinner, ride to the port", amount: 200 },
+    ],
+    perks: [
+      "Adults only, with Scarlet Night (everyone in red) and pool parties",
+      "A day on Grand Turk plus a beach club day at Bimini",
+      "Every meal is included, with no cooking or cleanup",
+      "One booking covers the room, food and nightlife",
+    ],
+    heads: [
+      "Passport recommended (a birth certificate and photo ID also work)",
+      "Longer: 5 nights plus a travel day, home Thursday afternoon",
+      "Fewer people could make these dates in Round 1",
+      "Cabins are small, two to a room",
+    ],
+  },
+];
+
+/** Round 1 date availability (11 people answered) for each option's dates. */
+export const FINAL_FACTS: { k: string; villa: string; cruise: string }[] = [
+  { k: "Dates", villa: "Thu May 27 – Mon May 31", cruise: "Sat May 29 – Thu Jun 3" },
+  { k: "Time away", villa: "4 nights", cruise: "5 nights + 1 in Miami" },
+  { k: "Est. per person", villa: "$1,450 – $1,850", cruise: "$1,900 – $2,400" },
+  { k: "Dinners & groceries", villa: "We pay", cruise: "Included" },
+  { k: "Passport", villa: "Required", cruise: "Recommended" },
+  { k: "Could make these dates (Round 1)", villa: "10 of 11", cruise: "8 of 11" },
+];
+
+export const usd = (n: number) => `$${n.toLocaleString("en-US")}`;

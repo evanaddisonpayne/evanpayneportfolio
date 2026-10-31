@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState, type CSSProperties } from "react";
-import { BASE, DESTS, GROUP_SIZE, TRIP_TARGET, TRIP_TARGET_LABEL, VOTE_DEADLINE_LABEL } from "@/lib/tanyasbach";
+import { BASE, FINAL_OPTIONS, GROUP_SIZE, TRIP_TARGET, TRIP_TARGET_LABEL, VOTE_DEADLINE_LABEL, usd } from "@/lib/tanyasbach";
 import { Hibiscus, Palm, PapelPicado } from "./Art";
 import { Marquee, Neon, Postcard } from "./Breaks";
 import PackingList from "./PackingList";
@@ -20,7 +20,7 @@ export default function HomeView() {
         <PapelPicado />
         <Palm className="tb-hero-palm" />
         <div className="tb-tape" aria-hidden>
-          {"LA DESPEDIDA DE TANYA   ·   MAYO 2027   ·   CUATRO ISLAS   ·   UNA NOVIA   ·   ".repeat(10)}
+          {"LA DESPEDIDA DE TANYA   ·   MAYO 2027   ·   VILLA O CRUCERO   ·   UNA NOVIA   ·   ".repeat(10)}
         </div>
         <div className="wrap tb-hero-grid">
           <div className="tb-hero-copy">
@@ -31,8 +31,8 @@ export default function HomeView() {
               ¡Vamos, <span className="italic">Tanya!</span>
             </h1>
             <p className="lede">
-              One bride, {GROUP_SIZE} of her closest friends, a long weekend in May, and four places with warm water. We haven&apos;t picked
-              one yet. That&apos;s where you come in.
+              One bride, {GROUP_SIZE} of her closest friends, and one last decision: a villa in Turks and Caicos over Memorial Day weekend,
+              or a Virgin Voyages cruise to Grand Turk. The final vote is open.
             </p>
             <div className="btns tb-hero-btns">
               <Link className="btn btn-signal tb-big-btn" href={`${BASE}/rsvp`}>
@@ -73,20 +73,24 @@ export default function HomeView() {
       <section className="section orange tb-ballot">
         <div className="wrap">
           <div className="section-head">
-            <p className="eyebrow">On the ballot</p>
-            <h2 className="h2">Four destinations. One bride. Rank them.</h2>
+            <p className="eyebrow">The final vote</p>
+            <h2 className="h2">Two options. One bride. Pick your feeling.</h2>
           </div>
           <ul className="tb-ballot-grid">
-            {DESTS.map((d, i) => (
-              <li key={d.id}>
-                <Link className="tb-ticket" href={`${BASE}/islands#${d.id}`} style={{ "--tilt": `${(i % 3) - 1}deg` } as CSSProperties}>
+            {FINAL_OPTIONS.map((o, i) => (
+              <li key={o.id}>
+                <Link className="tb-ticket" href={`${BASE}/vote`} style={{ "--tilt": `${i ? 1 : -1}deg` } as CSSProperties}>
                   <span className="tb-ticket-k">
-                    {d.coords}
-                    <span className="tb-ticket-cost">{d.cost}</span>
+                    {o.kicker}
+                    <span className="tb-ticket-cost">
+                      ~{usd(o.low)}–{usd(o.high)}
+                    </span>
                   </span>
-                  <span className="tb-ticket-title">{d.name}</span>
-                  <span className="tb-ticket-line">{d.tagline}</span>
-                  <span className="tb-ticket-go">See details →</span>
+                  <span className="tb-ticket-title">{o.name}</span>
+                  <span className="tb-ticket-line">
+                    {o.when} · {o.nights}
+                  </span>
+                  <span className="tb-ticket-go">See the breakdown →</span>
                 </Link>
               </li>
             ))}
@@ -111,10 +115,10 @@ export default function HomeView() {
 function Steps() {
   const { done } = useTb();
   const rsvpDone = Boolean(done.rsvp);
-  const voteDone = Boolean(done.destination && done.dates);
+  const voteDone = Boolean(done.final);
   const steps = [
     { n: 1, href: `${BASE}/rsvp`, title: "RSVP", line: "Tell us you're in, plus a few travel details.", time: "About 2 minutes", done: rsvpDone },
-    { n: 2, href: `${BASE}/vote`, title: "Vote", line: "Pick where we go, which dates, and what we do.", time: `About 3 minutes · by ${VOTE_DEADLINE_LABEL}`, done: voteDone },
+    { n: 2, href: `${BASE}/vote`, title: "Vote", line: "The final vote: villa or cruise. React with an emoji.", time: `About a minute · by ${VOTE_DEADLINE_LABEL}`, done: voteDone },
     { n: 3, href: `${BASE}/results`, title: "See the results", line: "Check where the group is leaning. Come back any time.", time: "Updates as people vote", done: false },
   ];
   const next = steps.find((s) => !s.done) ?? steps[2];
