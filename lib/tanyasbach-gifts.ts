@@ -23,7 +23,30 @@ export type Gift = {
   checked?: string;
 };
 
-export const GIFTS: Gift[] = [];
+export const GIFTS: Gift[] = [
+  {
+    id: "bag-jute-tote-8pk",
+    category: "Bags",
+    name: "DEAYOU jute burlap tote bags, natural (8 pack)",
+    price: "$22.99",
+    url: "https://www.amazon.com/dp/B094V94T5K",
+    image: "https://m.media-amazon.com/images/I/91usSLRNDeS._AC_SL1500_.jpg",
+    shop: "Amazon",
+    note: "8 per pack, about $2.87 a bag. 2 packs cover all 16 ($45.98). Lined, 9.8 × 11.8 × 3.9 in.",
+    checked: "Oct 30, 2026",
+  },
+  {
+    id: "bag-custom-canvas-tote",
+    category: "Bags",
+    name: "H-DEWALL custom canvas tote, make your own design",
+    price: "$12.95",
+    url: "https://www.amazon.com/dp/B0FKJYXPRP?psc=1",
+    image: "https://m.media-amazon.com/images/I/71-hI9mYhtL._AC_SL1500_.jpg",
+    shop: "Amazon",
+    note: "Per bag, customized with your design (style 6 shown). About $207 for 16.",
+    checked: "Oct 30, 2026",
+  },
+];
 
 /** Bags to fill: Tanya + 15 friends. */
 export const BAGS = 16;
