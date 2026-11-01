@@ -159,7 +159,7 @@ export const SECTIONS: PrivateSection[] = [
     id: "gift-bags",
     eyebrow: "Tanya decides",
     title: "Bach gift bags",
-    intro: "Ideas for the 16 bags, by category. New up top: PR box picks to make each one feel like an influencer send (about $120–150 a box, 2 guys get a bracelet instead of hoops). Tanya, tap 😍 love it, 🤔 maybe or 🙅‍♀️ pass on each one. Tap again to undo.",
+    intro: "Ideas for the 16 bags, by category, aiming for an influencer PR box feel at about $120–150 a box (the 2 guys get a bracelet instead of hoops). Tanya, tap 😍 love it, 🤔 maybe or 🙅‍♀️ pass on each one. Tap again to undo.",
     tone: "blush",
     updated: "Nov 1, 2026",
     body: (
