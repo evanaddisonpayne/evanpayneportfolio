@@ -278,6 +278,17 @@ export const GIFTS: Gift[] = [
     checked: "Nov 1, 2026",
   },
   {
+    id: "misc-summer-fridays-jet-lag-set",
+    category: "Morning after",
+    name: "Summer Fridays Jet Lag Essentials hydration set (4 minis)",
+    price: "$34.00",
+    url: "https://www.sephora.com/product/the-jet-lag-tm-essentials-set-P516163?skuId=2858371",
+    image: "https://www.sephora.com/productimages/sku/s2858371-main-zoom.jpg",
+    shop: "Sephora",
+    note: "Per set ($46 value): hydration mist, serum, Jet Lag Mask and a pair of eye patches. About $544 for 16. Has its own eye patches, so the grace & stella pair could go.",
+    checked: "Nov 1, 2026",
+  },
+  {
     id: "misc-dare-scratch-cards",
     category: "Party games",
     name: "Bachelorette dare cards, scratch & reveal (20 cards)",
