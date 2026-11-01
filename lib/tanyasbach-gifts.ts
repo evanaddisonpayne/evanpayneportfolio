@@ -2,7 +2,7 @@
 //
 // HOW TO ADD AN ITEM: append to GIFTS. Categories show in the order they first appear here, so keep items grouped by category.
 //   id        short, lowercase, hyphenated, unique. Tanya's reaction is saved under it, so never rename or reuse one.
-//   category  one of: Bags, Towel, Hat, Sun & beach, Morning after, Party games (or a new one). Same spelling = same group.
+//   category  one of: PR box, Bags, Towel, Hat, Sun & beach, Morning after, Party games (or a new one). Same spelling = same group.
 //   name      product name as the shop lists it (shortened if long)
 //   price     as listed, with currency, e.g. "$12.99" or "$24 for 12"; per-bag cost in `note` if it's a pack
 //   url       the product page
@@ -24,6 +24,94 @@ export type Gift = {
 };
 
 export const GIFTS: Gift[] = [
+  {
+    id: "pr-white-magnetic-box-16pk",
+    category: "PR box",
+    name: "White collapsible gift boxes with magnetic lid (16 pack)",
+    price: "$71.99",
+    url: "https://www.amazon.com/dp/B0BXSMNRXN",
+    image: "https://m.media-amazon.com/images/I/31TWyiatinL._AC_SL1500_.jpg",
+    shop: "Amazon",
+    note: "The box itself, about $4.50 each. One pack covers all 16. Fill with red tissue, a gold foil seal and a printed name card.",
+    checked: "Nov 1, 2026",
+  },
+  {
+    id: "pr-straw-tote-name",
+    category: "PR box",
+    name: "Personalized straw beach bag with name and flower",
+    price: "$15.99",
+    url: "https://www.amazon.com/dp/B0GX1CPXKN",
+    image: "https://m.media-amazon.com/images/I/81Qsd4wsNQL._AC_SL1500_.jpg",
+    shop: "Amazon",
+    note: "Per bag, her name woven on. About $224 for the 14 girls; the 2 guys can skip it or get one without the flower.",
+    checked: "Nov 1, 2026",
+  },
+  {
+    id: "pr-pavoi-gold-hoops",
+    category: "PR box",
+    name: "PAVOI 14K gold plated chunky hoop earrings",
+    price: "$15.35",
+    url: "https://www.amazon.com/dp/B089NZ31C6",
+    image: "https://m.media-amazon.com/images/I/617D3oLZVEL._AC_SL1500_.jpg",
+    shop: "Amazon",
+    note: "Per pair, 49K reviews. For the 14 girls (about $215). The guys get the Cuban link bracelet instead.",
+    checked: "Nov 1, 2026",
+  },
+  {
+    id: "pr-cuban-link-bracelet-men",
+    category: "PR box",
+    name: "ChainsHouse 18K gold plated Cuban link bracelet, stainless steel",
+    price: "$24.99",
+    url: "https://www.amazon.com/dp/B087Q5DFDS",
+    image: "https://m.media-amazon.com/images/I/61knd1pQ6BL._AC_SL1500_.jpg",
+    shop: "Amazon",
+    note: "Guys' swap for the hoops. Pick 6 or 8 mm, 8.3 in. 2 needed ($49.98).",
+    checked: "Nov 1, 2026",
+  },
+  {
+    id: "pr-laneige-lip-mask",
+    category: "PR box",
+    name: "LANEIGE Lip Sleeping Mask, Berry",
+    price: "$24.00",
+    url: "https://www.amazon.com/dp/B07XXPHQZK",
+    image: "https://m.media-amazon.com/images/I/51VfrPOslWL._AC_SL1500_.jpg",
+    shop: "Amazon",
+    note: "Per jar, the cult-brand beauty pick. Replaces the 40-pack lip balms. About $384 for 16; often on sale near $17–19.",
+    checked: "Nov 1, 2026",
+  },
+  {
+    id: "pr-sdj-cheirosa-mist",
+    category: "PR box",
+    name: "SOL DE JANEIRO Cheirosa hair and body perfume mist",
+    price: "$26.00",
+    url: "https://www.amazon.com/dp/B09W18N3GT",
+    image: "https://m.media-amazon.com/images/I/61eXe6NOAuL._AC_SL1500_.jpg",
+    shop: "Amazon",
+    note: "Per bottle, 54K reviews. The trip's signature scent; pick a warmer, less sweet scent for the 2 guys. About $416 for 16.",
+    checked: "Nov 1, 2026",
+  },
+  {
+    id: "pr-mini-pearl-claw-clips-25pk",
+    category: "PR box",
+    name: "inSowni gold pearl and rhinestone mini hair claws (25 pieces)",
+    price: "$8.99",
+    url: "https://www.amazon.com/dp/B0FY3B95PG",
+    image: "https://m.media-amazon.com/images/I/811yE6AZjWL._AC_SL1500_.jpg",
+    shop: "Amazon",
+    note: "25 mini clips, about $0.36 each. One pack gives each of the 14 girls 1–2.",
+    checked: "Nov 1, 2026",
+  },
+  {
+    id: "pr-rhinestone-heart-sunglasses",
+    category: "PR box",
+    name: "Zando rhinestone heart sunglasses",
+    price: "$6.99",
+    url: "https://www.amazon.com/dp/B0CGDPWJX3",
+    image: "https://m.media-amazon.com/images/I/61GNxi9QZaL._AC_SL1500_.jpg",
+    shop: "Amazon",
+    note: "Per pair, comes in red. The upgraded group photo prop. About $112 for 16.",
+    checked: "Nov 1, 2026",
+  },
   {
     id: "bag-jute-tote-8pk",
     category: "Bags",
