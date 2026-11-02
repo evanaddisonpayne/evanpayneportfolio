@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import type { Case, Stat } from "@/lib/cases";
+import { localePath, type Locale } from "@/lib/locales";
 import { site } from "@/lib/site";
 
 /**
@@ -76,8 +77,8 @@ export function SectionHead({ eyebrow, title, children }: { eyebrow: string; tit
   );
 }
 
-export function CaseCard({ c, featured = false }: { c: Case; featured?: boolean }) {
-  const href = `/work/${c.slug}`;
+export function CaseCard({ c, featured = false, locale = "en", read = "Read the case\u00a0\u00a0→" }: { c: Case; featured?: boolean; locale?: Locale; read?: string }) {
+  const href = localePath(locale, `/work/${c.slug}`);
   return (
     <article className={`case-card${featured ? " featured" : ""}`}>
       <Link href={href} className="cc-art" tabIndex={-1} aria-hidden>
@@ -108,20 +109,20 @@ export function CaseCard({ c, featured = false }: { c: Case; featured?: boolean 
           <Chips items={c.chips} />
         </div>
         <p className="cc-read">
-          <Link href={href}>Read the case&nbsp;&nbsp;→</Link>
+          <Link href={href}>{read}</Link>
         </p>
       </div>
     </article>
   );
 }
 
-export function CaseRow({ c }: { c: Case }) {
+export function CaseRow({ c, locale = "en", read = "Read the case\u00a0\u00a0→" }: { c: Case; locale?: Locale; read?: string }) {
   return (
-    <Link href={`/work/${c.slug}`} className="case-row">
+    <Link href={localePath(locale, `/work/${c.slug}`)} className="case-row">
       <span className="cr-num">({c.n})</span>
       <span className="cr-who">{c.client.split(/\s+·\s+/)[0]}</span>
       <span className="cr-what">{c.cardTitle}</span>
-      <span className="cr-go">Read the case&nbsp;&nbsp;→</span>
+      <span className="cr-go">{read}</span>
     </Link>
   );
 }
@@ -134,11 +135,11 @@ export function Tarot({ src, alt, className = "" }: { src: string; alt: string; 
   );
 }
 
-export function Portrait() {
+export function Portrait({ alt = "Engraved line portrait of Evan in a cap and aviator sunglasses, smiling" }: { alt?: string }) {
   return (
     <div className="portrait">
       <div className="inner">
-        <img src="/art/portrait.svg" alt="Engraved line portrait of Evan in a cap and aviator sunglasses, smiling" width={420} height={560} />
+        <img src="/art/portrait.svg" alt={alt} width={420} height={560} />
       </div>
     </div>
   );

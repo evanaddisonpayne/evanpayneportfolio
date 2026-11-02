@@ -1,0 +1,4 @@
+{
+  "compilerOptions": { "target": "ES2020", "module": "esnext", "moduleResolution": "bundler", "strict": true, "noEmit": true, "skipLibCheck": true, "resolveJsonModule": true, "paths": { "@/*": ["../*"] }, "types": [] },
+  "include": ["./*.ts", "./cases/*.ts", "../lib/cases.ts"]
+}

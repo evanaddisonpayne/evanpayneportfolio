@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 /** Embeds the live travel map (public/travel-map.html, a flat Mercator chart) and sizes the frame to its content. */
-export default function Globe() {
+export default function Globe({ lang = "en", title = "Where I’ve been: an interactive map of flights and train trips from 2016 to 2026" }: { lang?: string; title?: string }) {
   const ref = useRef<HTMLIFrameElement>(null);
   const [height, setHeight] = useState<number | null>(null);
 
@@ -21,8 +21,8 @@ export default function Globe() {
     <div className="globe-panel">
       <iframe
         ref={ref}
-        src="/travel-map.html"
-        title="Where I’ve been: an interactive map of flights and train trips from 2016 to 2026"
+        src={lang === "en" ? "/travel-map.html" : `/travel-map.html?lang=${lang}`}
+        title={title}
         loading="lazy"
         style={height ? { height, aspectRatio: "auto" } : undefined}
       />
