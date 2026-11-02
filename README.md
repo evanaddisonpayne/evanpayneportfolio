@@ -44,9 +44,8 @@ Side margins step 20 / 40 / 64 / 120. Type scales with `clamp()` between the Fig
 
 See `.env.example`.
 
-- `NEXT_PUBLIC_LINKEDIN_URL`: LinkedIn profile. The LinkedIn links stay hidden until this is set.
+- `NEXT_PUBLIC_LINKEDIN_URL`: optional override for the LinkedIn profile (defaults to linkedin.com/in/evanaddison).
 - `NEXT_PUBLIC_NEWSLETTER_URL`: Brand Therapy on LinkedIn. The "Subscribe on LinkedIn" button stays hidden until this is set.
-- `NEXT_PUBLIC_CONTACT_ENDPOINT`: where the contact form posts JSON (Formspree, Basin, or your own function). Until it's set, the form says it isn't switched on yet.
 - `NEXT_PUBLIC_SITE_URL`: the production URL, for social previews.
 
 ## Art
