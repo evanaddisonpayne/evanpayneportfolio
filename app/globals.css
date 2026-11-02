@@ -1585,9 +1585,6 @@ html:not([data-footer]) .ft-art, html[data-footer="canal"] .ft-art {
 .rx-bullets { margin-top: 14px; display: flex; flex-direction: column; gap: 9px; max-width: 760px; }
 .rx-bullets li { position: relative; padding-left: 24px; font-size: 16px; line-height: 1.6; color: color-mix(in srgb, var(--oxblood) 82%, transparent); }
 .rx-bullets li::before { content: ""; position: absolute; left: 0; top: 0.8em; width: 12px; height: 1.2px; background: var(--antique); }
-.rx-job.brief .org { font-size: 25px; }
-.rx-job.brief .rx-role-block { margin-top: 14px; }
-.rx-job.brief .title { font-size: 19px; }
 
 /* capabilities and education */
 .rx-cap { position: relative; padding: 72px 0 80px; }
