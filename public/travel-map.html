@@ -410,7 +410,22 @@ button:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
   // ---------- countries ----------
   const byIso = new Map(COUNTRIES.map(c => [c.iso, c]));
   function buildLand(features) {
-    world = features.map(f => ({ type: "Feature", properties: { name: f.n, iso: f.a }, geometry: { type: f.c.length > 1 ? "MultiPolygon" : "Polygon", coordinates: f.c.length > 1 ? f.c : f.c[0] } }));
+    // d3 joins points with great-circle arcs, so a long straight border (the 49th parallel) bows north on a flat chart.
+    // Split any segment longer than half a degree so borders follow lines of latitude the way a printed map draws them.
+    const densify = r => {
+      const out = [r[0]];
+      for (let i = 1; i < r.length; i++) {
+        const [x0, y0] = r[i - 1], [x1, y1] = r[i];
+        const n = Math.ceil(Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)) / 0.5);
+        for (let k = 1; k < n; k++) out.push([x0 + (x1 - x0) * k / n, y0 + (y1 - y0) * k / n]);
+        out.push(r[i]);
+      }
+      return out;
+    };
+    world = features.map(f => {
+      const c = f.c.map(p => p.map(densify));
+      return { type: "Feature", properties: { name: f.n, iso: f.a }, geometry: { type: c.length > 1 ? "MultiPolygon" : "Polygon", coordinates: c.length > 1 ? c : c[0] } };
+    });
     // Natural Earth rings are counter-clockwise; d3 wants clockwise exteriors on the sphere
     world.forEach(f => {
       const fix = poly => { if (d3.geoArea({ type: "Polygon", coordinates: poly }) > 2 * Math.PI) poly.forEach(r => r.reverse()); };
