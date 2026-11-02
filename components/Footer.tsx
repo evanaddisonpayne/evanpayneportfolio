@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { navLinks, site } from "@/lib/site";
+import FooterScene from "./FooterScene";
 import { Eyebrow } from "./ui";
 
 export default function Footer({ cta = true }: { cta?: boolean }) {
   return (
     <footer className={`footer${cta ? "" : " no-cta"}`}>
-      <div className="canal" aria-hidden />
+      <FooterScene />
       <div className="wrap ft-stack">
         {cta && (
           <>
