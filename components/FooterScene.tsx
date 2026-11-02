@@ -14,10 +14,5 @@ export default function FooterScene() {
     w.__eapFooterPath = location.pathname;
     pickFooterScene();
   }, []);
-  return (
-    <>
-      <div className="ft-art" aria-hidden />
-      <div className="ft-ground" aria-hidden />
-    </>
-  );
+  return <div className="ft-art" aria-hidden />;
 }

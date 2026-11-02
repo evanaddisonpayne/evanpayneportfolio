@@ -228,38 +228,30 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
 }
 
 /* ---------- footer scenes (Figma "Footer explorations"; picked at random, see lib/footers.ts) ----------
-   Every scene is a 1440 x 700 Figma frame. The canal art is its bottom 223px; the others are the bottom 320px.
+   Every scene is a 1440 x 700 Figma frame drawn edge to edge, so on every screen the art runs the full width:
+   each SVG is a seamless tile (--ft-w wide) repeated across, positioned so the centre 1440 matches Figma.
+   The canal art is the frame's bottom 223px; the others are its bottom 320px.
    <html data-footer> holds the scene; with no script it stays on the canal. */
-.ft-art { position: absolute; z-index: 0; left: 50%; width: 1440px; transform: translateX(-50%);
+.ft-art { position: absolute; z-index: 0; left: 0; width: 100%;
   top: calc(var(--canal-top, -106px) + 380px); height: 320px;
   color: var(--brass); background: currentColor;
   -webkit-mask-image: var(--ft-img); mask-image: var(--ft-img);
-  -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
-.ft-ground { display: none; }
+  -webkit-mask-size: var(--ft-w, 1440px) 100%; mask-size: var(--ft-w, 1440px) 100%;
+  -webkit-mask-repeat: repeat-x; mask-repeat: repeat-x;
+  -webkit-mask-position: calc(50% + (var(--ft-w, 1440px) - 1440px) / 2) 0; mask-position: calc(50% + (var(--ft-w, 1440px) - 1440px) / 2) 0; }
 html[data-footer="windmills"] .ft-art { --ft-img: url(/art/footer_windmills.svg); }
 html[data-footer="loop"] .ft-art { --ft-img: url(/art/footer_loop.svg); }
 html[data-footer="l"] .ft-art { --ft-img: url(/art/footer_l.svg); }
-html[data-footer="greystones"] .ft-art { --ft-img: url(/art/footer_greystones.svg); }
+html[data-footer="greystones"] .ft-art { --ft-img: url(/art/footer_greystones.svg); --ft-w: 1464px; }
 html[data-footer="pier"] .ft-art { --ft-img: url(/art/footer_pier.svg); }
+/* canal: the Figma frame at 1440, and wider than that a seamless 1354px run of whole houses, centre 1440 unchanged */
 html:not([data-footer]) .ft-art, html[data-footer="canal"] .ft-art {
   --ft-img: url(/art/canal.webp); top: calc(var(--canal-top, -106px) + 477px); height: 223px; }
 @media (min-width: 1441px) {
-  /* canal: repeat the seamless run of houses edge to edge, centre 1440 unchanged */
-  html:not([data-footer]) .ft-art, html[data-footer="canal"] .ft-art { left: 0; width: 100%; transform: none;
+  html:not([data-footer]) .ft-art, html[data-footer="canal"] .ft-art {
     -webkit-mask-image: url(/art/canal_tile.webp); mask-image: url(/art/canal_tile.webp);
-    -webkit-mask-size: 1354px 223px; mask-size: 1354px 223px; -webkit-mask-repeat: repeat-x; mask-repeat: repeat-x;
+    -webkit-mask-size: 1354px 223px; mask-size: 1354px 223px;
     -webkit-mask-position: calc(50% - 5.667px) 0; mask-position: calc(50% - 5.667px) 0; }
-  /* the other skylines are single compositions: keep them at 1440, ease their ends into the oxblood,
-     and run the ground line (Figma y 640, 1.2 brass at 70%) on to both edges of the screen */
-  html[data-footer]:not([data-footer="canal"]) .ft-art { --fade: clamp(0px, (100vw - 1440px) / 2, 160px);
-    -webkit-mask-image: var(--ft-img), linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
-    mask-image: var(--ft-img), linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
-    -webkit-mask-composite: source-in; mask-composite: intersect; }
-  html[data-footer]:not([data-footer="canal"]) .ft-ground { display: block; position: absolute; z-index: 0; left: 0; right: 0;
-    top: calc(var(--canal-top, -106px) + 639.4px); height: 1.2px; background: var(--brass); opacity: .35; /* matches the art's anti-aliased 1.2 line */
-    --fade: clamp(0px, (100vw - 1440px) / 2, 160px);
-    -webkit-mask-image: linear-gradient(90deg, #000 calc(50% - 720px), transparent calc(50% - 720px + var(--fade)), transparent calc(50% + 720px - var(--fade)), #000 calc(50% + 720px));
-    mask-image: linear-gradient(90deg, #000 calc(50% - 720px), transparent calc(50% - 720px + var(--fade)), transparent calc(50% + 720px - var(--fade)), #000 calc(50% + 720px)); }
 }
 /* CTA=Off: same bar, canal sits 20px above it */
 .footer.no-cta { --canal-top: -456px; padding-top: 24px; }
