@@ -1614,10 +1614,10 @@ html:not([data-footer]) .ft-art, html[data-footer="canal"] .ft-art {
   .nav:lang(de) .nav-cta { margin-left: 14px; letter-spacing: 0.1em; padding-inline: 16px; }
   .nav:lang(de) .lang-nav { margin-left: 12px; padding-left: 12px; }
 }
-/* Article sign-off: the "Filed under" line can wrap on narrow screens in French and German */
-.locale-root .ar-sign .filed { white-space: pre-wrap; }
-.locale-root .ar-sign, .locale-root .ar-sign .signed { max-width: 100%; }
-.locale-root .ar-sign .signed > div { min-width: 0; }
+/* Article sign-off: the "Filed under" line wraps on narrow screens instead of pushing the page sideways */
+.ar-sign .filed { white-space: pre-wrap; }
+.ar-sign, .ar-sign .signed { max-width: 100%; }
+.ar-sign .signed > div { min-width: 0; }
 .lang-menu { font-size: 13px; gap: 12px; }
 /* footer: under the links on small screens, beside or under them on wide ones */
 .ft-end { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }

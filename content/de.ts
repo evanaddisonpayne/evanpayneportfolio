@@ -63,35 +63,35 @@ export const de: Dict = {
     stances: {
       eyebrow: "Woran ich glaube",
       h2: "Fünf Dinge, über die ich an der Bar streite, beim Abendessen und in Ihrer\u00a0Quartalsplanung.",
-      tarotAlt: "Tarotkarte {n}, {name}",
+      tarotAlt: "Tarotkarte {n}, „{name}“",
       items: [
         {
           n: 1,
-          name: "Die Menge",
+          name: "The Crowd",
           title: "Austauschbarkeit ist ein\u00a0Umsatzproblem.",
           body: "Wenn Käufer Sie nicht unterscheiden können, nehmen sie den Günstigsten oder den, von dem sie zuerst gehört haben. Und Sie zahlen den vollen Preis für Marketing, an das sich niemand\u00a0erinnert.",
         },
         {
           n: 2,
-          name: "Das Gremium",
+          name: "The Committee",
           title: "Konsens killt\u00a0Marken.",
           body: "Jede Runde „Können wir das noch ein bisschen abschwächen?“ schleift eine weitere Kante ab, bis eine Botschaft übrig bleibt, die alle abgesegnet haben und die keiner wiederholen\u00a0kann.",
         },
         {
           n: 3,
-          name: "Der Funke",
+          name: "The Spark",
           title: "KI ist ein Beschleuniger, kein\u00a0Ersatz.",
           body: "Ich nutze sie jeden Tag, und im Tempomachen ist sie brillant. Bei der Frage, wohin es überhaupt gehen soll, ist sie nutzlos. Das bleibt Ihr\u00a0Job.",
         },
         {
           n: 4,
-          name: "Der Kompass",
+          name: "The Compass",
           title: "Erst Positionierung, dann Demand\u00a0Gen.",
           body: "Wenn die Pipeline schwächelt, will man instinktiv mehr ausgeben. Meist sitzt das Problem aber weiter vorn, in einer Story, die nie jemandem einen Grund gegeben hat, sich für Sie zu\u00a0entscheiden.",
         },
         {
           n: 5,
-          name: "Das Gespenst",
+          name: "The Ghost",
           title: "Sicher heißt nicht\u00a0risikoarm.",
           body: "Auf Nummer sicher zu gehen fühlt sich verantwortungsvoll an, genau bis zu dem Moment, in dem Ihnen klar wird, dass niemand Sie im Raum bemerkt\u00a0hat.",
         },
@@ -107,7 +107,7 @@ export const de: Dict = {
       issueTitle: "Sie klingen alle gleich. Das kostet\u00a0Millionen.",
       read: "Ausgabe (I)\u00a0lesen",
       subscribe: "Auf LinkedIn\u00a0abonnieren",
-      tarotAlt: "Karte zu Ausgabe (I), Sie klingen alle gleich",
+      tarotAlt: "Karte zu Ausgabe (I), „You all sound the same“",
     },
     work: {
       eyebrow: "Ausgewählte Arbeiten",
@@ -442,7 +442,7 @@ export const de: Dict = {
   },
 
   notFound: {
-    tarotAlt: "Tarotkarte (404), Das Gespenst",
+    tarotAlt: "Tarotkarte (404), „The Ghost“",
     eyebrow: "Fehler   ·   404",
     h1: ["Diese Seite ", "ist unsichtbar."],
     lede:

@@ -33,7 +33,7 @@ export default function Article() {
               </div>
             </div>
           </div>
-          <img className="ar-tarot" src="/art/tarot_1.webp" alt="Tarotkarte (I), Die Menge" width={216} height={360} />
+          <img className="ar-tarot" src="/art/tarot_1.webp" alt="Tarotkarte (I), „The Crowd“" width={216} height={360} />
         </div>
       </section>
 

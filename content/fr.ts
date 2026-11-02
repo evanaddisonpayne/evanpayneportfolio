@@ -62,35 +62,35 @@ export const fr: Dict = {
     stances: {
       eyebrow: "Mes convictions",
       h2: "Cinq sujets pour lesquels je me battrai au bar, au dîner et en pleine revue\u00a0trimestrielle.",
-      tarotAlt: "Carte de tarot {n}, {name}",
+      tarotAlt: "Carte de tarot {n}, «\u202f{name}\u202f»",
       items: [
         {
           n: 1,
-          name: "La Foule",
+          name: "The Crowd",
           title: "L’uniformité est un problème de chiffre\u00a0d’affaires.",
           body: "Quand les acheteurs ne savent pas vous distinguer, ils choisissent le moins cher ou celui dont ils ont entendu parler en premier, et vous finissez par payer plein tarif un marketing dont personne ne se\u00a0souvient.",
         },
         {
           n: 2,
-          name: "Le Comité",
+          name: "The Committee",
           title: "Le consensus tue les\u00a0marques.",
           body: "Chaque «\u202fon pourrait adoucir un peu\u202f» ponce une aspérité de plus, jusqu’à ce qu’il ne reste qu’un message validé par tout le monde et que personne n’est capable de\u00a0répéter.",
         },
         {
           n: 3,
-          name: "L’Étincelle",
+          name: "The Spark",
           title: "L’IA est un accélérateur, pas un\u00a0substitut.",
           body: "Je m’en sers tous les jours, et elle est brillante pour aller plus vite. Elle ne sert à rien pour décider où vous devriez aller, et ça, c’est toujours votre\u00a0travail.",
         },
         {
           n: 4,
-          name: "La Boussole",
+          name: "The Compass",
           title: "Le positionnement avant la demand\u00a0gen.",
           body: "Quand le pipeline s’essouffle, le réflexe est de dépenser plus. Le problème se situe généralement en amont, dans un récit qui n’a jamais donné à personne une raison de vous\u00a0choisir.",
         },
         {
           n: 5,
-          name: "Le Fantôme",
+          name: "The Ghost",
           title: "Prudent ne veut pas dire sans\u00a0risque.",
           body: "Jouer la sécurité semble responsable, jusqu’au jour où vous réalisez que personne n’avait remarqué votre\u00a0présence.",
         },
@@ -106,7 +106,7 @@ export const fr: Dict = {
       issueTitle: "Vous vous ressemblez tous. Ça coûte des\u00a0millions.",
       read: "Lire le numéro\u00a0(I)",
       subscribe: "S’abonner sur\u00a0LinkedIn",
-      tarotAlt: "Carte du numéro (I), Vous vous ressemblez tous",
+      tarotAlt: "Carte du numéro (I), «\u202fYou all sound the same\u202f»",
     },
     work: {
       eyebrow: "Projets choisis",
@@ -441,7 +441,7 @@ export const fr: Dict = {
   },
 
   notFound: {
-    tarotAlt: "Carte de tarot (404), Le Fantôme",
+    tarotAlt: "Carte de tarot (404), «\u202fThe Ghost\u202f»",
     eyebrow: "Erreur   ·   404",
     h1: ["Cette page ", "est invisible."],
     lede:

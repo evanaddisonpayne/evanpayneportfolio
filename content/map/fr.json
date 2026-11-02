@@ -14,7 +14,7 @@
   "hintDesktop": "Glisser pour se déplacer  ·  {key} + molette pour zoomer",
   "placesLabel": "Lieux",
   "eyebrow": "Là où je suis allé",
-  "caption": "Les réservations de vols et de trains de 2016 à 2026, tirées tout droit de ma boîte mail. Faites-la tourner en la faisant glisser. Choisissez un pays ou un trajet pour vous y envoler.",
+  "caption": "Les réservations de vols et de trains de 2016 à 2026, tirées tout droit de ma boîte mail. Faites-la glisser pour l’explorer. Choisissez un pays ou un trajet pour vous y envoler.",
   "countries": "Pays",
   "legend": { "flight": "Vol", "rail": "Train", "visited": "Déjà visité", "home": "Port d’attache" },
   "homeBase": "Port d’attache  ·",
