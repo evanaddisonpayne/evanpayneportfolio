@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import Nav from "@/components/Nav";
+import { footerSceneScript } from "@/lib/footers";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -20,8 +21,10 @@ export const viewport: Viewport = { themeColor: "#2b0b10" };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" data-footer="canal" suppressHydrationWarning>
       <head>
+        {/* picks the footer skyline before first paint (see lib/footers.ts) */}
+        <script dangerouslySetInnerHTML={{ __html: footerSceneScript }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
