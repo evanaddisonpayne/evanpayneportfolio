@@ -571,7 +571,8 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
 /* about (Figma About 1440 x 980) */
 .ha { position: relative; overflow: hidden; padding: 77px 0 69px; }
 .ha .color-bar { top: 300px; left: 0; width: 427px; height: 48px; }
-@media (min-width: 1280px) { .ha .color-bar { width: 600px; } }
+/* runs from the left edge to 40px past the art's right edge, so it tucks behind the image at any desktop width (the art sits at the content column's left edge, not the viewport's) */
+@media (min-width: 1280px) { .ha .color-bar { width: calc(max(var(--gut), 50% - 600px) + 480px); } }
 .ha-stack { display: flex; flex-direction: column; gap: 28px; }
 .ha-row { display: flex; flex-direction: column; align-items: flex-start; gap: 32px; }
 .ha-art { width: 100%; max-width: 350px; position: relative; z-index: 1; }
