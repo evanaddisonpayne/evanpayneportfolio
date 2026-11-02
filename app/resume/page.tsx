@@ -2,277 +2,261 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import PrintButton from "@/components/PrintButton";
-import { Eyebrow, Pattern } from "@/components/ui";
+import { Pattern } from "@/components/ui";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Resume" };
 
-type Role = { title: string; dates?: string; summary: string; bullets: string[]; chips: string[] };
-type Employer = { n: string; name: string; when: string; where: string; tour?: string; roles: Role[] };
+// Every fact on this page comes from Evan (resume, LinkedIn, or confirmed in chat). Don't add numbers or claims without asking.
 
-const employers: Employer[] = [
+const scope = [
+  { num: "10+", label: "years in brand and growth" },
+  { num: "7", label: "direct reports" },
+  { num: "75 + 1,000", label: "colleagues and volunteers in cross-functional work" },
+  { num: "3", label: "client regions: North America, EMEA, and APAC" },
+];
+
+const results = [
   {
-    n: "I", name: "The Starr Conspiracy", when: "Feb 2025 to now", where: "Chicago, IL",
+    num: "+15–20%",
+    text: "Beat a $2.2M monthly revenue target by 15 to 20 percent, consistently, directing the SEO, paid media, and content team.",
+    org: "hireEZ",
+    year: "2024",
+  },
+  {
+    num: "$10M",
+    text: "Ran a $10M event and marketing budget end to end. Online store launches averaged more than $125K in their first 24 hours.",
+    org: "San Francisco AIDS Foundation",
+    year: "2023–24",
+  },
+  {
+    num: "$1.72M",
+    text: "Oversaw $1.72M in recurring annual revenue at a 9.75 NPS, and found $600K in upsell with the sales directors.",
+    org: "The Starr Conspiracy",
+    year: "2021–22",
+  },
+];
+
+type Role = { title: string; when?: string; mandate: string; bullets: string[] };
+type Job = { org: string; when: string; where: string; note?: string; roles: Role[]; brief?: boolean };
+
+const jobs: Job[] = [
+  {
+    org: "The Starr Conspiracy",
+    when: "2025 – now",
+    where: "Chicago",
+    note: "Rejoined in February 2025 and promoted to Director 14 months later.",
     roles: [
       {
-        title: "Director of Brand & Growth Strategy", dates: "April 2026 to now",
-        summary: "Brand and growth strategy for B2B SaaS and HR tech clients. Cross-functional team across content, design, digital, analytics, and client strategy.",
+        title: "Director of Brand & Growth Strategy",
+        when: "April 2026 – now",
+        mandate: "Brand and growth strategy for B2B SaaS and HR tech clients, with a cross-functional team across content, design, digital, analytics, and client strategy.",
         bullets: [
-          "Lead category positioning and messaging aimed at client win rates and executive engagement.",
-          "Build multi-channel campaigns across paid, organic, email, social, events, and partner ecosystems.",
-          "Run executive thought leadership programs that grow share of voice in HR tech media and on LinkedIn.",
-          "Own attribution, reporting, and KPI dashboards used to optimize CAC and conversion.",
+          "Lead category positioning and messaging aimed at client win rates and executive engagement.",
+          "Run executive thought leadership programs that grow share of voice in HR tech media and on LinkedIn.",
+          "Own the attribution, reporting, and KPI dashboards used to optimize CAC and conversion.",
         ],
-        chips: ["Win rates", "Share of voice", "CAC and conversion"],
       },
       {
-        title: "Marketing & Brand Strategist", dates: "Feb 2025 to April 2026   ·   San Francisco, CA and Chicago, IL",
-        summary: "Enterprise B2B tech accounts. AI-integrated growth and Answer Engine Optimization.",
+        title: "Marketing & Brand Strategist",
+        when: "Feb 2025 – April 2026",
+        mandate: "Enterprise B2B tech accounts, with a focus on AI-integrated growth and Answer Engine Optimization.",
         bullets: [
-          "Moved enterprise clients from traditional search to Answer Engine Optimization to increase qualified lead\u00a0velocity.",
-          "Turned AI performance data into executive-ready frameworks for high-growth SaaS leaders.",
-          "Ran in-person client events across North America, EMEA, and APAC that generated qualified leads.",
-          "Flagged at-risk accounts early and ran interventions that protected long-term revenue.",
+          "Moved enterprise clients from traditional search to Answer Engine Optimization to increase qualified lead velocity.",
+          "Ran in-person client events across North America, EMEA, and APAC that generated qualified leads.",
+          "Held a 9.5 NPS across key client accounts, flagging at-risk accounts early and running the interventions that protected long-term revenue.",
         ],
-        chips: ["9.5 NPS", "3 regions", "AEO programs"],
       },
     ],
   },
   {
-    n: "II", name: "hireEZ", when: "Aug 2024 to Jan 2025", where: "Mountain View, CA",
+    org: "hireEZ",
+    when: "2024 – 2025",
+    where: "Mountain View, CA",
     roles: [
       {
-        title: "Sr. Manager, Digital Marketing",
-        summary: "HR tech. Team of SEO, paid media, and content specialists against a $2.2M monthly revenue target.",
+        title: "Senior Manager, Digital Marketing",
+        mandate: "HR tech. Led the SEO, paid media, and content team against a $2.2M monthly revenue target.",
         bullets: [
-          "Beat the $2.2M monthly revenue target by 15 to 20 percent, consistently.",
-          "Directed the cross-functional SEO, paid media, and content team and built a culture of ownership.",
-          "Introduced agile workflows and weekly performance sprints to find and scale winning campaigns.",
+          "Beat the target by 15 to 20 percent, consistently.",
+          "Introduced agile workflows and weekly performance sprints to find and scale winning campaigns.",
         ],
-        chips: ["$2.2M monthly target", "+15–20%"],
       },
     ],
   },
   {
-    n: "III", name: "San Francisco AIDS Foundation, AIDS/\u200bLifeCycle", when: "Feb 2023 to Aug 2024", where: "San Francisco, CA",
+    org: "San Francisco AIDS Foundation, AIDS/​LifeCycle",
+    when: "2023 – 2024",
+    where: "San Francisco",
     roles: [
       {
-        title: "Director of Marketing, Communications & Digital Engagement",
-        summary: "$10M event and marketing budget. About $200K a year in paid media. Led the marketing department.",
+        title: "Director of Marketing, Communications & Digital Engagement",
+        mandate: "Led the marketing department across a $10M event and marketing budget, including about $200K a year in paid media.",
         bullets: [
-          "Aligned multi-channel digital engagement with long-term revenue goals across a $10M program.",
-          "Built integrated plans for MQL and SQL conversion and brand awareness.",
-          "Partnered with senior leadership on growth plans, and ran rollout and change management for third-party and custom platforms.",
-          "Online store launches averaged more than $125K in revenue in the first 24 hours.",
+          "Aligned multi-channel digital engagement with long-term revenue goals and built integrated plans for MQL and SQL conversion.",
+          "Partnered with senior leadership on growth plans, and ran rollout and change management for third-party and custom platforms.",
+          "Online store launches averaged more than $125K in revenue in the first 24 hours.",
         ],
-        chips: ["$10M budget", "$125K in 24 hours"],
       },
     ],
   },
   {
-    n: "IV", name: "The Starr Conspiracy", when: "April 2021 to Nov 2022", where: "Bentonville, AR", tour: "First tour",
+    org: "The Starr Conspiracy",
+    when: "2021 – 2022",
+    where: "Bentonville, AR",
     roles: [
       {
         title: "Marketing Strategist",
-        summary: "Product marketing and go-to-market for new software products across a key-account portfolio.",
+        mandate: "Product marketing and go-to-market for new software products across a key-account portfolio.",
         bullets: [
-          "Oversaw $1.72M in recurring annual revenue with a 9.75 NPS.",
-          "Led design sprints and go-to-market strategy for new software products.",
-          "Found upsell and cross-sell openings with sales directors that added $600K in revenue.",
-          "Built the sales decks, investor and analyst decks, websites, and collateral myself.",
+          "Oversaw $1.72M in recurring annual revenue at a 9.75 NPS, and added $600K in upsell and cross-sell with the sales directors.",
+          "Led design sprints and go-to-market strategy for new software products, and built the sales, investor, and analyst decks myself.",
         ],
-        chips: ["$1.72M ARR", "9.75 NPS", "+$600K"],
       },
     ],
   },
   {
-    n: "V", name: "Greater Bentonville Area Chamber of\u00a0Commerce", when: "March 2020 to April 2021", where: "Bentonville, AR",
+    org: "Greater Bentonville Area Chamber of Commerce",
+    when: "2020 – 2021",
+    where: "Bentonville, AR",
+    brief: true,
     roles: [
       {
-        title: "Director of Marketing & Communications",
-        summary: "Brand, PR, social, and email for a regional chamber competing nationally for talent.",
-        bullets: [
-          "Rebuilt the brand so the Chamber could compete nationally for remote workers and relocating companies.",
-          "Grew social impressions 78 percent and engagement 22.5 percent in under six months.",
-          "Beat industry email open and click rates by 6 and 3 percent with no paid push.",
-          "Led PR from day-to-day programs through high-profile launches and partnerships.",
-        ],
-        chips: ["+78% impressions", "+22.5% engagement"],
+        title: "Director of Marketing & Communications",
+        mandate: "Rebuilt the brand to compete nationally for remote workers and relocating companies. Grew social impressions 78 percent in under six months with no paid push.",
+        bullets: [],
       },
     ],
   },
   {
-    n: "VI", name: "Intercut Productions", when: "July 2017 to March 2020", where: "Bentonville, AR",
+    org: "Intercut Productions",
+    when: "2017 – 2020",
+    where: "Bentonville, AR",
+    brief: true,
     roles: [
       {
         title: "Chief of Staff",
-        summary: "Fortune 500 clients. Account management, creative, and the crew behind it.",
-        bullets: [
-          "Steered creative concepts and content that told Fortune 500 clients’ brand innovation and CSR stories.",
-          "Protected brand positioning across every piece of content and customer touchpoint.",
-          "Hired and oversaw the photographers, cinematographers, editors, and designers, and ran budgets and roadmaps.",
-          "Helped make an Emmy-nominated TV show.",
-        ],
-        chips: ["Fortune 500 clients", "Emmy-nominated show"],
+        mandate: "Account management, creative, and production for Fortune 500 clients. Hired and ran the crews and budgets, and helped make an Emmy-nominated TV show.",
+        bullets: [],
       },
     ],
   },
 ];
 
-const skills = [
-  { title: "Growth & AI", body: "Answer Engine Optimization, AI-integrated growth programs, ABM, category creation, full-funnel optimization" },
-  { title: "Design & UX", body: "Figma, Adobe Creative Suite, design sprint facilitation, UI and UX strategy" },
-  { title: "Operations", body: "Expert Excel and PowerPoint, Asana, Trello, CRM management, agile marketing workflows" },
-  { title: "Leadership", body: "Player-coach, cross-functional team management, and the kind of executive communication that gets a decision made" },
+const capabilities = [
+  { t: "Brand and category strategy", b: "Category positioning, messaging, and the executive thought leadership that carries it into the market." },
+  { t: "Growth programs", b: "Multi-channel go-to-market across paid, organic, email, social, events, and partners, with the attribution to show what worked." },
+  { t: "AI-era search and growth", b: "Answer Engine Optimization and AI-integrated growth programs for enterprise B2B." },
+  { t: "Teams and budgets", b: "Player-coach for cross-functional teams, owner of revenue targets and an eight-figure budget, and the executive communication that gets a decision made." },
+  { t: "Hands on the work", b: "Figma, Adobe Creative Suite, and design sprints. I still build the decks, sites, and collateral myself." },
 ];
-
-const proof = [
-  { num: "+15–20%", label: "over a $2.2M monthly revenue target, consistently", org: "hireEZ" },
-  { num: "$10M", label: "event and marketing budget, run end to end", org: "San Francisco AIDS Foundation" },
-  { num: "$1.72M", label: "in recurring annual revenue overseen, plus $600K in upsell", org: "The Starr Conspiracy" },
-  { num: "9.75 and 9.5", label: "NPS across key client accounts, in both tours", org: "The Starr Conspiracy" },
-  { num: "14 months", label: "from rehire to Director of Brand & Growth", org: "The Starr Conspiracy" },
-  { num: "+78%", label: "social impressions in under six months, no paid push", org: "Bentonville Chamber of Commerce" },
-];
-
-function Segs({ text }: { text: string }) {
-  return (
-    <span className="ey-in">
-      {text.split(/\s+·\s+/).map((p, i) => (
-        <span className="ey-seg" key={i}>
-          <span className="ey-sep" aria-hidden>{"   ·   "}</span>
-          <span className="ey-txt">{p}</span>
-        </span>
-      ))}
-    </span>
-  );
-}
 
 export default function Resume() {
   return (
     <>
-      <section className="rs-head dark">
+      <section className="rx-head dark" aria-labelledby="rx-name">
         <div className="pattern-corner tall" aria-hidden />
-        <div className="wrap rs-head-row">
-          <div className="rs-intro">
-            <Eyebrow className="rs-ey">Director, Brand & Growth   ·   The Starr Conspiracy   ·   Chicago, IL</Eyebrow>
-            <h1 className="rs-h1">I’ve worked in agencies, startups, and nonprofits, and it has always been the same&nbsp;job.</h1>
-            <p className="rs-lede">
-              Find the thing that makes a company worth choosing, then build the programs that make the market see it. Ten years across agency,
-              in-house, nonprofit, and production, mostly in B2B SaaS and HR tech. I’ve owned revenue targets and an eight-figure budget, led
-              cross-functional teams, and I still make a lot of the work&nbsp;myself.
-            </p>
-            <div className="rs-btns">
-              <PrintButton />
-              {site.linkedin && (
-                <a href={site.linkedin} className="rs-link" target="_blank" rel="noopener noreferrer">LinkedIn&nbsp;&nbsp;→</a>
-              )}
-            </div>
+        <div className="wrap">
+          <p className="rx-kicker">Resume</p>
+          <h1 className="rx-name" id="rx-name">Evan Addison Payne</h1>
+          <p className="rx-role"><span>Director of Brand & Growth Strategy</span><span className="rx-dot" aria-hidden>·</span><span>The Starr Conspiracy</span><span className="rx-dot" aria-hidden>·</span><span>Chicago</span></p>
+          <p className="rx-pos">
+            I lead brand and growth strategy for B2B SaaS and HR tech companies, from the positioning decision to the pipeline it has
+            to&nbsp;produce.
+          </p>
+          <div className="rx-btns">
+            <PrintButton />
+            {site.linkedin && (
+              <a href={site.linkedin} className="rx-link" target="_blank" rel="noopener noreferrer">LinkedIn&nbsp;&nbsp;→</a>
+            )}
           </div>
-          <dl className="facts">
-            <div><dt>Based in</dt><dd>Chicago, IL</dd></div>
-            <div><dt>Focus</dt><dd>B2B SaaS, HR tech, Work Tech</dd></div>
-            <div><dt>Experience</dt><dd>10+ years in brand and growth</dd></div>
-            <div><dt>References</dt><dd>Letters of recommendation on&nbsp;request</dd></div>
+          <dl className="rx-scope">
+            {scope.map((s) => (
+              <div key={s.label}>
+                <dt>{s.num}</dt>
+                <dd>{s.label}</dd>
+              </div>
+            ))}
           </dl>
         </div>
       </section>
 
-      <section className="rs-proof orange" aria-labelledby="short">
-        <div className="wrap rs-proof-stack">
-          <div className="rs-proof-head">
-            <div className="rs-proof-title">
-              <Eyebrow>The short version</Eyebrow>
-              <h2 className="rs-h2" id="short">Six numbers, if you only read&nbsp;six.</h2>
-            </div>
-            <p className="italic">Every number is real and every one is mine to stand&nbsp;behind.</p>
-          </div>
-          <div className="rs-proof-grid">
-            {[proof.slice(0, 3), proof.slice(3)].map((row, ri) => (
-              <div className="rs-proof-row" key={ri}>
-                {row.map((p) => (
-                  <div className="rs-stat" key={p.num}>
-                    <p className="num">{p.num}</p>
-                    <p className="label">{p.label}</p>
-                    <p className="org">{p.org}</p>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="rs-exp light" aria-labelledby="exp">
+      <section className="rx-body light">
         <Pattern kind="passport" />
         <div className="wrap">
-          <div className="rs-exp-head">
-            <Eyebrow>Experience</Eyebrow>
-            <h2 className="rs-h2" id="exp">What I owned, and what came of&nbsp;it.</h2>
-          </div>
-          {employers.map((e) => (
-            <article className="employer" key={e.n}>
-              <div className="emp-info">
-                <p className="num">({e.n})</p>
-                <h3 className="name">{e.name}</h3>
-                <p className="when">{e.when}</p>
-                <p className="where">{e.where}</p>
-                {e.tour && <p className="tour-wrap"><span className="tour">{e.tour}</span></p>}
-              </div>
-              <div className="roles">
-                {e.roles.map((r) => (
-                  <div className="role" key={r.title}>
-                    <h4 className="title">{r.title}</h4>
-                    {r.dates && <p className="dates"><Segs text={r.dates} /></p>}
-                    <p className="summary">{r.summary}</p>
-                    <ul className="bullets">
-                      {r.bullets.map((b) => <li key={b}>{b}</li>)}
-                    </ul>
-                    <p className="role-proof">
-                      {r.chips.map((c, i) => (
-                        <span key={c} style={{ display: "contents" }}>
-                          {i > 0 && <span className="pipe" aria-hidden>|</span>}
-                          <span>{c}</span>
-                        </span>
-                      ))}
-                    </p>
+          <section className="rx-block" aria-labelledby="rx-results">
+            <h2 className="rx-label" id="rx-results">Selected results</h2>
+            <ol className="rx-results">
+              {results.map((r) => (
+                <li key={r.num}>
+                  <p className="rx-num">{r.num}</p>
+                  <p className="rx-text">{r.text}</p>
+                  <p className="rx-src">{r.org}<span>{r.year}</span></p>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <section className="rx-block" aria-labelledby="rx-exp">
+            <h2 className="rx-label" id="rx-exp">Experience</h2>
+            <div className="rx-jobs">
+              {jobs.map((j) => (
+                <article className={`rx-job${j.brief ? " brief" : ""}`} key={j.org + j.when}>
+                  <div className="rx-when">
+                    <p className="yrs">{j.when}</p>
+                    <p className="loc">{j.where}</p>
                   </div>
-                ))}
-              </div>
-            </article>
-          ))}
+                  <div className="rx-what">
+                    <h3 className="org">{j.org}</h3>
+                    {j.note && <p className="note">{j.note}</p>}
+                    {j.roles.map((r) => (
+                      <div className="rx-role-block" key={r.title}>
+                        <h4 className="title">
+                          {r.title}
+                          {r.when && <span className="dates">{r.when}</span>}
+                        </h4>
+                        <p className="mandate">{r.mandate}</p>
+                        {r.bullets.length > 0 && (
+                          <ul className="rx-bullets">
+                            {r.bullets.map((b) => <li key={b}>{b}</li>)}
+                          </ul>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
         </div>
       </section>
 
-      <section className="rs-skills dark" aria-labelledby="skills">
-        <div className="wrap rs-skills-stack">
-          <Eyebrow className="off">What I bring to the table</Eyebrow>
-          <h2 className="rs-skills-h2" id="skills">A strategist who can also open Figma and make the thing, and a designer who will still ask what it’s supposed to do for&nbsp;revenue.</h2>
-          <div className="rs-skill-row off">
-            {skills.map((s, i) => (
-              <article className="rs-skill" key={s.title}>
-                <p className="num">({["I", "II", "III", "IV"][i]})</p>
-                <h3 className="t">{s.title}</h3>
-                <p className="b">{s.body}</p>
-              </article>
-            ))}
-          </div>
-          <div className="rs-rule off"><span /></div>
-          <div className="rs-foot off">
-            <div>
-              <p className="lbl">Education</p>
-              <p className="name">University of Arkansas</p>
-              <p className="det"><span>B.S. in Business Administration, marketing and economics</span><span className="sep" aria-hidden>&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;</span><span>Fayetteville, AR</span></p>
-            </div>
-            <div>
-              <p className="lbl">More on request</p>
-              <p className="links">
-                <Link href="/contact">References and letters</Link>
-                <Link href="/contact">Certifications</Link>
-                {site.linkedin && <a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>}
+      <section className="rx-cap dark">
+        <div className="wrap">
+          <section className="rx-block" aria-labelledby="rx-capabilities">
+            <h2 className="rx-label" id="rx-capabilities">Capabilities</h2>
+            <dl className="rx-caps">
+              {capabilities.map((c) => (
+                <div key={c.t}>
+                  <dt>{c.t}</dt>
+                  <dd>{c.b}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+          <section className="rx-block rx-edu" aria-labelledby="rx-education">
+            <h2 className="rx-label" id="rx-education">Education</h2>
+            <div className="rx-edu-row">
+              <p className="loc">Fayetteville, AR</p>
+              <div>
+                <p className="school">University of Arkansas</p>
+                <p className="degree">B.S. in Business Administration, marketing and economics</p>
+              </div>
+              <p className="rx-more">
+                References, letters, and certifications on request.&nbsp;&nbsp;<Link href="/contact">Get in touch&nbsp;→</Link>
               </p>
             </div>
-          </div>
+          </section>
         </div>
       </section>
 
