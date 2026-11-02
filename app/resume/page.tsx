@@ -38,7 +38,7 @@ const results = [
 ];
 
 type Role = { title: string; when?: string; mandate: string; bullets: string[] };
-type Job = { org: string; when: string; where: string; note?: string; roles: Role[]; brief?: boolean };
+type Job = { org: string; when: string; where: string; note?: string; roles: Role[] };
 
 const jobs: Job[] = [
   {
@@ -119,12 +119,14 @@ const jobs: Job[] = [
     org: "Greater Bentonville Area Chamber of Commerce",
     when: "2020 – 2021",
     where: "Bentonville, AR",
-    brief: true,
     roles: [
       {
         title: "Director of Marketing & Communications",
-        mandate: "Rebuilt the brand to compete nationally for remote workers and relocating companies. Grew social impressions 78 percent in under six months with no paid push.",
-        bullets: [],
+        mandate: "Brand, PR, social, and email for a regional chamber competing nationally for talent.",
+        bullets: [
+          "Rebuilt the brand so the Chamber could compete nationally for remote workers and relocating companies.",
+          "Grew social impressions 78 percent in under six months with no paid push.",
+        ],
       },
     ],
   },
@@ -132,12 +134,14 @@ const jobs: Job[] = [
     org: "Intercut Productions",
     when: "2017 – 2020",
     where: "Bentonville, AR",
-    brief: true,
     roles: [
       {
         title: "Chief of Staff",
-        mandate: "Account management, creative, and production for Fortune 500 clients. Hired and ran the crews and budgets, and helped make an Emmy-nominated TV show.",
-        bullets: [],
+        mandate: "Account management, creative, and production for Fortune 500 clients.",
+        bullets: [
+          "Hired and oversaw the photographers, cinematographers, editors, and designers, and ran budgets and roadmaps.",
+          "Helped make an Emmy-nominated TV show.",
+        ],
       },
     ],
   },
@@ -185,7 +189,7 @@ export default function Resume() {
         <Pattern kind="passport" />
         <div className="wrap">
           <section className="rx-block" aria-labelledby="rx-results">
-            <h2 className="rx-label" id="rx-results">Selected results</h2>
+            <h2 className="rx-label" id="rx-results">Results</h2>
             <ol className="rx-results">
               {results.map((r) => (
                 <li key={r.num}>
@@ -201,7 +205,7 @@ export default function Resume() {
             <h2 className="rx-label" id="rx-exp">Experience</h2>
             <div className="rx-jobs">
               {jobs.map((j) => (
-                <article className={`rx-job${j.brief ? " brief" : ""}`} key={j.org + j.when}>
+                <article className="rx-job" key={j.org + j.when}>
                   <div className="rx-when">
                     <p className="yrs">{j.when}</p>
                     <p className="loc">{j.where}</p>
