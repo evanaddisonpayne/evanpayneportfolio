@@ -954,78 +954,43 @@ html:not([data-footer]) .ft-art, html[data-footer="canal"] .ft-art {
 .ct-h1 { font-family: var(--display); font-weight: 300; font-size: 43px; line-height: 1.04; }
 .ct-lede { font-size: 19px; line-height: 1.6; color: var(--smoke); }
 .ct-body { position: relative; overflow: hidden; padding: 61px 0 66px; }
-.ct-row { display: flex; flex-direction: column; gap: 32px; }
+.ct-row { display: flex; flex-direction: column; gap: 48px; }
 .ct-label { font-family: var(--caps); font-weight: 500; font-size: 14px; line-height: normal; letter-spacing: 0.14em; text-transform: uppercase; color: var(--antique); }
-.ct-label .req { margin-left: 8px; font-weight: 700; font-size: 10px; color: var(--signal); }
-/* form */
-.ct-form { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
-.ct-two { display: flex; flex-direction: column; gap: 20px; }
-.ct-two > * { flex: 1 1 0; min-width: 0; }
-.ct-field { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 0; padding: 0; border: 0; min-width: 0; }
-.ct-field legend { padding: 0; float: left; width: 100%; }
-.ct-field input, .ct-field textarea { width: 100%; margin: 0; border: 0; border-radius: 0; background: transparent; color: var(--oxblood); box-sizing: border-box;
-  font-family: var(--display); font-weight: 300; font-size: 19px; line-height: normal; }
-.ct-field input { padding: 7px 0; border-bottom: 1.2px solid var(--oxblood); }
-.ct-field textarea { display: block; border: 1.2px solid var(--oxblood); padding: 9px 10px 7px; height: 64.4px; resize: none; }
-.ct-field input::placeholder, .ct-field textarea::placeholder { color: rgba(43, 11, 16, .4); opacity: 1; }
-.ct-field input:focus, .ct-field textarea:focus { outline: none; border-color: var(--signal); }
-.ct-topic { gap: 11px; }
-.ct-chips { display: flex; flex-wrap: wrap; gap: 8px 9px; }
-.ct-chips label { position: relative; display: block; }
-.ct-chips input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
-.ct-chips span { display: block; border: 1px solid var(--oxblood); padding: 6px 10px; font-family: var(--body); font-weight: 500; font-size: 15px; line-height: normal; color: var(--oxblood); white-space: nowrap; }
-.ct-chips input:checked + span { background: var(--oxblood); color: var(--ivory); }
-.ct-chips input:focus-visible + span { outline: 2px solid var(--signal); outline-offset: 2px; }
-.ct-submit { display: flex; align-items: center; gap: 18px; }
-.ct-submit .btn { flex: none; font-size: 17px; padding: 10px 18px; }
-.ct-submit .note { flex: 1 1 0; min-width: 0; font-family: var(--display); font-style: italic; font-weight: 300; font-size: 18px; line-height: normal; color: rgba(43, 11, 16, .8); }
-.ct-error { font-size: 14px; color: rgba(43, 11, 16, .7); }
-/* sidebar */
-.ct-side { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
-.ct-next { border: 1.2px solid var(--oxblood); padding: 15px 15px 7px; }
+/* two ways in: LinkedIn first, email behind a click (no form, nothing for bots to submit) */
+.ct-routes { display: flex; flex-direction: column; min-width: 0; }
+.ct-route { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 28px 0 32px; border-top: 1.2px solid var(--oxblood); }
+.ct-route + .ct-route { border-top-width: 1px; border-top-color: color-mix(in srgb, var(--brass) 70%, transparent); }
+.ct-route-h { font-family: var(--display); font-weight: 300; font-size: 30px; line-height: 1.12; }
+.ct-route-d { max-width: 560px; font-size: 17px; line-height: 1.6; color: color-mix(in srgb, var(--oxblood) 82%, transparent); }
+.ct-route .btn { margin-top: 10px; }
+.ct-email { margin-top: 10px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 18px; }
+.ct-addr { font-family: var(--display); font-weight: 300; font-size: 24px; line-height: 1.2; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; overflow-wrap: anywhere; }
+.ct-addr:hover { color: var(--signal); }
+.ct-copy { padding: 6px 12px; border: 1px solid var(--oxblood); background: transparent; color: var(--oxblood); font-family: var(--body); font-weight: 500; font-size: 14px; cursor: pointer; }
+.ct-copy:hover { background: var(--oxblood); color: var(--ivory); }
+
+.ct-side { display: flex; flex-direction: column; gap: 28px; min-width: 0; }
+.ct-next { border: 1.2px solid var(--oxblood); padding: 18px 18px 8px; }
 .ct-next ol { display: flex; flex-direction: column; }
-.ct-next li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-top: 1px solid rgba(196, 154, 74, .7); }
-.ct-next li:first-child { border-top: 0; padding-top: 11px; }
-.ct-next .num { flex: none; font-family: var(--display); font-weight: 300; font-size: 19px; line-height: normal; color: var(--antique); }
-.ct-next .txt { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
-.ct-next .t { font-family: var(--display); font-weight: 400; font-size: 19px; line-height: normal; }
+.ct-next li { display: flex; flex-direction: column; gap: 6px; padding: 14px 0; border-top: 1px solid rgba(196, 154, 74, .7); }
+.ct-next li:first-child { border-top: 0; }
+.ct-next .t { font-family: var(--display); font-weight: 400; font-size: 20px; line-height: normal; }
 .ct-next .d { font-size: 15px; line-height: 1.5; color: rgba(43, 11, 16, .8); }
 .ct-else { display: flex; flex-direction: column; align-items: flex-start; gap: 11px; }
-.ct-else a { font-family: var(--display); font-weight: 300; font-size: 19px; line-height: normal; white-space: pre; text-decoration: underline; text-decoration-thickness: from-font; text-underline-position: from-font; }
+.ct-else a { font-family: var(--display); font-weight: 300; font-size: 20px; line-height: normal; white-space: pre; text-decoration: underline; text-decoration-thickness: from-font; text-underline-offset: 3px; }
 .ct-else a:hover { color: var(--signal); }
-/* sent card (replaces the form column) */
-.ct-sent { display: flex; flex-direction: column; gap: 15px; padding: 31px; background: var(--oxblood); border: 1.2px solid var(--brass); color: var(--ivory); }
-.ct-sent .ct-label { color: var(--brass); letter-spacing: 0.16em; }
-.ct-sent .h { font-family: var(--display); font-weight: 300; font-size: 27px; line-height: 1.1; }
 @media (min-width: 768px) {
   .ct-hero { padding: 84px 0 77px; }
   .ct-intro { gap: 22px; }
   .ct-h1 { font-size: 50px; }
   .ct-lede { font-size: 20px; }
   .ct-body { padding: 77px 0 84px; }
-  .ct-row { gap: 48px; }
-  .ct-form { gap: 26px; }
-  .ct-two { flex-direction: row; flex-wrap: wrap; gap: 20px 26px; }
-  .ct-field { gap: 9px; }
-  .ct-field input, .ct-field textarea { font-size: 22px; }
-  .ct-field input { padding: 8px 0; }
-  .ct-field textarea { padding: 11px 13px 8px; height: 48.4px; }
-  .ct-topic { gap: 13px; }
-  .ct-chips { gap: 12px 11px; }
-  .ct-chips span { padding: 8px 13px; }
-  .ct-submit { gap: 22px; }
-  .ct-submit .btn { padding: 13px 22px; }
-  .ct-submit .note { flex: none; white-space: nowrap; }
-  .ct-side { gap: 26px; }
-  .ct-next { padding: 20px 20px 8px; }
-  .ct-next li { gap: 14px; padding: 13px 0; }
-  .ct-next li:first-child { padding: 14px 0 13px; }
-  .ct-next .num { font-size: 22px; }
-  .ct-next .t { font-size: 20px; }
-  .ct-else { gap: 13px; }
+  .ct-route { padding: 32px 0 40px; gap: 14px; }
+  .ct-route-h { font-size: 34px; }
+  .ct-route-d { font-size: 18px; }
+  .ct-addr { font-size: 28px; }
+  .ct-next { padding: 22px 22px 10px; }
   .ct-else a { font-size: 22px; }
-  .ct-sent { padding: 40px; gap: 17px; }
-  .ct-sent .h { font-size: 32px; }
 }
 @media (min-width: 1024px) {
   .ct-hero { padding: 96px 0 88px; }
@@ -1033,21 +998,9 @@ html:not([data-footer]) .ft-art, html[data-footer="canal"] .ft-art {
   .ct-lede { max-width: 640px; }
   .ct-body { padding: 88px 0 96px; }
   .ct-row { flex-direction: row; align-items: flex-start; gap: 80px; }
-  .ct-form, .ct-sent { flex: 0 0 534px; }
-  .ct-form { gap: 32px; }
-  .ct-two { flex-wrap: nowrap; gap: 32px; }
-  .ct-field input { padding: 10px 0; }
-  .ct-field textarea { padding: 13px 14px 10px; height: 79.4px; }
-  .ct-chips { gap: 8px 11px; }
-  .ct-chips span { padding: 9px 14px; }
-  .ct-submit .btn { padding: 14px 26px; }
-  .ct-submit .note { flex: 1 1 0; white-space: normal; }
-  .ct-side { flex: 0 0 281px; gap: 32px; }
-  .ct-next { padding: 22px 22px 10px; }
-  .ct-next li { padding: 14px 0; }
-  .ct-next li:first-child { padding: 16px 0 14px; }
-  .ct-sent { padding: 48px; }
-  .ct-sent .h { font-size: 36px; }
+  .ct-routes { flex: 1 1 0; }
+  .ct-side { flex: 0 0 300px; gap: 32px; }
+  .ct-route-h { font-size: 38px; }
 }
 @media (min-width: 1280px) {
   .ct-hero { padding: 120px 0 110px; }
@@ -1055,28 +1008,14 @@ html:not([data-footer]) .ft-art, html[data-footer="canal"] .ft-art {
   .ct-h1 { font-size: 72px; max-width: 900px; }
   .ct-body { padding: 110px 0 120px; }
   .ct-row { gap: 100px; }
-  .ct-form, .ct-sent { flex: 0 0 720px; }
-  .ct-form { gap: 40px; }
-  .ct-two { gap: 40px; }
-  .ct-field { gap: 10px; }
-  .ct-field input { padding: 12px 0; }
-  .ct-field textarea { padding: 16px 18px 12px; height: 180px; }
-  .ct-topic { gap: 14px; }
-  .ct-chips { gap: 12px; }
-  .ct-chips span { padding: 11px 18px; }
-  .ct-submit { gap: 24px; }
-  .ct-submit .btn { padding: 18px 32px; }
-  .ct-submit .note { flex: none; white-space: nowrap; }
   .ct-side { flex: 0 0 380px; gap: 40px; }
+  .ct-route { padding: 40px 0 48px; gap: 16px; }
+  .ct-route-h { font-size: 44px; }
+  .ct-route-d { font-size: 19px; }
+  .ct-addr { font-size: 32px; }
   .ct-next { padding: 28px 28px 12px; }
-  .ct-next li { gap: 16px; padding: 18px 0; }
-  .ct-next li:first-child { padding: 20px 0 18px; }
-  .ct-next .txt { flex: 0 1 250px; }
-  .ct-else { gap: 14px; }
-  .ct-sent { padding: 56px; gap: 20px; }
-  .ct-sent .h { font-size: 40px; }
-  .ct-sent .h { max-width: 600px; }
 }
+
 /* ==========================================================================
    WRITING INDEX  (Figma Writing · Desktop 1440 / Laptop 1024 / Tablet 768 / Mobile 390)
    ========================================================================== */
