@@ -46,7 +46,7 @@ export default function Contact() {
             <div className="ct-route">
               <p className="ct-label">Email</p>
               <h2 className="ct-route-h">Rather&nbsp;email?</h2>
-              <p className="ct-route-d">Same reply time. The address appears when you click, which keeps it away from spam&nbsp;bots.</p>
+              <p className="ct-route-d">I reply just as fast either&nbsp;way.</p>
               <EmailReveal />
             </div>
           </div>
