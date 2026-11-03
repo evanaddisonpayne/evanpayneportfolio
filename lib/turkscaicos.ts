@@ -502,7 +502,7 @@ export const LEAVE_HOME = [
   "Anything you'd cry about losing on a boat",
   "Stilettos (sand)",
   "A heavy jacket (it's 86°F)",
-  "Your work laptop. Please. (except can't leave home without it.)",
+  "Your work laptop. Please (except Evan can't leave home without it).",
 ];
 
 /* ------------------------------------------------------------------ */
