@@ -42,8 +42,8 @@ function Closed() {
         <h2 className="h2">Voting is closed.</h2>
         <p className="lede">The final vote closed the night before Thanksgiving. Thank you to everyone who weighed in.</p>
         <div className="tb-success-btns">
-          <Link className="btn btn-signal tb-big-btn" href={`${BASE}/results`}>
-            See the results
+          <Link className="btn btn-signal tb-big-btn" href={BASE}>
+            Back to the trip page
           </Link>
         </div>
       </div>
@@ -72,8 +72,8 @@ function FinalForm() {
         <div className="wrap">
           <Success
             title={`Vote's in. Gracias, ${firstName(name)}.`}
-            body="You can change your reactions any time before the deadline. Your latest answer is the one that counts."
-            next={{ href: `${BASE}/results`, label: "See how it's going" }}
+            body="You can change your reactions any time before the deadline. Your latest answer is the one that counts. We'll share the winner once voting closes."
+            next={{ href: BASE, label: "Back to the trip page" }}
             onEdit={edit}
           />
         </div>

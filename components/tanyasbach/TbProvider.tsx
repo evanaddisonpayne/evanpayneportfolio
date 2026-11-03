@@ -41,7 +41,6 @@ const TABS = [
   { href: `${BASE}/rsvp`, label: "RSVP", icon: "✉" },
   { href: `${BASE}/vote`, label: "Vote", icon: "✓" },
   { href: `${BASE}/islands`, label: "Places", icon: "☀" },
-  { href: `${BASE}/results`, label: "Results", icon: "◉" },
 ];
 
 export default function TbProvider({ children }: { children: ReactNode }) {
