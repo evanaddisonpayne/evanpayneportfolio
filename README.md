@@ -39,6 +39,19 @@ Side margins step 20 / 40 / 64 / 120. Type scales with `clamp()` between the Fig
 - `/contact`
 - `/writing` and `/writing/you-all-sound-the-same`
 - 404 (`app/not-found.tsx`)
+- the same pages in French and German under `/fr` and `/de` (`app/[locale]`)
+
+## Languages (English, French, German)
+
+English stays at the existing URLs. French lives under `/fr` and German under `/de` (`/fr/work/hireez`, `/de/about`, and so on), with the same slugs in every language. The EN · FR · DE switch in the nav, the mobile menu and the footer goes to the same page in the other language.
+
+- **Copy lives in dictionaries, not in the pages.** `content/en.ts` holds every string on the portfolio pages; `content/fr.ts` and `content/de.ts` have the same shape (TypeScript enforces it). Case studies are `lib/cases.ts` (English) plus `content/cases/fr.ts` and `content/cases/de.ts`. Pages are shared components in `components/pages/` that take a locale.
+- **Change copy in all three.** When English copy changes, update the same key in `fr.ts` and `de.ts`, or the translated page keeps the old meaning.
+- **The article** is one component per language: the English page `app/writing/you-all-sound-the-same/page.tsx` is untouched, and the translations are `content/articles/you-all-sound-the-same.fr.tsx` and `.de.tsx`.
+- **The travel map** reads `?lang=fr` or `?lang=de` and swaps in strings from `public/map/i18n.js` (kilometers instead of miles). That file is generated: edit `content/map/fr.json` or `de.json`, then run `node scripts/build-map-i18n.mjs`.
+- **No-orphan rule, every language.** `\u00a0` (no-break space) goes between the last two words of headings and paragraph endings, and `\u2060` (word joiner) after a hyphen in a last word. French also uses `\u202f` (narrow no-break space) before ; ! ? and inside « ».
+- **Brief and notes.** `content/TRANSLATION-BRIEF.md` is the brief the French and German translations were written to (voice, hard rules, typography, layout limits). `content/TRANSLATION-NOTES.fr.md` and `.de.md` record each translator's decisions and open questions. `tsc -p content/tsconfig.check.json` typechecks the dictionaries on their own.
+- **SEO.** Each page declares its `hreflang` alternates and canonical URL when `NEXT_PUBLIC_SITE_URL` is set. The root layout renders `lang="en"`; a small head script sets `lang="fr"` or `"de"` before first paint, and the localized content is wrapped in an element with the right `lang`.
 
 ## Settings (Vercel → Project → Environment Variables)
 
@@ -46,7 +59,7 @@ See `.env.example`.
 
 - `NEXT_PUBLIC_LINKEDIN_URL`: optional override for the LinkedIn profile (defaults to linkedin.com/in/evanaddison).
 - `NEXT_PUBLIC_NEWSLETTER_URL`: Brand Therapy on LinkedIn. The "Subscribe on LinkedIn" button stays hidden until this is set.
-- `NEXT_PUBLIC_SITE_URL`: the production URL, for social previews.
+- `NEXT_PUBLIC_SITE_URL`: the production URL, for social previews and the `hreflang` links between languages.
 
 ## Art
 

@@ -212,7 +212,7 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
 .ft-id { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding-top: 24px; }
 .ft-id .name { font-family: var(--display); font-weight: 300; font-size: 18px; line-height: normal; white-space: nowrap; }
 .ft-id .meta { font-size: 14px; line-height: normal; color: var(--smoke); white-space: nowrap; }
-.ft-links { display: flex; gap: 16px; font-size: 14px; line-height: normal; white-space: nowrap; }
+.ft-links { display: flex; flex-wrap: wrap; gap: 10px 16px; font-size: 14px; line-height: normal; white-space: nowrap; }
 .ft-links a:hover { color: var(--signal); }
 /* canal row: Figma "Pattern/Canal row" is 1440 x 700, the houses sit in its bottom 223 */
 .canal { position: absolute; left: 50%; width: 1440px; height: 223px; transform: translateX(-50%); top: calc(var(--canal-top, -106px) + 477px);
@@ -1586,3 +1586,47 @@ html:not([data-footer]) .ft-art, html[data-footer="canal"] .ft-art {
   .rx-body .wrap, .rx-cap .wrap { gap: 28px !important; }
   .rx-results li, .rx-job, .rx-caps > div { break-inside: avoid; padding: 14px 0 !important; }
 }
+
+/* ==========================================================================
+   LANGUAGE SWITCH  (EN · FR · DE)
+   Same voice as the nav coordinates: DM Sans Medium, wide tracking, Smoke.
+   The current language is Ivory with a brass hairline under it.
+   ========================================================================== */
+.locale-root { display: contents; }
+.lang { display: flex; align-items: center; gap: 8px; font-family: var(--body); font-weight: 500; font-size: 11px; line-height: 1; letter-spacing: 0.2em; white-space: nowrap; }
+.lang a { color: var(--smoke); padding: 6px 0 4px; border-bottom: 0.6px solid transparent; transition: color .2s, border-color .2s; margin-right: -0.2em; }
+.lang a:hover { color: var(--signal); }
+.lang a[aria-current="true"] { color: var(--ivory); border-bottom-color: var(--brass); }
+.lang-sep { color: var(--antique); }
+/* nav: shown with the desktop links, in the menu below 1024 */
+.lang-nav { display: none; }
+@media (min-width: 1024px) {
+  .nav-links { margin-left: auto; }
+  .lang-nav { display: flex; margin-left: 22px; padding-left: 22px; border-left: 0.6px solid var(--hair); align-self: stretch; }
+}
+/* 1024 to 1279: the switcher needs ~50px, so the link row tightens a little here only (1440 is unchanged) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .nav-links { gap: 18px; }
+  .nav-cta { margin-left: 22px; }
+  .lang-nav { margin-left: 16px; padding-left: 16px; }
+  /* German labels run ~100px longer than English */
+  .nav:lang(de) .nav-links { gap: 11px; }
+  .nav:lang(de) .nav-cta { margin-left: 14px; letter-spacing: 0.1em; padding-inline: 16px; }
+  .nav:lang(de) .lang-nav { margin-left: 12px; padding-left: 12px; }
+}
+/* Article sign-off: the "Filed under" line wraps on narrow screens instead of pushing the page sideways */
+.ar-sign .filed { white-space: pre-wrap; }
+.ar-sign, .ar-sign .signed { max-width: 100%; }
+.ar-sign .signed > div { min-width: 0; }
+.lang-menu { font-size: 13px; gap: 12px; }
+/* footer: under the links on small screens, beside or under them on wide ones */
+.ft-end { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+.lang-footer a { color: var(--smoke); }
+@media (min-width: 1024px) {
+  .ft-end { align-items: flex-end; gap: 14px; padding-top: 24px; }
+  .ft-bar .ft-links { padding-top: 0; }
+}
+@media (min-width: 1280px) {
+  .ft-end { flex-direction: row; align-items: center; gap: 32px; }
+}
+@media print { .lang { display: none !important; } }

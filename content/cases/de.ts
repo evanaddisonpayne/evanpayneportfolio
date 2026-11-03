@@ -1,0 +1,237 @@
+import type { Case } from "@/lib/cases";
+
+// German (de-DE) case studies, translated from lib/cases.ts. Same order, slugs and assets.
+// Big stat numerals carry only the figure ("1,72", "+600"); the unit opens the label ("Mio. US-Dollar ...",
+// "Tsd. US-Dollar ...") so the numeral is never wider than the English and the line reads straight across.
+
+export const cases: Case[] = [
+  {
+    slug: "the-starr-conspiracy",
+    n: "I",
+    client: "The Starr Conspiracy   ·   Zwei Etappen   ·   Im Fokus",
+    category: "featured",
+    cardTitle: "Zweimal dieselbe Agentur, vom Strategen bis auf den\u00a0Regiestuhl.",
+    cardLine:
+      "Drei Kapitel. Neue Softwareprodukte für Key Accounts an den Markt bringen, zurückkommen und Enterprise-Kunden von der Suche in KI-generierte Antworten holen, und heute die Marken- und Wachstumsstrategie für B2B-SaaS und HR-Tech\u00a0leiten.",
+    chips: ["1,72\u00a0Mio.\u00a0$\u00a0ARR", "NPS 9,75", "NPS 9,5", "+600.000\u00a0$"],
+    art: "/art/art_tsc.webp",
+    scene: "/art/scene_tsc.webp",
+    eyebrow: "(I)   ·   Case Study   ·   The Starr Conspiracy   ·   B2B-SaaS und HR-Tech",
+    meta: [
+      { label: "Rollen", value: "Marketing Strategist   ·   Marketing & Brand\u00a0Strategist   ·   Director of Brand & Growth" },
+      { label: "Zeitraum", value: "2021 bis 2022 und 2025 bis\u00a0heute" },
+      { label: "Ort", value: "Bentonville, AR\nSan Francisco, CA\nChicago, IL" },
+      { label: "Geleitet", value: "Go-to-Market, AEO, Marken- und\u00a0Wachstumsstrategie" },
+    ],
+    situation: {
+      label: "Die Kurzfassung",
+      title: "Zwei Etappen, drei Rollen, jedes Mal mehr\u00a0Verantwortung.",
+      body:
+        "In meiner ersten Zeit bei The Starr Conspiracy ging es um Key Accounts, also darum, neue Softwareprodukte für ein ganzes Kundenportfolio an den Markt zu bringen. 2025 kam ich als Stratege zurück und habe Enterprise-Kunden von der klassischen Suche in KI-generierte Antworten geholt. Im April 2026 wurde ich befördert und leite seitdem die Marken- und Wachstumsstrategie für unsere B2B-SaaS- und\u00a0HR-\u2060Tech-\u2060Kunden.",
+    },
+    chapters: [
+      {
+        eyebrow: "Kapitel (I)   ·   April 2021 bis November 2022   ·   Bentonville, AR",
+        title: "Key Accounts. Neue Softwareprodukte und die Kunden, die sie kaufen\u00a0sollten.",
+        role: "Marketing Strategist",
+        moves: [
+          { title: "Sprints und Launch\u00a0geleitet", body: "Ich habe kollaborative Design-Sprints und die Go-to-Market-Strategie für neue Softwareprodukte geleitet und das Produktmarketing für das gesamte Kundenportfolio\u00a0verantwortet." },
+          { title: "Die Unterlagen selbst\u00a0gebaut", body: "Ich habe die Themen recherchiert, die jeden Kunden umtrieben, daraus eine Vertriebsstrategie gemacht und dann die passenden Sales-Decks, Investoren- und Analysten-Decks, Websites und Collateral selbst\u00a0gebaut." },
+          { title: "Den nächsten Deal\u00a0gefunden", body: "Gemeinsam mit den Sales Directors habe ich Chancen für Upsell und Cross-Sell aufgespürt und die Budgets mehrerer Projekte parallel geplant und\u00a0nachgehalten." },
+        ],
+        stats: [
+          { num: "1,72", label: "Mio. US-Dollar wiederkehrender Jahresumsatz, von mir\u00a0betreut" },
+          { num: "9,75", label: "NPS" },
+          { num: "+600", label: "Tsd. US-Dollar durch Upsell und\u00a0Cross-\u2060Sell" },
+        ],
+      },
+      {
+        eyebrow: "Kapitel (II)   ·   Februar 2025 bis April 2026   ·   San Francisco, CA und Chicago, IL",
+        title: "Das Comeback. B2B-Marken in den Antworten sichtbar machen, nicht nur in den\u00a0Suchergebnissen.",
+        role: "Marketing & Brand\u00a0Strategist",
+        moves: [
+          { title: "Von der Suche zur\u00a0Antwort", body: "Ich habe KI-integrierte Wachstumsprogramme und Answer Engine Optimization aufgebaut und Kunden von der klassischen Suche in KI-generierte Antworten geholt, damit qualifizierte Leads schneller\u00a0kommen." },
+          { title: "Daten für Executives\u00a0übersetzt", body: "Aus unübersichtlichen KI-Performance-Daten habe ich Frameworks gemacht, mit denen Führungskräfte wachstumsstarker SaaS-Unternehmen tatsächlich entscheiden\u00a0konnten." },
+          { title: "Raus aus dem\u00a0Büro", body: "Ich habe Kunden-Events vor Ort in Nordamerika, EMEA und APAC aufgebaut und durchgeführt, die qualifizierte Leads brachten, und gefährdete Accounts früh genug erkannt, um sie zu\u00a0halten." },
+        ],
+        stats: [
+          { num: "9,5", label: "NPS über die wichtigsten\u00a0Enterprise-\u2060Accounts" },
+          { num: "3", label: "Regionen mit\u00a0Kunden-\u2060Events" },
+          { num: "AEO", label: "Programme, live für\u00a0Enterprise-\u2060SaaS" },
+        ],
+        note: "Kundennamen und Pipeline-Zahlen stehen unter NDA. Details auf\u00a0Anfrage.",
+      },
+      {
+        eyebrow: "Kapitel (III)   ·   April 2026 bis heute   ·   Chicago, IL",
+        title: "Heute. Marke und Wachstum für das gesamte\u00a0Kundenportfolio.",
+        role: "Director of Brand & Growth\u00a0Strategy",
+        moves: [
+          { title: "Positionierung, die Deals\u00a0gewinnt", body: "Ich leite die Arbeit an Kategorie-Positionierung und Messaging für B2B-SaaS- und HR-Tech-Kunden, ausgerichtet auf Win Rates und Engagement auf Führungsebene, nicht nur auf\u00a0Bekanntheit." },
+          { title: "Kampagnen auf allen\u00a0Kanälen", body: "Ich baue die Kampagnen, die das über Paid, Organic, E-Mail, Social, Events und Partner-Ökosysteme tragen, und steuere Thought-Leadership-Programme, die den Share of Voice in HR-Tech-Medien und auf LinkedIn\u00a0steigern." },
+          { title: "Ein Team und eine\u00a0Anzeigetafel", body: "Ich leite ein bereichsübergreifendes Team aus Content, Design, Digital, Analytics und Client Strategy und verantworte die Attribution und die Dashboards, die uns sagen, ob irgendetwas davon funktioniert\u00a0hat." },
+        ],
+        stats: [
+          { num: "6", label: "Kanäle im\u00a0Mix" },
+          { num: "5", label: "Disziplinen im\u00a0Team" },
+          { num: "B2B SaaS", label: "und HR-Tech im\u00a0Kundenportfolio" },
+        ],
+        note: "Die Ergebnisse aus diesem Kapitel laufen gerade erst ein. Die Zahlen ergänze ich, sobald ich sie teilen\u00a0darf.",
+      },
+    ],
+    next: { slug: "hireez", title: "Ein Monatsziel von 2,2\u00a0Mio.\u00a0$ und ein Team, das es laufend\u00a0knackte.", sub: "hireEZ   ·   HR-Tech   ·   Zur Case Study\u00a0\u00a0→" },
+  },
+  {
+    slug: "hireez",
+    n: "II",
+    client: "hireEZ   ·   HR-Tech",
+    tag: "Wachstum",
+    category: "growth",
+    cardTitle: "Ein Monatsziel von 2,2\u00a0Mio.\u00a0$ und ein Team, das es laufend\u00a0knackte.",
+    cardLine: "Ich habe das Team für SEO, Paid Media und Content in wöchentlichen Sprints\u00a0geführt.",
+    chips: ["Monatsziel 2,2\u00a0Mio.\u00a0$", "15 bis 20\u00a0%\u00a0darüber"],
+    art: "/art/art_hireez.webp",
+    scene: "/art/scene_hireez.webp",
+    eyebrow: "(II)   ·   Case Study   ·   hireEZ   ·   HR-Tech",
+    meta: [
+      { label: "Rolle", value: "Sr. Manager, Digital\u00a0Marketing" },
+      { label: "Zeitraum", value: "August 2024 bis Januar\u00a02025" },
+      { label: "Ort", value: "Mountain View,\u00a0CA" },
+      { label: "Geleitet", value: "SEO, Paid Media,\u00a0Content" },
+    ],
+    situation: {
+      title: "Bei diesem Umsatzziel ist kein Platz für einen schwachen\u00a0Monat.",
+      body:
+        "hireEZ fuhr ein Full-Funnel-Digitalprogramm gegen ein monatliches Umsatzziel von 2,2\u00a0Mio.\u00a0$. Bei einer Zahl dieser Größe können Sie nicht ein Quartal lang warten, um festzustellen, dass ein Kanal schwächelt. Der eigentliche Job war also, schnell genug herauszufinden, was funktioniert, um nachzulegen, solange es noch\u00a0funktionierte.",
+    },
+    movesTitle: "Drei\u00a0Züge.",
+    moves: [
+      { title: "Ein Team entlang des\u00a0Funnels", body: "Ich habe ein bereichsübergreifendes Team aus SEO-, Paid-Media- und Content-Spezialisten geführt und eine Kultur aufgebaut, in der jeder eine Zahl verantwortete statt einer\u00a0Aufgabenliste." },
+      { title: "Im Wochentakt\u00a0gesteuert", body: "Ich habe das Team auf agile Workflows und wöchentliche Performance-Sprints umgestellt. So haben wir die Kampagnen, die wirklich etwas brachten, früh erkannt und schnell\u00a0skaliert." },
+      { title: "Den ganzen Funnel\u00a0optimiert", body: "Ich habe konsequent auf Full-Funnel-Optimierung gesetzt, vom ersten Klick bis zum Umsatz, statt jeden Kanal als eigene Insel zu\u00a0behandeln." },
+    ],
+    resultsTitle: "Die\u00a0Zahlen.",
+    stats: [
+      { num: "2,2", label: "Mio. US-Dollar monatliches\u00a0Umsatzziel" },
+      { num: "+15–20\u00a0%", label: "über dem Ziel,\u00a0konstant", small: true },
+      { num: "3", label: "Disziplinen in einem\u00a0Team" },
+      { num: "7\u00a0Tage", label: "pro\u00a0Performance-\u2060Sprint" },
+    ],
+    note: "Nicht ein glücklicher Monat. Die\u00a0meisten.",
+    next: { slug: "sfaf", title: "Ein 10-Mio.-$-Programm, das sich laufend rechnen\u00a0musste.", sub: "San Francisco AIDS Foundation   ·   AIDS/LifeCycle   ·   Zur Case Study\u00a0\u00a0→" },
+  },
+  {
+    slug: "sfaf",
+    n: "III",
+    client: "San Francisco AIDS\u00a0Foundation",
+    tag: "Kampagnen & Content",
+    category: "campaigns",
+    cardTitle: "Ein 10-Mio.-$-Programm, das sich laufend rechnen\u00a0musste.",
+    cardLine: "Ich habe Marketing, Kommunikation und Digital Engagement für AIDS/LifeCycle\u00a0verantwortet.",
+    chips: ["10\u00a0Mio.\u00a0$\u00a0Budget", "125.000\u00a0$ in 24\u00a0Stunden"],
+    art: "/art/art_sfaf.webp",
+    scene: "/art/scene_sfaf.webp",
+    eyebrow: "(III)   ·   Case Study   ·   San Francisco AIDS Foundation   ·   AIDS/LifeCycle",
+    meta: [
+      { label: "Rolle", value: "Director of Marketing, Communications & Digital\u00a0Engagement" },
+      { label: "Zeitraum", value: "Februar 2023 bis August\u00a02024" },
+      { label: "Ort", value: "San Francisco,\u00a0CA" },
+      { label: "Geleitet", value: "Marketing, Kommunikation,\u00a0Digital" },
+    ],
+    situation: {
+      title: "Jeder Dollar musste der Mission\u00a0dienen.",
+      body:
+        "AIDS/LifeCycle arbeitet mit einem Event- und Marketingbudget von 10\u00a0Mio.\u00a0$, und in einer Non-Profit-Organisation muss jede Zeile dieses Budgets belegen, dass sie die Mission voranbringt. Marketing, Kommunikation, Digital und die Plattformen darunter mussten alle in dieselbe Richtung\u00a0ziehen.",
+    },
+    movesTitle: "Drei\u00a0Züge.",
+    moves: [
+      { title: "Kanäle an Umsatz\u00a0gekoppelt", body: "Ich habe das Multichannel-Digital-Engagement auf langfristige Umsatzziele ausgerichtet und integrierte, auf Conversion ausgelegte Pläne gesteuert, mit rund 200.000\u00a0$ Paid Media pro Jahr\u00a0dahinter." },
+      { title: "Die Plattformen\u00a0geführt", body: "Ich habe den Rollout und das laufende Change Management der Drittanbieter- und Eigenentwicklungen verantwortet, auf denen das Programm\u00a0aufbaut." },
+      { title: "Aus Launches Momente\u00a0gemacht", body: "Ich habe den Onlineshop kuratiert und das Merchandising gestaltet. Launches brachten in den ersten 24 Stunden im Schnitt mehr als 125.000\u00a0$\u00a0Umsatz." },
+    ],
+    resultsTitle: "Die\u00a0Zahlen.",
+    stats: [
+      { num: "10", label: "Mio. US-Dollar Event- und\u00a0Marketingbudget" },
+      { num: "200", label: "Tsd. US-Dollar Paid Media pro\u00a0Jahr" },
+      { num: "125+", label: "Tsd. US-Dollar Shop-Umsatz in den ersten 24 Stunden eines\u00a0Launches" },
+    ],
+    note: "Außerdem habe ich das Marketingteam geführt und mit der Geschäftsleitung an den Wachstumsplänen der Organisation\u00a0gearbeitet.",
+    next: { slug: "bentonville", title: "Eine regionale Handelskammer, die USA-weit um Talente kämpfen\u00a0wollte.", sub: "Greater Bentonville Area Chamber of\u00a0Commerce   ·   Positionierung   ·   Zur Case Study\u00a0\u00a0→" },
+  },
+  {
+    slug: "bentonville",
+    n: "IV",
+    client: "Bentonville Chamber of\u00a0Commerce",
+    tag: "Positionierung",
+    category: "positioning",
+    cardTitle: "Eine regionale Handelskammer, die USA-weit um Talente kämpfen\u00a0wollte.",
+    cardLine: "Ich habe das Rebranding geleitet, die Social-Strategie und die PR\u00a0dahinter.",
+    chips: ["+78\u00a0%\u00a0Impressions", "+22,5\u00a0%\u00a0Engagement"],
+    art: "/art/art_bentonville.webp",
+    scene: "/art/scene_bentonville.webp",
+    eyebrow: "(IV)   ·   Case Study   ·   Greater Bentonville Area Chamber of\u00a0Commerce",
+    meta: [
+      { label: "Rolle", value: "Director of Marketing &\u00a0Communications" },
+      { label: "Zeitraum", value: "März 2020 bis April\u00a02021" },
+      { label: "Ort", value: "Bentonville, AR" },
+      { label: "Geleitet", value: "Marke, Social,\u00a0PR" },
+    ],
+    situation: {
+      title: "Ein Wirtschaftsverband aus der Kleinstadt, plötzlich in der\u00a0Bundesliga.",
+      body:
+        "Die Kammer wollte USA-weit um Remote-Arbeitskräfte konkurrieren und um Unternehmen, die einen neuen Standort suchten. Das ist ein anderes Publikum als die Mitglieder, die sie längst kannten, und ein anderer Auftrag für die Marke. Die Story musste bei Menschen ankommen, die noch nie einen Gedanken an Northwest Arkansas verschwendet hatten, und trotzdem den Betrieben etwas bedeuten, die die Beiträge\u00a0zahlen.",
+    },
+    movesTitle: "Drei Züge, der Reihe\u00a0nach.",
+    moves: [
+      { title: "Die Marke neu\u00a0aufgebaut", body: "Ich habe die Überarbeitung geleitet, mit der die Kammer USA-weit um Remote-Talente und umziehende Unternehmen konkurrieren konnte, statt nur zu den Mitgliedern zu sprechen, die sie schon\u00a0hatte." },
+      { title: "Social auf den Mehrwert\u00a0ausgerichtet", body: "Ich habe die Social-Strategie um den besonderen Wert einer Kammermitgliedschaft herum aufgebaut, damit sich jeder Post seinen Platz verdient, statt nur einen Redaktionsplan zu\u00a0füllen." },
+      { title: "PR von A bis\u00a0Z", body: "Ich habe die PR-Strategie geleitet, klassisch wie digital, von den laufenden Programmen bis zu den großen Launch-Kampagnen und\u00a0Partnerschaften." },
+    ],
+    resultsTitle: "In unter sechs\u00a0Monaten.",
+    stats: [
+      { num: "+78\u00a0%", label: "Social Impressions" },
+      { num: "+22,5\u00a0%", label: "Social Engagement" },
+      { num: "+6\u00a0%", label: "E-Mail-Öffnungsrate über dem\u00a0Branchenschnitt" },
+      { num: "+3\u00a0%", label: "Klickrate über dem\u00a0Branchenschnitt" },
+    ],
+    note: "Die E-Mail-Zahlen waren organisch, ohne bezahlte Reichweite\u00a0dahinter.",
+    next: { slug: "intercut", title: "Fortune-500-Initiativen als Geschichten, die man sich gern\u00a0ansieht.", sub: "Intercut Productions   ·   Zur Case Study\u00a0\u00a0→" },
+  },
+  {
+    slug: "intercut",
+    n: "V",
+    client: "Intercut Productions",
+    tag: "Kampagnen & Content",
+    category: "campaigns",
+    cardTitle: "Fortune-500-Initiativen als Geschichten, die man sich gern\u00a0ansieht.",
+    cardLine: "Als Chief of Staff habe ich die Accounts geführt und die Kreation hinter Markengeschichten für Fortune-500-Kunden\u00a0gesteuert.",
+    chips: ["Fortune-500-Kunden", "Emmy-nominierte Show"],
+    art: "/art/art_intercut.webp",
+    scene: "/art/scene_intercut.webp",
+    eyebrow: "(V)   ·   Case Study   ·   Intercut Productions",
+    meta: [
+      { label: "Rolle", value: "Chief of\u00a0Staff" },
+      { label: "Zeitraum", value: "Juli 2017 bis März\u00a02020" },
+      { label: "Ort", value: "Bentonville, AR" },
+      { label: "Geleitet", value: "Accounts, Kreation,\u00a0Crew" },
+    ],
+    situation: {
+      title: "Fortune-500-Geschichten, die ein Publikum\u00a0verdienten.",
+      body:
+        "Intercut produzierte Content für Fortune-500-Unternehmen über Markeninnovation, gesellschaftliche Verantwortung und die Initiativen, auf die sie am stolzesten waren. Solche Geschichten sind leicht gut zu machen und schwer so zu erzählen, dass sie jemanden interessieren. Mein Job lag zwischen den Kunden, der Kreation und dem Geschäft, und ich habe dafür gesorgt, dass alle drei auf eine Geschichte zusteuerten, die es wert war, erzählt zu\u00a0werden.",
+    },
+    movesTitle: "Drei\u00a0Züge.",
+    moves: [
+      { title: "Die Kreation\u00a0gesteuert", body: "Ich habe Kreativkonzepte und Content-Entwicklung geleitet, damit jedes Stück die Innovationskraft der Marke und ihr gesellschaftliches Engagement wirklich vermittelte, statt es nur zu\u00a0beschreiben." },
+      { title: "Die Positionierung\u00a0geschützt", body: "Gemeinsam mit der Kreativabteilung war ich der zentrale Ansprechpartner dafür, die Markenpositionierung über alle Inhalte und Kundenkontaktpunkte hinweg zu schärfen und zu\u00a0schützen." },
+      { title: "Crew und Maschine\u00a0aufgebaut", body: "Ich habe Fotografen, Kameraleute, Cutter und Designer eingestellt und angeleitet und die Abläufe festgelegt, die den ganzen Betrieb effizient\u00a0hielten." },
+    ],
+    resultsTitle: "Was am Ende\u00a0stand.",
+    stats: [
+      { num: "Fortune 500", label: "Kunden, mit Geschichten über Markeninnovation und\u00a0CSR" },
+      { num: "4", label: "Gewerke in der Crew, die ich eingestellt und geführt habe (Foto, Film, Schnitt,\u00a0Design)" },
+      { num: "Emmy", label: "nominierte Show, an der ich bei Intercut mitgewirkt\u00a0habe" },
+    ],
+    note: "Die Nielsen-Ratings dieser Show stiegen innerhalb einer einzigen Staffel von sechzehn Wochen von 0,1 auf 2,3 und von 5,1 auf\u00a07,7.",
+    next: { slug: "the-starr-conspiracy", title: "Zweimal dieselbe Agentur, vom Strategen bis auf den\u00a0Regiestuhl.", sub: "The Starr Conspiracy   ·   Zwei Etappen   ·   Zur Case Study\u00a0\u00a0→" },
+  },
+];

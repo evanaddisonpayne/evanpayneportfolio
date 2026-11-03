@@ -8,14 +8,14 @@ const K = [23, 91, 7, 140, 55];
 const D = [106, 52, 116, 25, 224, 110, 58, 122, 80, 204, 98, 53, 110, 86, 252, 41, 53, 120, 68, 229, 99, 63, 118, 25, 226, 102, 45, 114];
 const decode = () => D.slice().reverse().map((n, i) => String.fromCharCode(n ^ K[i % K.length])).join("");
 
-export default function EmailReveal() {
+export default function EmailReveal({ show = "Show email address", copy: copyLabel = "Copy", copied: copiedLabel = "Copied" }: { show?: string; copy?: string; copied?: string }) {
   const [addr, setAddr] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   if (!addr) {
     return (
       <button type="button" className="btn btn-ghost" onClick={() => setAddr(decode())}>
-        Show email address
+        {show}
       </button>
     );
   }
@@ -32,7 +32,7 @@ export default function EmailReveal() {
     <div className="ct-email">
       <a href={`mailto:${addr}`} className="ct-addr">{addr}</a>
       <button type="button" className="ct-copy" onClick={copy} aria-live="polite">
-        {copied ? "Copied" : "Copy"}
+        {copied ? copiedLabel : copyLabel}
       </button>
     </div>
   );

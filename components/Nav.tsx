@@ -3,12 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { navLinks, roman, site } from "@/lib/site";
+import LangSwitch from "@/components/LangSwitch";
+import type { ChromeLabels } from "@/lib/i18n";
+import { localePath, splitLocale } from "@/lib/locales";
+import { roman, site } from "@/lib/site";
 
-export default function Nav() {
+export default function Nav({ labels }: { labels: ChromeLabels }) {
   const pathname = usePathname() || "/";
+  const { locale, rest } = splitLocale(pathname);
+  const t = labels[locale];
   const [open, setOpen] = useState(false);
-  const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
+  const isActive = (href: string) => rest === href || rest.startsWith(href + "/");
 
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
@@ -23,7 +28,7 @@ export default function Nav() {
   if (isTrip("/amsterdam") || isTrip("/christmas2026") || isTrip("/tanyasbach") || isTrip("/tanyasbach-private")) return null;
 
   const brand = (
-    <Link href="/" className="brand" aria-label={`${site.name}, home`}>
+    <Link href={localePath(locale, "/")} className="brand" aria-label={t.homeLabel.replace("{name}", site.name)}>
       <img src="/art/seal.webp" alt="" width={44} height={44} />
       <span>
         <span className="brand-name">{site.name}</span>
@@ -33,48 +38,50 @@ export default function Nav() {
   );
 
   return (
-    <header className="nav">
+    <header className="nav" lang={locale === "en" ? undefined : locale}>
       <div className="wrap nav-inner">
         {brand}
-        <nav className="nav-links" aria-label="Main">
-          {navLinks.map((l, i) => (
+        <nav className="nav-links" aria-label={t.nav.mainLabel}>
+          {t.nav.links.map((l, i) => (
             <span key={l.href} style={{ display: "contents" }}>
               {i > 0 && <span className="diamond" aria-hidden />}
-              <Link href={l.href} aria-current={isActive(l.href) ? "page" : undefined}>
+              <Link href={localePath(locale, l.href)} aria-current={isActive(l.href) ? "page" : undefined}>
                 {l.label}
               </Link>
             </span>
           ))}
-          <Link href="/contact" className="btn btn-outline-signal nav-cta">
-            Let&apos;s talk
+          <Link href={localePath(locale, "/contact")} className="btn btn-outline-signal nav-cta">
+            {t.nav.cta}
           </Link>
         </nav>
+        <LangSwitch label={t.languageLabel} className="lang-nav" />
         <button className="menu-btn" aria-expanded={open} aria-controls="site-menu" onClick={() => setOpen(true)}>
-          MENU
+          {t.nav.menu}
         </button>
       </div>
 
-      <div id="site-menu" className="menu" hidden={!open} role="dialog" aria-modal="true" aria-label="Menu">
+      <div id="site-menu" className="menu" hidden={!open} role="dialog" aria-modal="true" aria-label={t.nav.menuLabel}>
         <div className="nav">
           <div className="wrap nav-inner">
             {brand}
             <button className="menu-btn" onClick={() => setOpen(false)}>
-              CLOSE
+              {t.nav.close}
             </button>
           </div>
         </div>
-        <nav className="menu-links" aria-label="Menu">
-          {navLinks.map((l, i) => (
-            <Link key={l.href} href={l.href} aria-current={isActive(l.href) ? "page" : undefined}>
+        <nav className="menu-links" aria-label={t.nav.menuLabel}>
+          {t.nav.links.map((l, i) => (
+            <Link key={l.href} href={localePath(locale, l.href)} aria-current={isActive(l.href) ? "page" : undefined}>
               {l.label}
               <span>({roman[i]})</span>
             </Link>
           ))}
         </nav>
         <div className="menu-cta">
-          <Link href="/contact" className="btn btn-outline-signal">
-            Let&apos;s talk
+          <Link href={localePath(locale, "/contact")} className="btn btn-outline-signal">
+            {t.nav.cta}
           </Link>
+          <LangSwitch label={t.languageLabel} className="lang-menu" />
           <span className="brand-coords">{site.coords}</span>
         </div>
       </div>
