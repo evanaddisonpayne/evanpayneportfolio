@@ -122,8 +122,9 @@
 /* ---------- a day ---------- */
 .tb .tc-day { background: var(--grain), color-mix(in srgb, var(--tone) 16%, var(--ivory)); }
 .tb .tc-day.is-flip { background: var(--grain), var(--ivory); }
-.tb .tc-day-scarlet { background: var(--grain), radial-gradient(ellipse 60% 70% at 15% 20%, #e8173f, transparent 70%), var(--scarlet); color: #fff; }
-.tc-day-scarlet .eyebrow { color: var(--gold); }
+.tb .tc-day.tc-day-scarlet { background: var(--grain), radial-gradient(ellipse 60% 70% at 15% 20%, #e8173f, transparent 70%), var(--scarlet); color: #fff; }
+.tc .tc-day .eyebrow { color: var(--antique); }
+.tc .tc-day.tc-day-scarlet .eyebrow { color: var(--gold); }
 .tc-day-scarlet .lede { color: #fff; }
 .tc-day-head { display: grid; gap: 22px; align-items: start; max-width: 900px; margin-bottom: 40px; }
 @media (min-width: 720px) { .tc-day-head { grid-template-columns: 120px 1fr; gap: 32px; } }

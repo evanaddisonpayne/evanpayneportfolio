@@ -153,7 +153,7 @@ export const DAYS: Day[] = [
       },
       {
         time: "6:30 pm",
-        icon: "❤",
+        icon: "💋",
         title: "Scarlet hour",
         body: "Everyone in red by the pool for golden-hour photos. The bride picks the playlist. Sunset is around 7:25.",
         pin: "villa",
