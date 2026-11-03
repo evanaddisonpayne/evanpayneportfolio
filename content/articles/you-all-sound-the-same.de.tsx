@@ -203,7 +203,7 @@ export default function Article() {
               <span className="seal" aria-hidden />
               <div>
                 <p className="name">Evan Addison&nbsp;Payne</p>
-                <p className="filed">Abgelegt unter&nbsp;&nbsp;&nbsp;Positionierung&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;Marke&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;KI</p>
+                <p className="filed">Abgelegt unter{"   "}Positionierung{"   "}·{"   "}Marke{"   "}·{"   "}KI</p>
               </div>
             </div>
             <Share locale="de" />

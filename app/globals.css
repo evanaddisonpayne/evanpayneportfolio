@@ -212,7 +212,7 @@ p, li, figcaption, h1, h2, h3 { text-wrap: wrap; }
 .ft-id { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding-top: 24px; }
 .ft-id .name { font-family: var(--display); font-weight: 300; font-size: 18px; line-height: normal; white-space: nowrap; }
 .ft-id .meta { font-size: 14px; line-height: normal; color: var(--smoke); white-space: nowrap; }
-.ft-links { display: flex; gap: 16px; font-size: 14px; line-height: normal; white-space: nowrap; }
+.ft-links { display: flex; flex-wrap: wrap; gap: 10px 16px; font-size: 14px; line-height: normal; white-space: nowrap; }
 .ft-links a:hover { color: var(--signal); }
 /* canal row: Figma "Pattern/Canal row" is 1440 x 700, the houses sit in its bottom 223 */
 .canal { position: absolute; left: 50%; width: 1440px; height: 223px; transform: translateX(-50%); top: calc(var(--canal-top, -106px) + 477px);

@@ -200,7 +200,7 @@ export default function Article() {
               <span className="seal" aria-hidden />
               <div>
                 <p className="name">Evan Addison&nbsp;Payne</p>
-                <p className="filed">Classé dans&nbsp;&nbsp;&nbsp;Positionnement&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;Marque&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;IA</p>
+                <p className="filed">Classé dans{"   "}Positionnement{"   "}·{"   "}Marque{"   "}·{"   "}IA</p>
               </div>
             </div>
             <Share locale="fr" />
