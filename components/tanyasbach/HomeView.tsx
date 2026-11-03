@@ -119,9 +119,8 @@ function Steps() {
   const steps = [
     { n: 1, href: `${BASE}/rsvp`, title: "RSVP", line: "Tell us you're in, plus a few travel details.", time: "About 2 minutes", done: rsvpDone },
     { n: 2, href: `${BASE}/vote`, title: "Vote", line: "The final vote: villa or cruise. React with an emoji.", time: `About a minute · by ${VOTE_DEADLINE_LABEL}`, done: voteDone },
-    { n: 3, href: `${BASE}/results`, title: "See the results", line: "Check where the group is leaning. Come back any time.", time: "Updates as people vote", done: false },
   ];
-  const next = steps.find((s) => !s.done) ?? steps[2];
+  const next = steps.find((s) => !s.done) ?? steps[1];
   return (
     <section className="section light tb-steps-sec" id="start">
       <div className="wrap">

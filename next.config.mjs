@@ -3,6 +3,10 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   // The /amsterdam, /christmas2026, /tanyasbach, /tanyasbach-private and /turkscaicos trip pages are private: tell crawlers not to index them.
+  // The /tanyasbach results page was taken down (Nov 2, 2026); send old links to the trip home page.
+  async redirects() {
+    return [{ source: "/tanyasbach/results", destination: "/tanyasbach", permanent: false }];
+  },
   async headers() {
     const noindex = [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }];
     return [
