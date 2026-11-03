@@ -25,7 +25,7 @@ export default function Nav({ labels }: { labels: ChromeLabels }) {
 
   // The private trip pages have their own chrome and aren't part of the portfolio.
   const isTrip = (base: string) => pathname === base || pathname.startsWith(base + "/");
-  if (isTrip("/amsterdam") || isTrip("/christmas2026") || isTrip("/tanyasbach") || isTrip("/tanyasbach-private")) return null;
+  if (isTrip("/amsterdam") || isTrip("/christmas2026") || isTrip("/tanyasbach") || isTrip("/tanyasbach-private") || isTrip("/turkscaicos")) return null;
 
   const brand = (
     <Link href={localePath(locale, "/")} className="brand" aria-label={t.homeLabel.replace("{name}", site.name)}>
